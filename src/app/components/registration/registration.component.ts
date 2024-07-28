@@ -204,7 +204,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   processCSV() {
+    var success = 0;
+    var failed = 0;
+    var sum = 0;
+    var badUserNames: any[] = [];
+
     for (const row of this.csvData) {
+      sum++;
       const newUser: UserDTO = {
         firstName: row['Ime'],
         lastName: row['Prezime'],
@@ -220,21 +226,47 @@ export class RegistrationComponent implements OnInit {
         {
           this.userService.registerUser(newUser).subscribe(   
             (userId: any) => {
-              if (newUser.role == 3) {
-                var odeljenje = this.odeljenja?.find(x => x.brojOdeljenja == row['Odeljenje'] && x.razred == row['Razred'] && x.idSkole == row['idSkole']);
-                if(odeljenje)
-                {      
-                  this.zaduzenjaService.addOdeljenjeUcenik(userId, odeljenje.id).subscribe();
+              if(userId != null){
+                if (newUser.role == 3) {
+                  var odeljenje = this.odeljenja?.find(x => x.brojOdeljenja == row['Odeljenje'] && x.razred == row['Razred'] && x.idSkole == row['idSkole']);
+                  if(odeljenje)
+                  {      
+                    this.zaduzenjaService.addOdeljenjeUcenik(userId, odeljenje.id).subscribe((res: boolean)=>{
+                      if(res)
+                      {
+                        success++;
+                      }
+                      else{
+                        failed++;
+                      }
+                    });
+                  }
                 }
+              }
+              else{
+                failed++;
               }
             }
           );
         }
         else{
-          alert('Korisničko ime: '+ newUser.username +' je zauzeto!');
+          failed++;
+          badUserNames.push(newUser.username);
         }
     });
-    }  
+  } 
+
+    if(badUserNames.length > 0)
+    {
+        var text = "";
+        badUserNames.forEach(element => {
+          text = text + element + " ";
+        });
+        text = text + ";";
+        alert("Korisnici koji imaju nevalidnan username: " + text);
+    }
+      
+    alert("Od ukupno " + sum+ " uspešno dodato "+ success+ " korisnika, neuspešno dodato "+ failed + " korisnika.");
   }
 
   onFileSelected(event: any) {

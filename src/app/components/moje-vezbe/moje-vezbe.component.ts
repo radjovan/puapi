@@ -125,7 +125,6 @@ export class MojeVezbeComponent implements OnInit {
 
   prikaziIzmenaForm(vezbaId: number) {
     this.selectedVezbaId = vezbaId;
-    //this.selectedVezba = this.vezbe.find(vezba => vezba.id === vezbaId);
     this.showIzmenaForm = true;
     this.showUcenikForm = false;
     this.showOdeljenjeForm = false;

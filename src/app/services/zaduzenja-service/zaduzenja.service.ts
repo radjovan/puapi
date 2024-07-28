@@ -40,8 +40,8 @@ export class ZaduzenjaService {
     return this.http.post<boolean>(this.url + "zaduzenja.php", predmet);
   }
 
-  addOdeljenjeUcenik(idUcenika: number, idOdeljenja: number): Observable<Object>{
-    return this.http.post<Object>(this.url + "zaduzenja.php", { idUcenika: idUcenika, idOdeljenja: idOdeljenja, action: "dodajOdeljenjeUcenik" });
+  addOdeljenjeUcenik(idUcenika: number, idOdeljenja: number): Observable<boolean>{
+    return this.http.post<boolean>(this.url + "zaduzenja.php", { idUcenika: idUcenika, idOdeljenja: idOdeljenja, action: "dodajOdeljenjeUcenik" });
   }
 
   deleteZaduzenje(id: number): Observable<any> {
