@@ -1,0 +1,109 @@
+<br>
+<div class="registration">
+  <h1>Kontrolna strana</h1>
+  
+  <div class="nav-bar">
+    <button (click)="showForm('registration')">Registracija korisnika</button>
+    <button (click)="showForm('csv-registration')">Dodaj korisnike iz CSV</button>
+    <button (click)="showForm('odeljenje')">Dodaj odeljenje</button>
+    <button (click)="showForm('predmet')">Dodaj predmet</button>
+    <button (click)="showForm('skola')">Dodaj skolu</button>
+  </div>
+  
+  <div class="form-container" [ngClass]="{ 'active': activeForm === 'registration' }">
+    <form [formGroup]="registrationForm" (ngSubmit)="register()">
+      <h2>Registracija korisnika</h2>
+
+      <label for="firstName">Ime</label>
+      <input type="text" id="firstName" formControlName="firstName" required>
+
+      <label for="lastName">Prezime</label>
+      <input type="text" id="lastName" formControlName="lastName" required>
+      
+      <label for="username">Korisničko ime</label>
+      <input type="text" id="username" formControlName="username" required>
+  
+      <label for="password">Lozinka</label>
+      <input type="password" id="password" formControlName="password" required>
+  
+      <label for="role">Tip korisnika</label>
+      <select id="role" formControlName="role" required>
+        <option value="2">Profesor</option>
+        <option value="3">Učenik</option>
+      </select>
+  
+      <div *ngIf="registrationForm.get('role')?.value === '3'">
+        <label for="skola">Škola </label><br>
+        <select id="skola" formControlName="skola" (change)="filter()" required>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
+        </select>
+      </div>
+
+      <div *ngIf="registrationForm.get('skola')?.value != 0">
+        <label for="odeljenje">Odeljenje</label><br>
+        <select id="odeljenje" formControlName="odeljenje" required>
+          <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
+        </select>
+      </div>
+      <button type="submit">Registruj korisnika</button>
+    </form>
+  </div>
+  
+  <div class="form-container" [ngClass]="{ 'active': activeForm === 'odeljenje' }">
+    <form [formGroup]="OdeljenjeForm" (ngSubmit)="addOdeljenje()">
+      <h2>Dodaj odeljenje</h2>
+
+      <label for="idSkole">Škola</label>
+        <select id="idSkole" formControlName="idSkole" required>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
+        </select>
+      
+      <label for="razred">Razred</label>
+      <input type="number" id="razred" formControlName="razred" required>
+  
+      <label for="brojOdeljenja">Broj odeljenja</label>
+      <input type="number" id="brojOdeljenja" formControlName="brojOdeljenja" required>
+  
+      <button type="submit">Dodaj Odeljenje</button>
+    </form>
+  </div>
+  
+  <div class="form-container" [ngClass]="{ 'active': activeForm === 'predmet' }">
+    <form [formGroup]="PredmetForm" (ngSubmit)="addPredmet()">
+      <h2>Dodaj predmet</h2>
+      
+      <label for="razred">Razred slusanja predmeta</label>
+      <input type="number" id="razred" formControlName="razred" required>
+  
+      <label for="naziv">Naziv predmeta</label>
+      <input type="text" id="naziv" formControlName="naziv" required>
+  
+      <button type="submit">Dodaj Predmet</button>
+    </form>
+  </div>
+
+  <div class="form-container" [ngClass]="{ 'active': activeForm === 'skola' }">
+    <form [formGroup]="SkolaForm" (ngSubmit)="addSkola()">
+      <h2>Dodaj školu</h2>
+      
+      <label for="grad">Grad</label>
+      <input style='text-transform:uppercase' type="text" id="grad" formControlName="grad" required>
+  
+      <label for="naziv">Naziv škole</label>
+      <input  type="text" id="naziv" formControlName="naziv" required>
+  
+      <button type="submit">Dodaj školu</button>
+    </form>
+  </div>
+
+  <div class="form-container" [ngClass]="{ 'active': activeForm === 'csv-registration' }">
+    <form [formGroup]="csvRegistrationForm" (ngSubmit)="processCSV()">
+      <h2>Dodaj korisnike iz CSV-a</h2>
+      
+      <input type="file" (change)="onFileSelected($event)" accept=".csv">
+  
+      <button type="submit">Dodaj Odeljenje</button>
+    </form>
+  </div>
+  
+</div>

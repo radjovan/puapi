@@ -1,0 +1,66 @@
+.login-container {
+  background-color: #D8FEFF; /* tamno plava pozadina */
+  color: #004AAD; /* svetlo plavi tekst */
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif; /* Promenjen font */
+}
+
+.title {
+  font-size: 32px; /* Veći font za naslov */
+  color: #FF914D; /* narandžasti naslov */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.logo-image {
+  width: 50%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  color: #004AAD; /* svetlo plavi tekst */
+  font-size: 18px; /* Veći font za label */
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #FF914D; /* narandžasta pozadina za input */
+  color: #004AAD; /* tamno plavi tekst */
+  font-size: 16px; /* Veći font za input */
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  background-color:  #004AAD;/* narandžasti dugme */
+  border: none;
+  color: #D8FEFF; /* tamno plavi tekst */
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px; /* Veći font za dugme */
+  font-family: 'Roboto', sans-serif;
+}
+
+button:hover {
+  background-color: #FF914D; /* svetlo plava dugme pri hover-u */
+  color: #004AAD; /* tamno plavi tekst pri hover-u */
+}

@@ -1,0 +1,76 @@
+<br>
+<div class="moji-zadaci">
+    <h2>Moji Zadaci</h2>
+    <div class="filter-container">
+       <!-- <label for="razred">Razred:</label>
+        <select id="razred" [(ngModel)]="selectedRazred" (change)="filterTasks()">
+            <option *ngFor="let razred of razredi" [value]="razred">{{ razred }}</option>
+        </select>
+       --> 
+        <label for="predmet">Predmet:</label>
+        <select id="predmet" [(ngModel)]="selectedPredmet" (change)="filterTasks()">
+            <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv +" ("+ predmet.razred + ". razred)"  }}</option>
+        </select>
+    </div>
+
+    <ul>
+        <li *ngFor="let zadatak of filteredZadaci">
+            <div>
+                <h3>{{ zadatak.opis }}</h3>
+                <h4>Tekst zadatka:</h4>
+                <p *ngIf="zadatak.latex; else plainText">{{ zadatak.tekst }}</p>
+                <ng-template #plainText><p>{{ zadatak.tekst }}</p></ng-template>
+                <img *ngIf="zadatak.picture" [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
+                <br>
+                <button (click)="openEditDialog(zadatak)">Izmeni zadatak</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- Modal za prikaz slike -->
+<div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+    <span class="image-modal-close">&times;</span>
+    <div class="image-modal-content">
+        <img [src]="selectedImage" alt="Full size image">
+    </div>
+</div>
+
+<!-- Modal za izmenu zadatka -->
+<div class="modal" *ngIf="showEditDialog">
+    <div class="modal-content">
+      <span class="close" (click)="closeEditDialog()">&times;</span>
+      <h2>Izmena Zadatka</h2>
+      <form *ngIf="selectedTask" (submit)="updateTask()">
+        <label for="opis">Opis:</label>
+        <input id="opis" [(ngModel)]="selectedTask.opis" name="opis">
+  
+        <label for="tekst">Tekst:</label>
+        <textarea id="tekst" [(ngModel)]="selectedTask.tekst" name="tekst"></textarea>
+  
+        <label for="slika">Slika:</label>
+        <input id="slika" type="file" (change)="onFileSelected($event)">
+  
+        <label for="tekst">Hint:</label>
+        <textarea id="tekst" [(ngModel)]="selectedTask.hint.tekst" name="tekst"></textarea>
+
+        <label for="tekst">Definicija:</label>
+        <textarea id="tekst" [(ngModel)]="selectedTask.definicija.tekst" name="tekst"></textarea>
+
+        <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
+          <label [for]="'odgovor' + i">Odgovor {{ i + 1 }}:</label>
+          <textarea
+            [id]="'odgovor' + i"
+            [(ngModel)]="odgovor.tekst"
+            [name]="'odgovor' + i"
+          ></textarea>
+          <span *ngIf="odgovor.tacnost === 1">(Tacan odgovor)</span>
+          <span *ngIf="odgovor.tacnost === 2">(Priblizno tacan odgovor)</span>
+          <span *ngIf="odgovor.tacnost === 3 || odgovor.tacnost === 4">(Netacan odgovor)</span>
+        </div>
+  
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,93 @@
+<br>
+<div *ngIf="showTaskForm" class="task-container">
+    <form [formGroup]="taskForm" (ngSubmit)="addTask()">
+      <label>Dodaj zadatak:</label>
+      
+      <label for="nivo">Nivo težine</label>
+      <select id="nivo" formControlName="nivo" required>
+        <option value="1">Osnovni</option>
+        <option value="2">Srednji</option>
+        <option value="3">Napredni</option>
+      </select>
+      
+      <label for="opis">Naslov zadatka</label>
+      <input type="text" id="opis" formControlName="opis" required>
+
+      <label for="tekst">Tekst zadatka</label>
+      <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateLatex($event)" required></textarea>   
+      
+      <div>
+        <label for="latexOption">Uneti tekst zadatka je Latex kod:</label>
+        <input type="checkbox" id="latexOption" formControlName="latex">
+      </div>
+
+      <div  *ngIf="taskForm.get('latex')?.value">
+        <label>Latex:</label>
+        <div class="latex-output">
+      
+          <span [innerHTML]="renderedLatex"></span>
+          <!--<app-math-jax-paragraph mathString="Just testing how well a random equation \(x^2 + y^2 = z^2\) in the middle of a sentence works."></app-math-jax-paragraph>
+        -->
+        </div>
+      </div>
+    
+      
+      <label for="idPredmeta">Predmet</label>
+      <select id="idPredmeta" formControlName="idPredmeta" required>
+        <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv +" ("+ predmet.razred + ". razred)" }}</option>
+      </select>
+  
+      <label for="document">Upload photo</label>
+      <input type="file" id="document" (change)="onFileChange($event)">
+      
+      <button type="submit">Dodaj Zadatak</button>
+    </form>
+  </div>
+
+ <div *ngIf="!showTaskForm">
+  <label>Opis:</label>
+  <label>{{ zadatak?.opis}}</label>
+  <label>Tekst:</label>
+  <label>{{ zadatak?.tekst}}</label>
+  <label>Nivo težine:</label>
+  <label>{{ getZadatakClass(zadatak?.nivo)}}</label>
+  <label>Predmet:</label>
+  <label>{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</label>
+  <div *ngIf="imageUrl" class="image-preview">
+    <img [src]="imageUrl" alt="Uploaded Image Preview" />
+  </div>
+ </div>
+
+<div *ngIf="showAnswersForm" class="form-container">
+  <form [formGroup]="answersForm" (ngSubmit)="submitAnswers()">
+    <label for="correct">Tačan odgovor</label>
+    <input type="text" id="correct" formControlName="correct" required>
+    <label for="forHint">Približan odgovor</label>
+    <input type="text" id="forHint" formControlName="forHint" required>
+    <label for="hint">Pomoć za zadatak sa približnim odgovorom</label>
+    <textarea id="hint" formControlName="hint" rows="5" required></textarea>
+    <label for="wrong">Pogrešan odgovor</label>
+    <input type="text" id="wrong" formControlName="wrong" required>
+    <label for="wrong2">Pogrešan odgovor</label>
+    <input type="text" id="wrong2" formControlName="wrong2">
+    <button type="submit">Dodaj Odgovore</button>
+  </form>
+</div>
+<!--<div *ngIf="showAnswersForm" class="form-container">
+  <form [formGroup]="hintForm" (ngSubmit)="submitHint()">
+    <label for="hint">Pomoć za zadatak</label>
+    <textarea id="hint" formControlName="hint" rows="5" required></textarea>
+    <button type="submit">Dodaj Hint</button>
+  </form>
+</div>-->
+
+
+<div *ngIf="showdefinitionForm" class="form-container">
+  <form [formGroup]="definitionForm" (ngSubmit)="submitDefinition()">
+    <label for="tekst">Definicija zadatka</label>
+    <textarea id="tekst" formControlName="tekst" rows="5" required></textarea>
+    <label for="document">Upload photo</label>
+    <input type="file" id="document" (change)="onFileChangeDefinition($event)">
+    <button type="submit">Dodaj Definiciju</button>
+  </form>
+</div>

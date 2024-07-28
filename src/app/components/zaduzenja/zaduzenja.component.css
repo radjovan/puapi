@@ -1,0 +1,100 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.registration {
+  padding: 20px;
+  background-color: #004AAD;
+  border-radius: 8px;
+  color: #D8FEFF;
+}
+
+.registration h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background-color: #D8FEFF;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #004AAD;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+.form-field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #004AAD;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #D8FEFF;
+  color: #004AAD;
+}
+
+.submit-button,
+.delete-button {
+  background-color: #FF914D;
+  color: #004AAD;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-button:hover,
+.delete-button:hover {
+  background-color: #FFA500;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #162447;
+  text-align: left;
+}
+
+th {
+  background-color: #004AAD;
+  color: #D8FEFF;
+}
+
+td {
+  background-color: #D8FEFF;
+  color: #004AAD;
+}
+
+td button {
+  background-color: #FF914D;
+  color: #004AAD;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+td button:hover {
+  background-color: #FFA500;
+}

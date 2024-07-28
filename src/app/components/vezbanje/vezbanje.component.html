@@ -1,0 +1,63 @@
+<div class="exercise-container">
+
+
+  <div *ngIf="!exerciseStarted" class="trajanjeVezbe">
+    <p>Trajanje vežbe: {{ vezba?.trajanjeVezbe? vezba?.trajanjeVezbe: 0 / 60 | number:'1.0-0' }} sekundi</p>
+    <button (click)="startExercise()">Pokreni Vežbu</button>
+  </div>
+  <div *ngIf="exerciseStarted && !showResults && vezba && vezba.zadaci.length > 0" class="exercise-details">
+    <div class="timer">
+      <p>{{ minutes }}:{{ seconds | number:'2.0' }} / {{ vezba?.trajanjeVezbe ? vezba?.trajanjeVezbe : 0 / 60 | number:'1.0-0' }}:00</p>
+    </div>
+    <div class="exercise-description">
+      <h2>{{ vezba.naziv }}</h2>
+      
+    <p>{{ vezba.nazivPredmeta }} ({{ vezba.razred }}. razred)</p>
+    </div>
+    
+    <div class="current-question">
+      <div *ngIf="vezba.zadaci[currentZadatakIndex]" class="zadatak-item">
+        <h3>{{ vezba.zadaci[currentZadatakIndex].opis }}</h3>
+        <p>{{ vezba.zadaci[currentZadatakIndex].tekst }}</p>
+        
+        <div *ngIf="vezba.zadaci[currentZadatakIndex].picture">
+          <img [src]="vezba.zadaci[currentZadatakIndex].path" alt="Slika zadatka">
+        </div>
+        
+        <div class="odgovori">
+          <div *ngFor="let odgovor of vezba.zadaci[currentZadatakIndex].odgovori">
+            <label>
+              <input type="radio" name="zadatak{{ vezba.zadaci[currentZadatakIndex].id }}" (click)="selectedOdgovor = odgovor">
+              {{ odgovor.tekst }}
+            </label>
+          </div>
+        </div>
+        
+        <button (click)="odgovoriNaZadatak(vezba.zadaci[currentZadatakIndex], selectedOdgovor)">Odgovori</button>
+        <button (click)="preskociZadatak(vezba.zadaci[currentZadatakIndex])" class="button-preskoci">Preskoči zadatak</button>
+        <div *ngIf="showHint" class="hint-popup">
+          <p>POMOĆ:</p>
+          <p>{{ vezba.zadaci[currentZadatakIndex].hint.tekst }}</p>
+        </div>
+        
+        <div *ngIf="showDefinition" class="definition-popup">
+          <p>DEFINICIJA:</p>
+          <p>{{ vezba.zadaci[currentZadatakIndex].definicija.tekst }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="showResults" class="results">
+    <h2>Rezultati vežbe</h2>
+    <p>Ukupno tačnih odgovora: {{ pokusaj?.brojTacnihOdgovora }}</p>
+    <p>Ukupno netačnih odgovora: {{ pokusaj?.brojNetacnihOdgovora }}</p>
+    <p>Ukupno urađenih zadataka: {{ pokusaj?.brojUradjenihZadataka }}</p>
+    <p>Ukupno neuradjenih zadataka: {{ pokusaj?.brojNeuradjenihZadataka }}</p>
+    <p>Ukupno vreme: {{ minutes }}:{{ seconds | number:'2.0' }}</p>
+
+    <button (click)="resetExercise()">Ponovo pokreni vežbu</button>
+    <button (click)="goBack()">Vrati se na vežbe</button>
+  </div>
+</div>

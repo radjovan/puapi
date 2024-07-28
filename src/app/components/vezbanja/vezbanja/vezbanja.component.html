@@ -1,0 +1,21 @@
+<div class="exercise-list">
+    <div class="filters">
+      <label for="subjectFilter" class="subjectFilter">Filtriraj po predmetu:</label>
+      <select id="subjectFilter" [(ngModel)]="selectedSubject" (change)="filterExercises()">
+        <option value="0" class="option">Svi predmeti</option>
+        <option *ngFor="let vezba of vezbe" [value]="vezba.predmet?.id" class="option">{{ vezba.predmet?.naziv +" ("+ vezba.predmet?.razred + ". razred)"  }}</option>
+      </select>
+    </div>
+  
+    <div class="exercise-items">
+      <div *ngFor="let vezba of filteredExercises">
+        <div class="exercise-item">
+          <h3>{{ vezba.naziv }}</h3>
+          <p>{{"Predmet: " + vezba.predmet?.naziv +" ("+ vezba.predmet?.razred + ". razred)" }}</p>
+          <p>{{"Trajanje vezbe: " + vezba.trajanjeVezbe + "s" }}</p>
+          <button (click)="startExercise(vezba)">Startuj Vezbu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

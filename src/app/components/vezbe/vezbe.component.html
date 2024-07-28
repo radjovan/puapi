@@ -1,0 +1,60 @@
+<br>
+<div class="vezbe-container">
+  <form [formGroup]="vezbaForm" (ngSubmit)="addVezba()">
+    <label>Dodaj vežbu:</label>
+
+    <label for="predmet">Predmet</label>
+    <select id="predmet" formControlName="idPredmeta" required>
+      <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv +" ("+ predmet.razred + ". razred)"  }}</option>
+    </select>
+
+    <label for="naziv">Naziv vežbe</label>
+    <input type="text" id="naziv" formControlName="naziv" required>
+
+    <label for="trajanjeVezbe">Trajanje vežbe (u sekundama)</label>
+    <input type="number" id="trajanjeVezbe" formControlName="trajanjeVezbe" required>
+
+    <label for="nivo">Filter po nivou:</label>
+    <select id="nivo" formControlName="selectedNivo" required>
+      <option [value]="0">Svi nivoi</option>
+      <option [value]="1">Nivo 1</option>
+      <option [value]="2">Nivo 2</option>
+      <option [value]="3">Nivo 3</option>
+    </select>
+
+    <div class="zadaci-section">
+      <label>Odaberi zadatke:</label>
+      <div *ngFor="let zadatak of filteredZadaci" [ngClass]="getZadatakClass(zadatak.nivo)">
+        <input type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
+        <div><label>{{ "Naziv: " + zadatak.opis }}</label></div>
+        <label>{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
+        <button type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
+      </div>
+    </div>
+
+    <button type="submit">Sačuvaj vežbu</button>
+  </form>
+</div>
+
+<!-- Modal for displaying task details -->
+<div class="modal" *ngIf="showZadatakModal">
+  <div class="modal-content">
+    <span class="close" (click)="closeZadatakModal()">&times;</span>
+    <h2>{{ selectedZadatak?.opis }}</h2>
+    <p><strong>Tekst zadatka:</strong></p>
+    <p *ngIf="selectedZadatak?.latex; else plainText">{{ selectedZadatak?.tekst }}</p>
+    <ng-template #plainText><p>{{ selectedZadatak?.tekst }}</p></ng-template>
+    <img *ngIf="selectedZadatak?.picture" [src]="selectedZadatak?.path" class="task-image">
+    
+    <h3>Odgovori:</h3>
+    <ul>
+      <li *ngFor="let odgovor of selectedZadatak?.odgovori">{{ odgovor.tekst }}</li>
+    </ul>
+    
+    <h3>Definicija:</h3>
+    <p>{{ selectedZadatak?.definicija?.tekst }}</p>
+
+    <h3>Hint:</h3>
+    <p>{{ selectedZadatak?.hint?.tekst }}</p>
+  </div>
+</div>
