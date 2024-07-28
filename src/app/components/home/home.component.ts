@@ -12,8 +12,10 @@ export class HomeComponent {
 
   firstName: string = "";
   lastName: string = "";
+  logoPath = "";
   user: User | null = null;
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService, private fileService: FileService) { 
+    this.logoPath = this.fileService.getImageUrlByName("PU_Logo.png")
     this.user = this.userService.getCurrentUser().user;
   }
 

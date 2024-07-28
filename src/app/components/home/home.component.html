@@ -1,3 +1,5 @@
-<div>
-    <p>{{"Korisnik: " + user?.firstName + " " + user?.lastName}}</p>
+<div class="home">
+    <img [src]="logoPath" class="logo-image">
+    <p class="welcome-text">{{"Dobrodošao na Platformu za Programirano Učenje "}}</p>
+    <span class="welcome-text-name">{{ user?.firstName + " " + user?.lastName  + "!"}}</span>
 </div>

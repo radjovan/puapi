@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D8FEFF;; /* Tamna pozadina */
+    color: #D8FEFF; /* Svetli tekst */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .home {
+    text-align: center;
+    padding: 20px;
+    background-color:  #D8FEFF;;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logo-image {
+    width: 150px; /* Manja veličina slike */
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #FF914D;
+  }
+  .welcome-text-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4d94ff;
+  }
+  

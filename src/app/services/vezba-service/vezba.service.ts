@@ -63,7 +63,7 @@ export class VezbaService {
   }
 
   removeZadatakFromVezba(vezbaId: number, zadatakId: number): Observable<boolean> {
-    return this.http.get<boolean>(this.url + "vezba.php?action=getUceniciByVezbaId&id=");
+    return this.http.delete<boolean>(this.url + "vezba.php?action=removeZadatakFromVezba&idZadatka="+zadatakId+"&idVezbe="+vezbaId);
   }
 
   addZadatakToVezba(vezbaId: number, zadatakId: any): Observable<boolean> {

@@ -48,15 +48,19 @@
       <!-- Prikaz i dodela odeljenja -->
       <div *ngIf="showOdeljenjeForm && selectedVezbaId === vezba.id" class="form-container">
         <h2>Dodeli vežbu odeljenju</h2>
+        <label for="skola">Škola </label><br>
+        <select id="idSkole" [(ngModel)]="selectedSkolaId" (change)="filter()" required>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
+        </select>
         <label for="idOdeljenja">Izaberite odeljenje:</label>
-        <select [(ngModel)]="selectedOdeljenjeId" id="idOdeljenja">
-          <option *ngFor="let odeljenje of odeljenja" [value]="odeljenje.id">{{odeljenje.razred}}/{{odeljenje.brojOdeljenja}}</option>
+        <select *ngIf="selectedSkolaId" [(ngModel)]="selectedOdeljenjeId" id="idOdeljenja">
+          <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{odeljenje.razred}}/{{odeljenje.brojOdeljenja}}</option>
         </select>
         <button (click)="dodeliVezbuOdeljenju()">Dodeli</button>
         <button (click)="zatvoriForme()">Zatvori</button>
-        <h3>Odeljenja kojima je vežba dodeljena:</h3>
+        <h3>Odeljenja(Škola) kojima je vežba dodeljena:</h3>
         <ul>
-          <li *ngFor="let odeljenje of vezba.odeljenja">{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}</li>
+          <li *ngFor="let odeljenje of vezba.odeljenja">{{odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}  ({{odeljenje.skola.naziv }})</li>
         </ul>
       </div>
 

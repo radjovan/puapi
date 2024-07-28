@@ -8,6 +8,7 @@ import { ZaduzenjaService } from '../../services/zaduzenja-service/zaduzenja.ser
 import { Zadatak } from '../../models/zadatak';
 import { ZadatakService } from '../../services/zadatak-service/zadatak.service';
 import { Predmet } from '../../models/predmet';
+import { SkolaDTO } from '../../models/DTOs/skolaDTO';
 
 @Component({
   selector: 'app-moje-vezbe',
@@ -17,7 +18,9 @@ import { Predmet } from '../../models/predmet';
 export class MojeVezbeComponent implements OnInit {
   vezbe: Vezba[] = [];
   odeljenja: Odeljenje[] = [];
+  filterOdeljenja: Odeljenje[] = [];
   ucenici: User[] = [];
+  skole: SkolaDTO[] = [];
   selectedVezba: Vezba = {naziv: "", trajanjeVezbe: 0, id: 0, idPredmeta: 0, brojZadataka: 0, zadaci: []};
   selectedVezbaId: number | null = null;
   selectedOdeljenjeId: number | null = null;
@@ -28,6 +31,7 @@ export class MojeVezbeComponent implements OnInit {
   showUcenikForm: boolean = false;
   showZadatkeForm: boolean = false;
   noviZadatakId: number | null = null;
+  selectedSkolaId: number | null = null;
 
   constructor(private vezbaService: VezbaService,
      private userService: UserService,
@@ -43,7 +47,18 @@ export class MojeVezbeComponent implements OnInit {
   ucitajVezbe() {
     this.vezbaService.getVezbeByProfesorId(this.userService.getCurrentUserId()).subscribe((vezbe: Vezba[]) => {
       vezbe.forEach(vezba => {
-        this.vezbaService.getOdeljenjaByVezbaId(vezba.id).subscribe((res: Odeljenje[]) =>{vezba.odeljenja = res;});
+        this.vezbaService.getOdeljenjaByVezbaId(vezba.id).subscribe((res: Odeljenje[]) =>{
+        
+          this.zaduzenjeService.getSkole().subscribe(
+            (response: any) => {
+              this.skole = response;
+              res.forEach(o => {
+                o.skola = this.skole.find(x => x.id === o.idSkole) ?? { naziv: "", id: 0, grad: "", action: "" };
+              });
+    
+              vezba.odeljenja = res;
+            });
+        });
         this.vezbaService.getUceniciByVezbaId(vezba.id).subscribe((res: User[]) =>{vezba.ucenici = res;});
         this.zadaciService.getPredmetiById(vezba.idPredmeta).subscribe((p: Predmet) => {vezba.predmet = p;});
         this.zadaciService.getZadaciByPredmetId(vezba.idPredmeta).subscribe((z: Zadatak[]) => {
@@ -57,9 +72,18 @@ export class MojeVezbeComponent implements OnInit {
       this.vezbe = vezbe;
     });
   }
+
   ucitajOdeljenja() {
     this.zaduzenjeService.getOdeljenja().subscribe((odeljenja: Odeljenje[]) => {
       this.odeljenja = odeljenja;
+      this.zaduzenjeService.getSkole().subscribe(
+        (response: any) => {
+          this.skole = response;
+          this.odeljenja.forEach(o => {
+            o.skola = this.skole.find(x => x.id === o.idSkole) ?? { naziv: "", id: 0, grad: "", action: "" };
+          });
+        }
+      );
     });
   }
 
@@ -167,5 +191,9 @@ export class MojeVezbeComponent implements OnInit {
     this.showOdeljenjeForm = false;
     this.showUcenikForm = false;
     this.showZadatkeForm = false;
+  }
+
+  filter(){
+    this.filterOdeljenja = this.odeljenja?.filter(x => x.idSkole == this.selectedSkolaId);
   }
 }

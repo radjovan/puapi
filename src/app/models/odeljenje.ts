@@ -1,3 +1,4 @@
+import { SkolaDTO } from "./DTOs/skolaDTO";
 import { Predmet } from "./predmet";
 import { User } from "./user";
 
@@ -9,6 +10,7 @@ export interface Odeljenje {
     idSkole: number;
     predmeti: Predmet[];
     ucenici: User[];
+    skola: SkolaDTO;
   }
 
   

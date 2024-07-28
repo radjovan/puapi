@@ -76,6 +76,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
 
         this.zadatakService.dajDefinicijuPoIdZadatka(zadatak.id).subscribe((d: Definition) => {
           zadatak.definicija = d;
+          if (d.slika) {
+            zadatak.definicija.slika = this.fileService.getImageUrlByName(d.slika);
+          }
         });
 
         if (zadatak.picture) {
@@ -140,8 +143,10 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       this.pokusaj.brojTacnihOdgovora++;
       this.nextZadatak();
     } else if (odgovor.tacnost === 2) {
+      this.pokusaj.brojNetacnihOdgovora++;
       this.showHint = true;
     } else if (odgovor.tacnost === 3 || odgovor.tacnost === 4) {
+      this.pokusaj.brojNetacnihOdgovora++;
       this.showDefinition = true;
     } else {
       this.pokusaj.brojNetacnihOdgovora++;
@@ -205,6 +210,23 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/vezbanja']);
   }
   preskociZadatak(id: any): void{
+    if(this.pokusaj)
+    {
+      this.pokusaj.brojUradjenihZadataka = this.pokusaj.pokusajiZadataka.filter(pz => pz.uspesnoUradjen === 1).length;
+      this.pokusaj.brojNeuradjenihZadataka = this.vezba?.zadaci.length ? this.vezba?.zadaci.length: 0 - this.pokusaj.brojUradjenihZadataka;
+    }
+    else{
+      this.pokusaj = {
+        id: 0,
+        idVezbe: this.vezba?.id || 0,
+        brojTacnihOdgovora: 0,
+        brojNetacnihOdgovora: 0,
+        brojUradjenihZadataka: 0,
+        brojNeuradjenihZadataka: 1,
+        datumPokusaja: new Date().toISOString(),
+        pokusajiZadataka: []
+      };
+    }
     if (this.vezba && this.currentZadatakIndex < this.vezba.zadaci.length - 1) {
       this.currentZadatakIndex++;
     } else {

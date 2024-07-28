@@ -185,7 +185,7 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
       if (this.selectedFileDefinition) {
         this.fileService.uploadFile(this.selectedFileDefinition).subscribe(response => {
           if (response.status === 'success') {
-            this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, response.fileName).subscribe();
+            this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, response.filename).subscribe();
             this.definitionImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);

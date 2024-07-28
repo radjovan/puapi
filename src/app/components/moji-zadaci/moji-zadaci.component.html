@@ -47,15 +47,19 @@
   
         <label for="tekst">Tekst:</label>
         <textarea id="tekst" [(ngModel)]="selectedTask.tekst" name="tekst"></textarea>
-  
-        <label for="slika">Slika:</label>
+  <!--
+                <label for="slika">Slika:</label>
         <input id="slika" type="file" (change)="onFileSelected($event)">
+        -->
+
   
-        <label for="tekst">Hint:</label>
+        <label for="tekst">Pomoć:</label>
         <textarea id="tekst" [(ngModel)]="selectedTask.hint.tekst" name="tekst"></textarea>
 
+        <!--
         <label for="tekst">Definicija:</label>
         <textarea id="tekst" [(ngModel)]="selectedTask.definicija.tekst" name="tekst"></textarea>
+        -->
 
         <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
           <label [for]="'odgovor' + i">Odgovor {{ i + 1 }}:</label>

@@ -1,7 +1,7 @@
 <br>
 <div class="vezbe-container">
   <form [formGroup]="vezbaForm" (ngSubmit)="addVezba()">
-    <label>Dodaj vežbu:</label>
+    <label>DODAJ NOVU VEŽBU:</label>
 
     <label for="predmet">Predmet</label>
     <select id="predmet" formControlName="idPredmeta" required>
@@ -16,19 +16,19 @@
 
     <label for="nivo">Filter po nivou:</label>
     <select id="nivo" formControlName="selectedNivo" required>
-      <option [value]="0">Svi nivoi</option>
-      <option [value]="1">Nivo 1</option>
-      <option [value]="2">Nivo 2</option>
-      <option [value]="3">Nivo 3</option>
+      <option [value]="0">Svi Nivoi</option>
+      <option [value]="1">Osnovni Nivo</option>
+      <option [value]="2">Srednji Nivo</option>
+      <option [value]="3">Napredni NIvo</option>
     </select>
 
     <div class="zadaci-section">
       <label>Odaberi zadatke:</label>
       <div *ngFor="let zadatak of filteredZadaci" [ngClass]="getZadatakClass(zadatak.nivo)">
-        <input type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
-        <div><label>{{ "Naziv: " + zadatak.opis }}</label></div>
-        <label>{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
-        <button type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
+        <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
+        <div class="zadaci-naziv"><label>{{ "Naziv: " + zadatak.opis }}</label></div>
+        <label class="zadaci-level">{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
+        <button class="zadaci-details" type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
       </div>
     </div>
 
@@ -36,7 +36,6 @@
   </form>
 </div>
 
-<!-- Modal for displaying task details -->
 <div class="modal" *ngIf="showZadatakModal">
   <div class="modal-content">
     <span class="close" (click)="closeZadatakModal()">&times;</span>

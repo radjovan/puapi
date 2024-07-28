@@ -43,6 +43,9 @@
         <div *ngIf="showDefinition" class="definition-popup">
           <p>DEFINICIJA:</p>
           <p>{{ vezba.zadaci[currentZadatakIndex].definicija.tekst }}</p>
+          <div *ngIf="vezba.zadaci[currentZadatakIndex].definicija.slika">
+            <img [src]="vezba.zadaci[currentZadatakIndex].definicija.slika" alt="Slika zadatka">
+          </div>
         </div>
       </div>
     </div>
