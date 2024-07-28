@@ -14,13 +14,15 @@ import { PredmetDTO } from '../../models/DTOs/predmetDTO';
 export class UserService {  
   constructor(private http: HttpClient) { }
 
+  url = environment.apiUrl + "Controllers/";
+
   login(username: string, password: string): Observable<any> {
-    return this.http.post<Object>(environment.apiUrl + "user.php", { username: username, password: password, action: "loginUser" });
+    return this.http.post<Object>(this.url + "user.php", { username: username, password: password, action: "loginUser" });
   }
 
   registerUser(user: UserDTO): Observable<number> {
     user.action = "addUser";
-    return this.http.post<number>(environment.apiUrl + "user.php", user);
+    return this.http.post<number>(this.url + "user.php", user);
   }
 
   logout() {
@@ -84,10 +86,10 @@ export class UserService {
   }
 
   getUcenici(): Observable<Object>{
-    return this.http.get<Object>(environment.apiUrl + "user.php?action=getUsersByRole&roleId=3");
+    return this.http.get<Object>(this.url + "user.php?action=getUsersByRole&roleId=3");
   }
 
   checkUsername(username: string): Observable<boolean> {
-    return this.http.get<boolean>(environment.apiUrl + "user.php?action=checkUsername&un="+username);
+    return this.http.get<boolean>(this.url + "user.php?action=checkUsername&un="+username);
   }
 }

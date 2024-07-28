@@ -14,15 +14,15 @@ export class FileService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.http.post(environment.apiUrl + "upload.php", formData);
+    return this.http.post(environment.apiUrl + "Controllers/upload.php", formData);
   }
 
   getFile(filePath: string): Observable<Blob> {
     const options = { responseType: 'blob' as 'json' };
-    return this.http.get<Blob>(environment.apiUrl + "upload.php?filePath="+filePath, options);
+    return this.http.get<Blob>(environment.apiUrl + "Controllers/upload.php?filePath="+filePath, options);
   }
 
   getImageUrlByName(filename: any): string{
-    return "http://localhost/programiranoUcenjeAPI/uploads/" + filename;
+    return environment.apiUrl + "uploads/" + filename;
   }
 }

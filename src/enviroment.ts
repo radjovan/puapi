@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: "http://localhost/programiranoUcenjeAPI/Controllers/"
+    apiUrl: "http://localhost/programiranoUcenjeAPI/"
 }
 
 export const tacnostOdgovora = {
