@@ -18,7 +18,10 @@
     <div class="current-question">
       <div *ngIf="vezba.zadaci[currentZadatakIndex]" class="zadatak-item">
         <h3>{{ vezba.zadaci[currentZadatakIndex].opis }}</h3>
-        <p>{{ vezba.zadaci[currentZadatakIndex].tekst }}</p>
+        <p *ngIf="!vezba.zadaci[currentZadatakIndex].latex">{{ vezba.zadaci[currentZadatakIndex].tekst }}</p>
+        <div class="latex-output" *ngIf="vezba.zadaci[currentZadatakIndex].latex">
+          <div [innerHTML]="renderLatex(vezba.zadaci[currentZadatakIndex].tekst)"></div>
+        </div>
         
         <div *ngIf="vezba.zadaci[currentZadatakIndex].picture">
           <img [src]="vezba.zadaci[currentZadatakIndex].path" alt="Slika zadatka">

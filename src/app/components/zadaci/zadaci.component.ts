@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Predmet } from '../../models/predmet';
@@ -9,13 +9,14 @@ import { UserService } from '../../services/user-service/user.service';
 import { Zadatak } from '../../models/zadatak';
 import { Router } from '@angular/router';
 import { FileService } from '../../services/file-service/file.service';
+import { MathJaxService } from '../../services/math-jax/math-jax.service';
 
 @Component({
   selector: 'app-zadaci',
   templateUrl: './zadaci.component.html',
   styleUrls: ['./zadaci.component.css']
 })
-export class ZadaciComponent implements OnInit , AfterViewInit {
+export class ZadaciComponent implements OnInit {
   taskForm: FormGroup;
   //hintForm: FormGroup;
   definitionForm: FormGroup;
@@ -28,7 +29,7 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
   showAnswersForm = false;
   showdefinitionForm = false;
   latexInput: string = ''; // Polje za unos LaTeX izraza
-  renderedLatex: SafeHtml = ''; // Bezbedan HTML za prikaz LaTeX izraza
+  renderedLatex: string = ''; // Bezbedan HTML za prikaz LaTeX izraza
   taskId = 0;
   imageUrl: string | null = null;
   definitionImageUrl: string | null = null;
@@ -36,6 +37,7 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
 
   zadatak: Zadatak | null = null;
 
+  @Input() mathString!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +45,9 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
     private sanitizer: DomSanitizer,
     private userService: UserService,
     private router: Router,
-    private fileService: FileService
+    private fileService: FileService,
+    private el: ElementRef,
+     private mathJaxService: MathJaxService
   ) {
     this.taskForm = this.fb.group({
       nivo: [0, Validators.required],
@@ -66,9 +70,6 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
       hint: ['', Validators.required]
     });
   }
-  ngAfterViewInit(): void {
-    this.typesetMath();
-  }
 
   ngOnInit(): void {
     if(this.userService.isAdmin())
@@ -87,6 +88,10 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
         }
       );
     }
+
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
   }
 
   onFileChange(event: Event): void {
@@ -204,20 +209,10 @@ export class ZadaciComponent implements OnInit , AfterViewInit {
 
   updateLatex(event: Event) {
     if (this.taskForm.get('latex')?.value) {
-      const input = (event.target as HTMLTextAreaElement).value;
-      const rendered = this.renderLatex(input);
-      this.renderedLatex = this.sanitizer.bypassSecurityTrustHtml(rendered);
-      this.typesetMath(); // Ponovno renderovanje MathJax nakon ažuriranja LaTeX koda
-    }
-  }
-
-  renderLatex(input: string): string {
-    return `$$${input}$$`; // Koristimo $$ za display mode renderovanje
-  }
-
-  typesetMath() {
-    if (typeof MathJax !== 'undefined' && MathJax && MathJax.Hub && MathJax.Hub.Queue) {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      this.mathString = this.taskForm.get('tekst')?.value;
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
     }
   }
   

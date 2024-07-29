@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VezbaService } from '../../services/vezba-service/vezba.service';
 import { Vezba } from '../../models/vezba';
@@ -11,6 +11,7 @@ import { Hint } from '../../models/hint';
 import { Definition } from '../../models/definition';
 import { CommonModule } from '@angular/common';
 import { Pokusaj } from '../../models/pokusaj';
+import { MathJaxService } from '../../services/math-jax/math-jax.service';
 
 @Component({
   selector: 'vezbanje',
@@ -20,6 +21,7 @@ import { Pokusaj } from '../../models/pokusaj';
   imports: [CommonModule]
 })
 export class VezbanjeComponent implements OnInit, OnDestroy {
+
   vezba: Vezba | null = null;
   pokusaj: Pokusaj | null = null;
   userId: number = 0;
@@ -34,6 +36,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   seconds: number = 0;
   showResults: boolean = false;
   exerciseStarted: boolean = false;
+
+  @Input() mathString!: string;
   
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +46,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     private zadatakService: ZadatakService,
     private fileService: FileService,
     private router: Router,
+    private el: ElementRef,
+    private mathJaxService: MathJaxService
   ) { }
 
   ngOnInit(): void {
@@ -233,6 +239,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       this.endExercise();
     }
   }
+
   izmesajOdgovore(odgovori: Odgovor[]){
     let currentIndex = odgovori.length, randomIndex;
 
@@ -245,4 +252,12 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
 
     return odgovori;
   }
+
+  renderLatex(arg0: string) {
+    this.mathString = arg0;
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+    return this.mathString;
+    }
 }

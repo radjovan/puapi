@@ -38,7 +38,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     MojiZadaciComponent,
     VezbanjaComponent,
     VezbeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    MathJaxParagraphComponent
   ],
   imports: [
     BrowserModule,
@@ -46,8 +47,7 @@ import { RegistrationComponent } from './components/registration/registration.co
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    CommonModule,
-    MathJaxParagraphComponent
+    CommonModule
 ],
   providers: [],
   bootstrap: [AppComponent]
