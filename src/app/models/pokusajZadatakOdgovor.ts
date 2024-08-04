@@ -3,5 +3,6 @@ export interface PokusajZadatakOdgovor {
     idVezbaPokusajZadatak: number;
     idZadatakOdgovor: number;
     redniBroj: number;
+    vreme: number;
   }
   

@@ -29,7 +29,13 @@ export class VezbanjaComponent implements OnInit {
   ngOnInit(): void {
     this.vezbaService.getVezbeByUcenikId(this.userService.getCurrentUserId()).subscribe((data: Vezba[]) => {
       data.forEach(vezba => {
-         this.zadatakService.getPredmetiById(vezba.idPredmeta).subscribe((predmet: Predmet) => vezba.predmet = predmet);
+         this.zadatakService.getPredmetiById(vezba.idPredmeta).subscribe((predmet: Predmet) => {
+          vezba.predmet = predmet;
+          if(this.predmeti.findIndex(x => x.id == predmet?.id) == -1)
+            {
+                this.predmeti.push(predmet);   
+            }
+         });
       });
       this.vezbe = data;
       this.filteredExercises = [...this.vezbe];

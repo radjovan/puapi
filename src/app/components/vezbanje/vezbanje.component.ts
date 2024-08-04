@@ -32,6 +32,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   timer: any;
   startTime: number = 0;
   elapsedTime: number = 0;
+  zadatakStartTime: number = 0; // For per-question timing
   minutes: number = 0;
   seconds: number = 0;
   showResults: boolean = false;
@@ -99,6 +100,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   startExercise(): void {
     this.exerciseStarted = true;
     this.startTime = Date.now();
+    this.zadatakStartTime = Date.now();
     this.timer = setInterval(() => {
       this.elapsedTime = Math.floor((Date.now() - this.startTime) / 1000);
       this.minutes = Math.floor(this.elapsedTime / 60);
@@ -108,6 +110,10 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
 
   odgovoriNaZadatak(zadatak: Zadatak, odgovor: Odgovor): void {
     if (!this.selectedOdgovor) return;
+
+    const zadatakElapsedTime = Math.floor((Date.now() - this.zadatakStartTime) / 1000); // Calculate per-question elapsed time
+    this.zadatakStartTime = Date.now(); // Reset per-question timer
+
 
     this.selectedOdgovor = odgovor;
     this.showHint = false;
@@ -141,7 +147,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       id: 0,
       idVezbaPokusajZadatak: pokusajZadatak.id,
       idZadatakOdgovor: odgovor.id,
-      redniBroj: pokusajZadatak.brojPokusaja
+      redniBroj: pokusajZadatak.brojPokusaja,
+      vreme: zadatakElapsedTime 
     });
 
     if (odgovor.tacnost === 1) {
@@ -172,6 +179,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     } else {
       this.endExercise();
     }
+    this.zadatakStartTime = Date.now();
   }
 
   endExercise(): void {

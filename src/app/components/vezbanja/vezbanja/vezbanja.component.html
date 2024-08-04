@@ -3,7 +3,7 @@
       <label for="subjectFilter" class="subjectFilter">Filtriraj po predmetu:</label>
       <select id="subjectFilter" [(ngModel)]="selectedSubject" (change)="filterExercises()">
         <option value="0" class="option">Svi predmeti</option>
-        <option *ngFor="let vezba of vezbe" [value]="vezba.predmet?.id" class="option">{{ vezba.predmet?.naziv +" ("+ vezba.predmet?.razred + ". razred)"  }}</option>
+        <option *ngFor="let p of predmeti" [value]="p?.id" class="option">{{ p?.naziv +" ("+ p?.razred + ". razred)"  }}</option>
       </select>
     </div>
   

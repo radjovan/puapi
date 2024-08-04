@@ -1,0 +1,8 @@
+<div class="attempts-list">
+    <h3>Attempts for {{ exercise.naziv }}</h3>
+    <ul>
+      <li *ngFor="let attempt of attempts" (click)="selectAttempt(attempt)">
+        Attempt by {{ attempt.idUcenika }} on {{ attempt.datumPokusaja }}
+      </li>
+    </ul>
+  </div>
