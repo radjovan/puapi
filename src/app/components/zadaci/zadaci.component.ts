@@ -209,7 +209,10 @@ export class ZadaciComponent implements OnInit {
 
   updateLatex(event: Event) {
     if (this.taskForm.get('latex')?.value) {
-      this.mathString = this.taskForm.get('tekst')?.value;
+      this.mathString = "$" + this.taskForm.get('tekst')?.value + "$";
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
         console.error('Error rendering MathJax:', error);
       });

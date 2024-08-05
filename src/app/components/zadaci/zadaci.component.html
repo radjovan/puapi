@@ -18,7 +18,7 @@
       
       <div>
         <label for="latexOption">Uneti tekst zadatka je Latex kod:</label>
-        <input type="checkbox" id="latexOption" formControlName="latex">
+        <input type="checkbox" id="latexOption" formControlName="latex" (change)="updateLatex($event)">
       </div>
 
       <div  *ngIf="taskForm.get('latex')?.value">
