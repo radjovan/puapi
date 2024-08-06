@@ -7,7 +7,7 @@
   </div>
   <div *ngIf="exerciseStarted && !showResults && vezba && vezba.zadaci.length > 0" class="exercise-details">
     <div class="timer">
-      <p>{{ minutes }}:{{ seconds | number:'2.0' }} / {{ vezba?.trajanjeVezbe ? vezba?.trajanjeVezbe : 0 / 60 | number:'1.0-0' }}:00</p>
+      <p> VREME: {{ minutes }}:{{ seconds | number:'2.0' }} / {{ minutesDuration | number:'1.0-0' }}:{{ secondsDuration | number:'2.0' }}</p>
     </div>
     <div class="exercise-description">
       <h2>{{ vezba.naziv }}</h2>
@@ -37,7 +37,7 @@
         </div>
         
         <button (click)="odgovoriNaZadatak(vezba.zadaci[currentZadatakIndex], selectedOdgovor)">Odgovori</button>
-        <button (click)="preskociZadatak(vezba.zadaci[currentZadatakIndex])" class="button-preskoci">Preskoči zadatak</button>
+        <!-- <button (click)="preskociZadatak(vezba.zadaci[currentZadatakIndex])" class="button-preskoci">Preskoči zadatak</button> -->
         <div *ngIf="showHint" class="hint-popup">
           <p>POMOĆ:</p>
           <p>{{ vezba.zadaci[currentZadatakIndex].hint.tekst }}</p>

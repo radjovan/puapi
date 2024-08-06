@@ -35,6 +35,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   zadatakStartTime: number = 0; // For per-question timing
   minutes: number = 0;
   seconds: number = 0;
+  minutesDuration: number = 0;
+  secondsDuration: number = 0;
   showResults: boolean = false;
   exerciseStarted: boolean = false;
 
@@ -59,6 +61,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
         this.vezbaService.getVezba(id).subscribe((v: Vezba) => {
           this.loadZadaci(v);
           this.vezba = v;
+          const trajanje = this.vezba?.trajanjeVezbe ? this.vezba?.trajanjeVezbe : 0;
+          this.minutesDuration = Math.floor(trajanje / 60);
+          this.secondsDuration = trajanje % 60;
         });
       }
     });

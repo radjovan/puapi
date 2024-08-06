@@ -65,6 +65,14 @@ export class ZaduzenjaComponent implements OnInit {
         zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
         zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
         zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
+        if(zaduzenje.odeljenje)
+        {
+          if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
+          {
+            //zaduzenje.odeljenje.skola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
+          }
+          
+        }
       });
     });
   }

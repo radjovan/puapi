@@ -11,7 +11,8 @@ import { PredmetDTO } from '../../models/DTOs/predmetDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {  
+export class UserService {
+
   constructor(private http: HttpClient) { }
 
   url = environment.apiUrl + "Controllers/";
@@ -24,6 +25,10 @@ export class UserService {
     user.action = "addUser";
     return this.http.post<number>(this.url + "user.php", user);
   }
+
+  changePassword(username: string, newPassword: any): Observable<any> {
+    return this.http.get<Object>(this.url + "user.php?action=changePassword&username="+username+"&password="+newPassword);
+  }  
 
   logout() {
     localStorage.removeItem('currentUser');

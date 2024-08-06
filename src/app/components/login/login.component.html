@@ -1,13 +1,21 @@
-<br> <br>
+<br><br>
 <div class="login-container">
-<img [src]="logoPath" class="logo-image">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <img [src]="logoPath" class="logo-image">
+  <form *ngIf="!showChangePassword" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <label for="username">KORISNIČKO IME</label>
     <input type="text" id="username" formControlName="username">
-  
+
     <label for="password">LOZINKA</label>
     <input type="password" id="password" formControlName="password">
-  
-    <button type="submit" [disabled]="!loginForm.valid">ПРИЈАВИ СЕ</button>
+
+    <button type="submit" [disabled]="!loginForm.valid">PRIJAVI SE</button>
+  </form>
+
+  <form *ngIf="showChangePassword" [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+    <b for="newPassword">POTREBNO JE PROMENITI INCIJALNU LOZINKU!</b>
+    
+    <input type="password" id="newPassword" formControlName="newPassword">
+
+    <button type="submit" [disabled]="!changePasswordForm.valid">PROMENI LOZINKU</button>
   </form>
 </div>

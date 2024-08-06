@@ -49,9 +49,9 @@ input {
 }
 
 button {
-  background-color:  #004AAD;/* narandžasti dugme */
+  background-color:  #FF914D;/* narandžasti dugme */
   border: none;
-  color: #FF914D; /* tamno plavi tekst */
+  color: #004AAD; /* tamno plavi tekst */
   padding: 10px 20px;
   margin-top: 20px;
   border-radius: 5px;
@@ -61,6 +61,6 @@ button {
 }
 
 button:hover {
-  background-color: #FF914D; /* svetlo plava dugme pri hover-u */
-  color: #004AAD; /* tamno plavi tekst pri hover-u */
+  background-color: #004AAD; /* svetlo plava dugme pri hover-u */
+  color: #FF914D; /* tamno plavi tekst pri hover-u */
 }

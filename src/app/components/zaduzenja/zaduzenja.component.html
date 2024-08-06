@@ -34,7 +34,7 @@
     <button class="submit-button" (click)="addZaduzenje()">Dodaj Zaduženje</button>
   </div>
 </div>
-
+<br>
 <div class="container_all registration">
   <h1>Sva Zaduženja</h1> 
   <!-- Forma za filtriranje -->
@@ -71,7 +71,7 @@
       </select>
     </div>
   </div>
-  
+  <br>
   <!-- Tabela sa zaduženjima -->
   <div class="table-container">
     <table>
@@ -79,6 +79,7 @@
         <tr>
           <th>Profesor</th>
           <th>Predmet</th>
+          <th>Škola</th>
           <th>Razred</th>
           <th>Odeljenje</th>
           <th>Akcije</th>
@@ -88,6 +89,7 @@
         <tr *ngFor="let zaduzenje of filteredZaduzenja">
           <td>{{ zaduzenje.profesor?.firstName + " " + zaduzenje.profesor?.lastName + " (" + zaduzenje.profesor?.username + ")" }}</td>       
           <td>{{ zaduzenje.predmet?.naziv }}</td>
+          <td>{{ zaduzenje.odeljenje.idSkole }}</td>
           <td>{{ zaduzenje.odeljenje?.razred }}</td>
           <td>{{ zaduzenje.odeljenje?.brojOdeljenja }}</td>
           <td>
