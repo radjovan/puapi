@@ -12,13 +12,14 @@ import { Definition } from '../../models/definition';
 import { CommonModule } from '@angular/common';
 import { Pokusaj } from '../../models/pokusaj';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vezbanje',
   templateUrl: './vezbanje.component.html',
   styleUrls: ['./vezbanje.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class VezbanjeComponent implements OnInit, OnDestroy {
 
@@ -39,6 +40,15 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   secondsDuration: number = 0;
   showResults: boolean = false;
   exerciseStarted: boolean = false;
+  selectedNivo: number = 0;
+
+  // Indeksi za zadatke po nivoima
+  currentZadatakIndexOsnovni: number = 0;
+  currentZadatakIndexSrednji: number = 0;
+  currentZadatakIndexNapredni: number = 0;
+  
+  brojTacnihZaNivo: number = 0; // Broji tačne odgovore za trenutni nivo
+  brojNetacnihZaNivo: number = 0; // Broji netačne odgovore za trenutni nivo
 
   @Input() mathString!: string;
   
@@ -50,8 +60,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     private fileService: FileService,
     private router: Router,
     private el: ElementRef,
-    private mathJaxService: MathJaxService
-  ) { }
+    private mathJaxService: MathJaxService) { }
 
   ngOnInit(): void {
     this.userId = this.userService.getCurrentUserId();
@@ -116,9 +125,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   odgovoriNaZadatak(zadatak: Zadatak, odgovor: Odgovor): void {
     if (!this.selectedOdgovor) return;
 
+    var prviOdgovor = false;
     const zadatakElapsedTime = Math.floor((Date.now() - this.zadatakStartTime) / 1000); // Calculate per-question elapsed time
-    this.zadatakStartTime = Date.now(); // Reset per-question timer
-
+    //this.zadatakStartTime = Date.now(); // Reset per-question timer
 
     this.selectedOdgovor = odgovor;
     this.showHint = false;
@@ -147,6 +156,11 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       pokusajiZadatakOdgovor: []
     };
 
+    if(pokusajZadatak.brojPokusaja == 0)
+    {
+      prviOdgovor = true;
+    }
+
     pokusajZadatak.brojPokusaja++;
     pokusajZadatak.pokusajiZadatakOdgovor.push({
       id: 0,
@@ -156,16 +170,34 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       vreme: zadatakElapsedTime 
     });
 
-    if (odgovor.tacnost === 1) {
+    if (odgovor.tacnost == 1) {
+
       pokusajZadatak.uspesnoUradjen = 1;
       this.pokusaj.brojTacnihOdgovora++;
+      this.brojTacnihZaNivo++;
+      this.brojNetacnihZaNivo = 0;
       this.nextZadatak();
-    } else if (odgovor.tacnost === 2) {
+
+    } else if (odgovor.tacnost == 2) {
+
       this.pokusaj.brojNetacnihOdgovora++;
       this.showHint = true;
-    } else if (odgovor.tacnost === 3 || odgovor.tacnost === 4) {
+      this.brojTacnihZaNivo = 0;
+      if(prviOdgovor)
+      {
+        this.brojNetacnihZaNivo++;
+      }
+
+    } else if (odgovor.tacnost == 3 || odgovor.tacnost == 4) {
+
       this.pokusaj.brojNetacnihOdgovora++;
       this.showDefinition = true;
+      this.brojTacnihZaNivo = 0;
+      if(prviOdgovor)
+      {
+        this.brojNetacnihZaNivo++;
+      }
+      
     } else {
       this.pokusaj.brojNetacnihOdgovora++;
     }
@@ -175,22 +207,72 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     }
 
     this.pokusaj.brojUradjenihZadataka = this.pokusaj.pokusajiZadataka.filter(pz => pz.uspesnoUradjen === 1).length;
-    this.pokusaj.brojNeuradjenihZadataka = this.vezba?.zadaci.length ? this.vezba?.zadaci.length: 0 - this.pokusaj.brojUradjenihZadataka;
+    //this.pokusaj.brojNeuradjenihZadataka = this.vezba?.zadaci.length ? this.vezba?.zadaci.length: 0 - this.pokusaj.brojUradjenihZadataka;
   }
 
   nextZadatak(): void {
-    if (this.vezba && this.currentZadatakIndex < this.vezba.zadaci.length - 1) {
-      this.currentZadatakIndex++;
-    } else {
-      this.endExercise();
+
+    var kraj = false;
+    let zadaciZaNivo = this.getZadaciZaTrenutniNivo();
+
+    if (this.brojTacnihZaNivo >= 3) {
+      this.podigniNivo();
+      this.brojTacnihZaNivo = 0;
+    } 
+    else if (this.brojNetacnihZaNivo >= 3) {
+      this.spustiNivo();
+      this.brojNetacnihZaNivo = 0;
     }
-    this.zadatakStartTime = Date.now();
+
+    if (this.selectedNivo == 1) {
+      if (this.currentZadatakIndexOsnovni < zadaciZaNivo.length - 1) {
+        this.currentZadatakIndexOsnovni++;
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexOsnovni].id);
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    } else if (this.selectedNivo == 2) {
+      if (this.currentZadatakIndexSrednji < zadaciZaNivo.length - 1) {
+        this.currentZadatakIndexSrednji++;
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexSrednji].id);
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    } else if (this.selectedNivo == 3) {
+      if (this.currentZadatakIndexNapredni < zadaciZaNivo.length - 1) {
+        this.currentZadatakIndexNapredni++;
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexNapredni].id);
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    }
+    if(!kraj)
+    {
+      this.zadatakStartTime = Date.now();
+    }
+  }
+
+  getZadaciZaTrenutniNivo(): Zadatak[] {
+    if (this.selectedNivo == 1) {
+      return this.vezba?.zadaci.filter(z => z.nivo == 1) || [];
+    } else if (this.selectedNivo == 2) {
+      return this.vezba?.zadaci.filter(z => z.nivo == 2) || [];
+    } else {
+      return this.vezba?.zadaci.filter(z => z.nivo == 3) || [];
+    }
+  }
+
+  getZadatakIndexById(id: number): number {
+    var index = this.vezba?.zadaci.findIndex(z => z.id == id);
+    return index? index: -1;
   }
 
   endExercise(): void {
     clearInterval(this.timer);
     this.showResults = true;
-    console.log(this.pokusaj);
     this.sacuvajPokusaj();
   }
   sacuvajPokusaj() {
@@ -272,5 +354,17 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       console.error('Error rendering MathJax:', error);
     });
     return this.mathString;
+  }
+
+  podigniNivo(): void {
+    if (this.selectedNivo < 3) {
+      this.selectedNivo++;
     }
+  }
+
+  spustiNivo(): void {
+    if (this.selectedNivo > 1) {
+      this.selectedNivo--;
+    }
+  }
 }

@@ -1,8 +1,12 @@
 <div class="exercise-container">
-
-
   <div *ngIf="!exerciseStarted" class="trajanjeVezbe">
     <p>Trajanje vežbe: {{ vezba?.trajanjeVezbe? vezba?.trajanjeVezbe: 0 / 60 | number:'1.0-0' }} sekundi</p>
+    <label for="nivo">Početni nivo zadatka:</label>
+    <select id="nivo" [(ngModel)]="selectedNivo">
+      <option [value]="1">Osnovni nivo</option>
+      <option [value]="2">Srednji nivo</option>
+      <option [value]="3">Napredni nivo</option>
+    </select>
     <button (click)="startExercise()">Pokreni Vežbu</button>
   </div>
   <div *ngIf="exerciseStarted && !showResults && vezba && vezba.zadaci.length > 0" class="exercise-details">
@@ -60,7 +64,6 @@
     <p>Ukupno tačnih odgovora: {{ pokusaj?.brojTacnihOdgovora }}</p>
     <p>Ukupno netačnih odgovora: {{ pokusaj?.brojNetacnihOdgovora }}</p>
     <p>Ukupno urađenih zadataka: {{ pokusaj?.brojUradjenihZadataka }}</p>
-    <p>Ukupno neuradjenih zadataka: {{ pokusaj?.brojNeuradjenihZadataka }}</p>
     <p>Ukupno vreme: {{ minutes }}:{{ seconds | number:'2.0' }}</p>
 
     <button (click)="resetExercise()">Ponovo pokreni vežbu</button>
