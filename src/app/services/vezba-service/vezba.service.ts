@@ -89,4 +89,16 @@ export class VezbaService {
     p.action = "dodajVezbaPokusajZadatakOdgovor";
     return this.http.post<boolean>(this.url + "vezba.php", p);
   }
+
+  getPokusajiByUserId(id: number): Observable<Pokusaj[]>{
+    return this.http.get<Pokusaj[]>(this.url + "vezba.php?action=getPokusaji&id="+id);
+  }
+
+  getPokusajZadatakByPokusajId(id: number): Observable<PokusajZadatak[]>{
+    return this.http.get<PokusajZadatak[]>(this.url + "vezba.php?action=getPokusajZadaci&id="+id);
+  }
+
+  getPokusajZadatakOdgovoriByPokusajZadatakId(id: number): Observable<PokusajZadatakOdgovor[]>{
+    return this.http.get<PokusajZadatakOdgovor[]>(this.url + "vezba.php?action=getPokusajZadatakOdgovori&id="+id);
+  }
 }

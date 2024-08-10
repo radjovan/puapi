@@ -1,8 +1,42 @@
-<div class="attempts-list">
-    <h3>Attempts for {{ exercise.naziv }}</h3>
-    <ul>
-      <li *ngFor="let attempt of attempts" (click)="selectAttempt(attempt)">
-        Attempt by {{ attempt.idUcenika }} on {{ attempt.datumPokusaja }}
-      </li>
-    </ul>
+<br>
+<div class="container">
+  <h1>MOJI POKUŠAJI</h1>
+
+  <ul class="exercise-list">
+    <li *ngFor="let pokusaj of pokusaji" class="pokusaj-item">
+      <div class="vezba-info">
+        <h3>Vežba {{ pokusaj.vezba?.naziv }}</h3>
+        <p>Datum pokušaja: {{ pokusaj.datumPokusaja }}</p>
+        <p>Broj tačnih odgovora: {{ pokusaj.brojTacnihOdgovora }}</p>
+        <p>Broj netačnih odgovora: {{ pokusaj.brojNetacnihOdgovora }}</p>
+        <p>Broj urađenih zadataka: {{ pokusaj.brojUradjenihZadataka }}</p>
+       <!--  <p>Broj neurađenih zadataka: {{ pokusaj.brojNeuradjenihZadataka }}</p> -->
+      </div>
+      <div class="actions">
+        <button (click)="viewDetails(pokusaj.id)">Pogledaj Detalje</button>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="selectedPokusaj" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>DETALJI POKUŠAJА</h2>
+      <div class="zadaci-section">
+        <div *ngFor="let zadatak of selectedPokusaj.pokusajiZadataka">
+          <div class="zadaci-naziv">Zadatak {{ zadatak.zadatak?.opis }}</div>
+          <div class="zadaci-level">Nivo: {{ getNivo(zadatak.zadatak?.nivo || 0) }}</div>
+          <div>
+            <p>Broj pokušaja: {{ zadatak.brojPokusaja }}</p>
+            <ul>
+              <li *ngFor="let odgovor of zadatak.pokusajiZadatakOdgovor" [ngClass]="getOdgovorClass(odgovor.odgovor?.tacnost)">
+                {{getTacnost(odgovor.odgovor?.tacnost) }} - Vreme: {{ odgovor.vreme }}s
+                
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>

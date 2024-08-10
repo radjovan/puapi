@@ -9,9 +9,11 @@ export interface Vezba {
     razred?: number;
     idPredmeta: number;
     brojZadataka?: number;
+    idProfesora?: number;
     trajanjeVezbe: number;//u sekundama
     nazivPredmeta?: string;
     naziv?: string;
+    profesor?: User;
     zadaci: Zadatak[];
     predmet?: Predmet;
     ucenici?: User[];

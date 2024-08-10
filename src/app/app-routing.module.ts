@@ -16,6 +16,7 @@ import { MojiZadaciComponent } from './components/moji-zadaci/moji-zadaci.compon
 import { VezbanjeComponent } from './components/vezbanje/vezbanje.component';
 import { UcenikGuard } from './services/guards/ucenik.guard';
 import { VezbanjaComponent } from './components/vezbanja/vezbanja/vezbanja.component';
+import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'moji-zadaci', component: MojiZadaciComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},
   { path: 'vezbanja', component: VezbanjaComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: 'vezbanje/:id', component: VezbanjeComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
+  { path: 'pokusaji', component: PokusajiComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: "**", component: PageNotFoundComponent}
 ];

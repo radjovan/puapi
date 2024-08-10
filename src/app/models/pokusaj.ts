@@ -1,4 +1,5 @@
 import { PokusajZadatak } from "./pokusajZadatak";
+import { Vezba } from "./vezba";
 
 export interface Pokusaj {
     id: number;
@@ -11,5 +12,6 @@ export interface Pokusaj {
     idUcenika?: number;
 
     pokusajiZadataka: PokusajZadatak[];
+    vezba?: Vezba;
   }
   

@@ -94,6 +94,10 @@ export class UserService {
     return this.http.get<Object>(this.url + "user.php?action=getUsersByRole&roleId=3");
   }
 
+  getUserById(id: number): Observable<Object>{
+    return this.http.get<Object>(this.url + "user.php?action=getUserById&id="+id);
+  }
+
   checkUsername(username: string): Observable<boolean> {
     return this.http.get<boolean>(this.url + "user.php?action=checkUsername&un="+username);
   }

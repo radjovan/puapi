@@ -20,8 +20,9 @@ import { VezbanjaComponent } from './components/vezbanja/vezbanja/vezbanja.compo
 import { MathJaxParagraphComponent } from './components/math-jax-paragraph/math-jax-paragraph.component';
 import { VezbeComponent } from './components/vezbe/vezbe.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
+
 import { PokusajDetaljiComponent } from './components/pokusaj-detalji/pokusaj-detalji.component';
+import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
 
 
 
@@ -42,8 +43,8 @@ import { PokusajDetaljiComponent } from './components/pokusaj-detalji/pokusaj-de
     VezbeComponent,
     RegistrationComponent,
     MathJaxParagraphComponent,
-    PokusajiComponent,
-    PokusajDetaljiComponent
+    PokusajDetaljiComponent,
+    PokusajiComponent
   ],
   imports: [
     BrowserModule,

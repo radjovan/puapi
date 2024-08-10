@@ -85,4 +85,13 @@ export class ZadatakService {
   dajDefinicijuPoIdZadatka(taskId: any): Observable<Definition>{
     return this.http.get<Definition>(this.url + "zadatak.php?action=dajDefinicijuPoIdZadatka&id="+taskId);
   }
+
+  dajZadatakPoId(taskId: any): Observable<Zadatak> {
+    return this.http.get<Zadatak>(this.url + "zadatak.php?action=dajZadatakPoId&id="+taskId);
+  }
+
+  dajOdgovorPoId(taskId: any): Observable<Odgovor> {
+    return this.http.get<Odgovor>(this.url + "zadatak.php?action=dajOdgovorPoId&id="+taskId);
+  }
+
 }

@@ -36,9 +36,13 @@ export class VezbanjaComponent implements OnInit {
                 this.predmeti.push(predmet);   
             }
          });
+         this.userService.getUserById(vezba.idProfesora || 0).subscribe((user: any) => {
+          vezba.profesor = user;
+         });
       });
       this.vezbe = data;
       this.filteredExercises = [...this.vezbe];
+      this.filteredExercises.sort((a, b) => b.id - a.id);
     });
   }
 
@@ -47,6 +51,7 @@ export class VezbanjaComponent implements OnInit {
       this.filteredExercises = [...this.vezbe]; // Prikaz svih vezbi ako je izabrano "Svi predmeti"
     } else {
       this.filteredExercises = this.vezbe.filter(vezba => vezba.idPredmeta == this.selectedSubject);
+      this.filteredExercises.sort((a, b) => b.id - a.id);
     }
   }
 

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { Pokusaj } from '../../models/pokusaj';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
 import { FormsModule } from '@angular/forms';
+import { Predmet } from '../../models/predmet';
 
 @Component({
   selector: 'vezbanje',
@@ -106,7 +107,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
           zadatak.path = this.fileService.getImageUrlByName(zadatak.path);
         }
       });
-
+      this.zadatakService.getPredmetiById(this.vezba?.idPredmeta || 0).subscribe((p: Predmet) =>{
+        v.predmet = p;
+      })
       v.zadaci = z;
     });
   }
@@ -253,6 +256,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     {
       this.zadatakStartTime = Date.now();
     }
+    console.log(this.selectedNivo);
   }
 
   getZadaciZaTrenutniNivo(): Zadatak[] {

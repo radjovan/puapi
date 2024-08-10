@@ -11,6 +11,7 @@
       <div *ngFor="let vezba of filteredExercises">
         <div class="exercise-item">
           <h3>{{ vezba.naziv }}</h3>
+          <p>{{"Profesor: " + vezba.profesor?.firstName + " " + vezba.profesor?.lastName}}</p>
           <p>{{"Predmet: " + vezba.predmet?.naziv +" ("+ vezba.predmet?.razred + ". razred)" }}</p>
           <p>{{"Trajanje vezbe: " + vezba.trajanjeVezbe + "s" }}</p>
           <button (click)="startExercise(vezba)">Startuj Vezbu</button>
