@@ -17,6 +17,7 @@ import { VezbanjeComponent } from './components/vezbanje/vezbanje.component';
 import { UcenikGuard } from './services/guards/ucenik.guard';
 import { VezbanjaComponent } from './components/vezbanja/vezbanja/vezbanja.component';
 import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
+import { StatistikeComponent } from './components/statistike/statistike.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'vezbe', component: VezbeComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},
   { path: 'moje-vezbe', component: MojeVezbeComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},
   { path: 'moji-zadaci', component: MojiZadaciComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},
+  { path: 'statistike', component: StatistikeComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},
   { path: 'vezbanja', component: VezbanjaComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: 'vezbanje/:id', component: VezbanjeComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: 'pokusaji', component: PokusajiComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},

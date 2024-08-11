@@ -42,6 +42,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   showResults: boolean = false;
   exerciseStarted: boolean = false;
   selectedNivo: number = 0;
+  zadatakPoRedu: number = 0;
+  defaultNivo: number = 0;
 
   // Indeksi za zadatke po nivoima
   currentZadatakIndexOsnovni: number = 0;
@@ -115,6 +117,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   }
 
   startExercise(): void {
+    this.selectedNivo = this.defaultNivo;
+    this.zadatakPoRedu = 1;
     this.exerciseStarted = true;
     this.startTime = Date.now();
     this.zadatakStartTime = Date.now();
@@ -123,6 +127,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       this.minutes = Math.floor(this.elapsedTime / 60);
       this.seconds = this.elapsedTime % 60;
     }, 1000);
+    
   }
 
   odgovoriNaZadatak(zadatak: Zadatak, odgovor: Odgovor): void {
@@ -155,7 +160,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       idVezbaZadatak: zadatak.id,
       uspesnoUradjen: 0,
       brojPokusaja: 0,
-      redniBroj: zadatak.id,
+      redniBroj: this.zadatakPoRedu,
       pokusajiZadatakOdgovor: []
     };
 
@@ -217,6 +222,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
 
     var kraj = false;
     let zadaciZaNivo = this.getZadaciZaTrenutniNivo();
+    this.zadatakPoRedu++;
 
     if (this.brojTacnihZaNivo >= 3) {
       this.podigniNivo();
@@ -256,7 +262,6 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     {
       this.zadatakStartTime = Date.now();
     }
-    console.log(this.selectedNivo);
   }
 
   getZadaciZaTrenutniNivo(): Zadatak[] {
@@ -309,6 +314,8 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     this.elapsedTime = 0;
     this.minutes = 0;
     this.seconds = 0;
+    this.zadatakPoRedu = 0;
+    this.zadatakStartTime = 0;
     this.pokusaj = null;
   }
   goBack(): void{

@@ -23,6 +23,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 import { PokusajDetaljiComponent } from './components/pokusaj-detalji/pokusaj-detalji.component';
 import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
+import { StatistikeComponent } from './components/statistike/statistike.component';
 
 
 
@@ -44,7 +45,8 @@ import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
     RegistrationComponent,
     MathJaxParagraphComponent,
     PokusajDetaljiComponent,
-    PokusajiComponent
+    PokusajiComponent,
+    StatistikeComponent
   ],
   imports: [
     BrowserModule,

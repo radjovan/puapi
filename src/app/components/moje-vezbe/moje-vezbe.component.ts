@@ -70,6 +70,7 @@ export class MojeVezbeComponent implements OnInit {
         this.zadaciService.getZadaciByVezbaId(vezba.id).subscribe((res: Zadatak[]) => {vezba.zadaci = res;});
       });
       this.vezbe = vezbe;
+      this.vezbe.sort((a, b) => b.id - a.id);
     });
   }
 

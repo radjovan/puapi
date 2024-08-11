@@ -25,9 +25,9 @@
       <div class="zadaci-section">
         <label>Odaberi zadatke:</label>
         <div *ngFor="let zadatak of filteredZadaci" [ngClass]="getZadatakClass(zadatak.nivo)">
-          <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
           <div class="zadaci-naziv"><label>{{ "Naziv: " + zadatak.opis }}</label></div>
           <label class="zadaci-level">{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
+          <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
           <div class="actions">
             <button class="zadaci-details" type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
           </div>

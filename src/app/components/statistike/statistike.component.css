@@ -1,0 +1,136 @@
+/* General Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  /* Filter Section */
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .filter-container {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  /* Exercise List */
+  .exercise-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .exercise-item {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .exercise-item:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .exercise-item h3 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .exercise-item p {
+    margin: 5px 0;
+  }
+  
+  /* Attempt Details */
+  .attempt-details {
+    margin-top: 20px;
+  }
+  
+  .people-list, .attempt-list {
+    margin-top: 20px;
+  }
+  
+  .people-item, .attempt-item {
+    background-color: #aedff3;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .people-item:hover, .attempt-item:hover {
+    background-color: #99cc7f;
+  }
+  
+  .pokusaj-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff3e0;
+    border: 1px solid #e0caa8;
+    border-radius: 8px;
+  }
+  
+  .pokusaj-info h3 {
+    margin-top: 0;
+    color: #e65100;
+  }
+  
+  .zadaci-section, .odgovori-section {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e1f5fe;
+    border: 1px solid #b3e5fc;
+    border-radius: 8px;
+  }
+  
+  .zadatak-item, .odgovor-item {
+    background-color: #b3e5fc;
+    border: 1px solid #81d4fa;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .zadatak-item:hover, .odgovor-item:hover {
+    background-color: #81d4fa;
+  }
+  
+  .zadatak-item p, .odgovor-item p {
+    margin: 5px 0;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  

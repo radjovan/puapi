@@ -207,7 +207,7 @@ export class ZadaciComponent implements OnInit {
     }
   }
 
-  updateLatex(event: Event) {
+  updateLatex() {
     if (this.taskForm.get('latex')?.value) {
       this.mathString = "$" + this.taskForm.get('tekst')?.value + "$";
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
@@ -217,6 +217,8 @@ export class ZadaciComponent implements OnInit {
         console.error('Error rendering MathJax:', error);
       });
     }
+
+    return true;
   }
   
   getFile() {
@@ -226,5 +228,13 @@ export class ZadaciComponent implements OnInit {
         this.imageUrl = url;
       });
     }
+  }
+
+  renderLatex(arg0: string) {
+    this.mathString = arg0;
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+    return this.mathString;
   }
 }

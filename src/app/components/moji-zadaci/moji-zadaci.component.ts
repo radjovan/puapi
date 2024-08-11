@@ -60,6 +60,7 @@ export class MojiZadaciComponent implements OnInit {
           element.odgovori = res;
         })
       });
+      res.sort((a, b) => b.id - a.id);
       this.zadaci = res;
       this.filteredZadaci = res;
     });

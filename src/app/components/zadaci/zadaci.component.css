@@ -110,3 +110,73 @@ button:hover {
   border-radius: 4px;
   padding: 5px;
 }
+
+/* Dodaj ovo u globalne stilove ako već nemaš roditeljski element koji koristi flexbox */
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh; /* ili neka druga visina, u zavisnosti od rasporeda stranice */
+  padding: 20px;
+}
+
+.zadatak-info {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin: 20px;
+  max-width: 600px;
+  width: 100%;
+  color: #333;
+}
+
+.zadatak-info label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.zadatak-info p {
+  margin: 5px 0;
+}
+
+.zadatak-info .image-preview {
+  margin-top: 10px;
+}
+
+.zadatak-info .image-preview img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.zadatak-info .info-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.zadatak-info .info-header h3 {
+  margin: 0;
+  color: #ff4500;
+}
+
+.zadatak-info .info-header p {
+  margin: 0;
+  color: #666;
+}
+
+.zadatak-info .info-body {
+  margin-top: 10px;
+}
+
+.zadatak-info .info-body .nivo {
+  font-style: italic;
+  color: #ff4500;
+}
+
+.zadatak-info .info-body .tekst {
+  margin-top: 10px;
+}

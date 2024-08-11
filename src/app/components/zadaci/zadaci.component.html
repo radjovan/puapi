@@ -14,11 +14,11 @@
       <input type="text" id="opis" formControlName="opis" required>
 
       <label for="tekst">Tekst zadatka</label>
-      <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateLatex($event)" required></textarea>   
+      <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateLatex()" required></textarea>   
       
       <div>
         <label for="latexOption">Uneti tekst zadatka je Latex kod:</label>
-        <input type="checkbox" id="latexOption" formControlName="latex" (change)="updateLatex($event)">
+        <input type="checkbox" id="latexOption" formControlName="latex" (change)="updateLatex()">
       </div>
 
       <div  *ngIf="taskForm.get('latex')?.value">
@@ -41,20 +41,38 @@
     </form>
   </div>
 
- <div *ngIf="!showTaskForm">
-  <label>Opis:</label>
-  <label>{{ zadatak?.opis}}</label>
-  <label>Tekst:</label>
-  <label>{{ zadatak?.tekst}}</label>
-  <label>Nivo težine:</label>
-  <label>{{ getZadatakClass(zadatak?.nivo)}}</label>
-  <label>Predmet:</label>
-  <label>{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</label>
-  <div *ngIf="imageUrl" class="image-preview">
-    <img [src]="imageUrl" alt="Uploaded Image Preview" />
+  <div *ngIf="!showTaskForm" class="parent-container">
+    <div  class="zadatak-info">
+      <div class="info-header">
+        <h3>Opis Zadataka</h3>
+      </div>
+      <div class="info-body">
+        <label>Opis:</label>
+        <p>{{ zadatak?.opis }}</p>
+    
+        <label>Tekst:</label>
+        <p *ngIf="!taskForm.get('latex')?.value">{{ zadatak?.tekst }}</p>
+        <div  *ngIf="taskForm.get('latex')?.value">
+          <label>Latex:</label>
+          <div class="latex-output">
+            <div [innerHTML]="renderLatex(mathString)"></div>
+          </div>
+        </div>
+    
+        <label>Nivo težine:</label>
+        <p class="nivo">{{ getZadatakClass(zadatak?.nivo) }}</p>
+    
+        <label>Predmet:</label>
+        <p>{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</p>
+    
+        <div *ngIf="imageUrl" class="image-preview">
+          <img [src]="imageUrl" alt="Uploaded Image Preview" />
+        </div>
+      </div>
+    </div>
   </div>
- </div>
-
+  
+  
 <div *ngIf="showAnswersForm" class="form-container">
   <form [formGroup]="answersForm" (ngSubmit)="submitAnswers()">
     <label for="correct">Tačan odgovor</label>

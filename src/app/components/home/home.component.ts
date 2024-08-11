@@ -13,10 +13,21 @@ export class HomeComponent {
   firstName: string = "";
   lastName: string = "";
   logoPath = "";
+  title: string = "";
   user: User | null = null;
   constructor(private userService: UserService, private fileService: FileService) { 
     this.logoPath = this.fileService.getImageUrlByName("PU_Logo.png")
     this.user = this.userService.getCurrentUser().user;
+    if(this.user?.role == 0)
+    {
+        this.title = "Admin: ";
+    }
+    else if(this.user?.role == 2){
+      this.title = "Profesor: ";
+    }
+    else{
+      this.title = "Učenik: ";
+    }
   }
 
 }

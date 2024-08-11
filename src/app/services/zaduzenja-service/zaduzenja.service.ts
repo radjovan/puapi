@@ -56,6 +56,10 @@ export class ZaduzenjaService {
     return this.http.get<Odeljenje[]>(this.url + "zaduzenja.php?action=getOdeljenja");
   }
 
+  getOdeljenjeByUserId(id: number): Observable<Odeljenje>{
+    return this.http.get<Odeljenje>(this.url + "zaduzenja.php?action=getOdeljenjeByUserId&id="+id);
+  }
+
   getPredmeti(): Observable<Predmet[]>{
     return this.http.get<Predmet[]>(this.url + "zaduzenja.php?action=getPredmet");
   }

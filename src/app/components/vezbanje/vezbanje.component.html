@@ -2,7 +2,7 @@
   <div *ngIf="!exerciseStarted" class="trajanjeVezbe">
     <p>Trajanje vežbe: {{ vezba?.trajanjeVezbe? vezba?.trajanjeVezbe: 0 / 60 | number:'1.0-0' }} sekundi</p>
     <label for="nivo">Početni nivo zadatka:</label>
-    <select id="nivo" [(ngModel)]="selectedNivo">
+    <select id="nivo" [(ngModel)]="defaultNivo">
       <option [value]="1">Osnovni nivo</option>
       <option [value]="2">Srednji nivo</option>
       <option [value]="3">Napredni nivo</option>

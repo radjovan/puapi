@@ -42,7 +42,7 @@
   <div class="modal" *ngIf="showEditDialog">
       <div class="modal-content form-container">
           <span class="close" (click)="closeEditDialog()">&times;</span>
-          <h2>Izmena Zadatka</h2>
+          <h2>IZMENA ZADATKA</h2>
           <form *ngIf="selectedTask" (submit)="updateTask()">
               <label for="opis">Opis:</label>
               <input id="opis" [(ngModel)]="selectedTask.opis" name="opis">
@@ -65,13 +65,13 @@
               <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
                   <label [for]="'odgovor' + i">Odgovor {{ i + 1 }}:</label>
                   <textarea id="'odgovor' + i" [(ngModel)]="odgovor.tekst" [name]="'odgovor' + i"></textarea>
-                  <span *ngIf="odgovor.tacnost === 1">(Tacan odgovor)</span>
-                  <span *ngIf="odgovor.tacnost === 2">(Priblizno tacan odgovor)</span>
-                  <span *ngIf="odgovor.tacnost === 3 || odgovor.tacnost === 4">(Netacan odgovor)</span>
+                  <span *ngIf="odgovor.tacnost === 1">(Tačan odgovor)</span>
+                  <span *ngIf="odgovor.tacnost === 2">(Približno tačan odgovor)</span>
+                  <span *ngIf="odgovor.tacnost === 3 || odgovor.tacnost === 4">(Netačan odgovor)</span>
               </div>
 
               <div class="actions">
-                  <button type="submit">Update</button>
+                  <button type="submit">Izmeni</button>
               </div>
           </form>
       </div>

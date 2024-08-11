@@ -54,6 +54,10 @@ export class VezbaService {
     return this.http.get<Odeljenje[]>(this.url + "vezba.php?action=getOdeljenjaByVezbaId&id=" + id);
   }
 
+  getOdeljenjaAndSoloUceniciOdeljenjaByVezbaId(id: number): Observable<Odeljenje[]> {
+    return this.http.get<Odeljenje[]>(this.url + "vezba.php?action=getOdeljenjaAndSoloUceniciOdeljenjaByVezbaId&id=" + id);
+  }
+
   getUceniciByVezbaId(id: number): Observable<User[]> {
     return this.http.get<User[]>(this.url + "vezba.php?action=getUceniciByVezbaId&id=" + id);
   }
@@ -100,5 +104,9 @@ export class VezbaService {
 
   getPokusajZadatakOdgovoriByPokusajZadatakId(id: number): Observable<PokusajZadatakOdgovor[]>{
     return this.http.get<PokusajZadatakOdgovor[]>(this.url + "vezba.php?action=getPokusajZadatakOdgovori&id="+id);
+  }
+
+  getPokusajiByVezbaId(id: number): Observable<Pokusaj[]>{
+    return this.http.get<Pokusaj[]>(this.url + "vezba.php?action=getPokusajiByVezbaId&id="+id);
   }
 }
