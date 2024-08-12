@@ -1,9 +1,14 @@
-<br>
 <div class="container">
   <h1>MOJI POKUŠAJI</h1>
-
+  <div class="filters">
+    <label for="subjectFilter" class="subjectFilter">Filtriraj po predmetu:</label>
+    <select id="subjectFilter" [(ngModel)]="selectedSubject" (change)="filterPokusaji()">
+      <option value="0" class="option">Svi predmeti</option>
+      <option *ngFor="let p of predmeti" [value]="p?.id" class="option">{{ p?.naziv +" ("+ p?.razred + ". razred)"  }}</option>
+    </select>
+  </div>
   <ul class="exercise-list">
-    <li *ngFor="let pokusaj of pokusaji" class="pokusaj-item">
+    <li *ngFor="let pokusaj of filteredPokusaji" class="pokusaj-item">
       <div class="vezba-info">
         <h3>Vežba {{ pokusaj.vezba?.naziv }}</h3>
         <p>Datum pokušaja: {{ pokusaj.datumPokusaja }}</p>
@@ -19,21 +24,23 @@
   </ul>
 
   <div *ngIf="selectedPokusaj" class="modal">
+    <span class="close" (click)="closeModal()">&times;</span>
     <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <h2>DETALJI POKUŠAJА</h2>
+      
       <div class="zadaci-section">
         <div *ngFor="let zadatak of selectedPokusaj.pokusajiZadataka">
-          <div class="zadaci-naziv">Zadatak {{ zadatak.zadatak?.opis }}</div>
-          <div class="zadaci-level">Nivo: {{ getNivo(zadatak.zadatak?.nivo || 0) }}</div>
-          <div>
-            <p>Broj pokušaja: {{ zadatak.brojPokusaja }}</p>
+          <div class="zadatak">
+            <div class="zadaci-naziv"><b>Zadatak:</b> {{ zadatak.zadatak?.opis }}</div>
+          <div class="zadaci-level"><b>Nivo:</b> {{ getNivo(zadatak.zadatak?.nivo || 0) }}</div>
+          <p><b>Broj pokušaja zadatka:</b> {{ zadatak.brojPokusaja }}</p>
+          <div>    
             <ul>
               <li *ngFor="let odgovor of zadatak.pokusajiZadatakOdgovor" [ngClass]="getOdgovorClass(odgovor.odgovor?.tacnost)">
-                {{getTacnost(odgovor.odgovor?.tacnost) }} - Vreme: {{ odgovor.vreme }}s
+                {{getTacnost(odgovor.odgovor?.tacnost) }} - ({{ odgovor.vreme }}s)
                 
               </li>
             </ul>
+          </div>
           </div>
         </div>
       </div>

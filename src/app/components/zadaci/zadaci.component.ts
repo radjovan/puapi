@@ -38,6 +38,7 @@ export class ZadaciComponent implements OnInit {
   zadatak: Zadatak | null = null;
 
   @Input() mathString!: string;
+  @Input() defMathString!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -59,7 +60,8 @@ export class ZadaciComponent implements OnInit {
     });
 
     this.definitionForm = this.fb.group({
-      tekst: ['', Validators.required]
+      tekst: ['', Validators.required],
+      defLatex: [false]
     });
 
     this.answersForm = this.fb.group({
@@ -190,7 +192,7 @@ export class ZadaciComponent implements OnInit {
       if (this.selectedFileDefinition) {
         this.fileService.uploadFile(this.selectedFileDefinition).subscribe(response => {
           if (response.status === 'success') {
-            this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, response.filename).subscribe();
+            this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, response.filename, this.definitionForm.value.defLatex).subscribe();
             this.definitionImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);
@@ -198,7 +200,7 @@ export class ZadaciComponent implements OnInit {
         });
       }
       else{
-        this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, null).subscribe();
+        this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, null, this.definitionForm.value.defLatex).subscribe();
       }
       
       alert('Definicija je uspešno dodata!');
@@ -210,6 +212,20 @@ export class ZadaciComponent implements OnInit {
   updateLatex() {
     if (this.taskForm.get('latex')?.value) {
       this.mathString = "$" + this.taskForm.get('tekst')?.value + "$";
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
+    }
+
+    return true;
+  }
+
+  updateDefLatex() {
+    if (this.definitionForm.get('defLatex')?.value) {
+      this.defMathString = "$" + this.definitionForm.get('tekst')?.value + "$";
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
         console.error('Error rendering MathJax:', error);
       });

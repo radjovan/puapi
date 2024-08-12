@@ -1,140 +1,133 @@
 .exercise-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    margin: auto;
-  }
-  
-  .timer {
-    text-align: center;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-  }
-  
-  .timer p {
-    margin: 0;
-  }
-  
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 1em;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
 
-  .button-preskoci {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 1em;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #fff200;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
+.trajanjeVezbe {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-  .button-preskoci:hover {
-    background-color: rgba(208, 253, 6, 0.882)
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .trajanjeVezbe {
-    text-align: center;
-  }
-  
-  .exercise-details {
-    margin-top: 20px;
-  }
-  
-  .exercise-description {
-    background-color: #f0f8ff; /* Light blue background */
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #cce7ff;
-  }
-  
-  .current-question {
-    background-color: #f9f9f9; /* Light grey background */
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-  }
-  
-  .zadatak-item h3 {
-    margin-bottom: 10px;
-  }
-  
-  .zadatak-item p {
-    margin-bottom: 10px;
-  }
-  
-  .zadatak-item img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
-  .odgovori {
-    margin-bottom: 10px;
-  }
-  
-  .odgovori label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .hint-popup {
-    background-color: #fffacd; /* Light yellow background */
-    color: #333;
-    border: 1px solid #f0e68c;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
-  .hint-popup p:first-child {
-    font-weight: bold;
-  }
-  
-  .definition-popup {
-    background-color: #ffe4e1; /* Light red (pink) background */
-    color: #333;
-    border: 1px solid #ffcccc;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  
-  .definition-popup p:first-child {
-    font-weight: bold;
-  }
-  
-  .results {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .results h2 {
-    margin-bottom: 20px;
-  }
-  
-  .results p {
-    margin: 5px 0;
-  }
-  
+.trajanjeVezbe p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+select {
+  padding: 5px;
+  font-size: 1em;
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 20px auto;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.exercise-details {
+  margin-top: 20px;
+}
+
+.timer {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.exercise-description {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.current-question {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.zadatak-item h3 {
+  margin-bottom: 10px;
+}
+
+.zadatak-item p {
+  margin-bottom: 10px;
+}
+
+.latex-output {
+  margin-bottom: 20px;
+}
+
+.odgovori {
+  margin-bottom: 20px;
+}
+
+.odgovori label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.hint-popup {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fffae6;
+  border: 1px solid #ffecb3;
+  border-radius: 10px;
+}
+
+.definition-popup {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8cfcf;
+  border: 1px solid #ffecb3;
+  border-radius: 10px;
+} 
+
+.results {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.results p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.results h2 {
+  margin-bottom: 20px;
+}
+.zadatak-item img {
+  max-width: 100%; /* Ensures the image doesn't overflow its container */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Removes any inline spacing */
+  margin: 0 auto; /* Center the image if needed */
+}

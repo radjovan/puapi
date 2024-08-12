@@ -88,19 +88,22 @@
     <button type="submit">Dodaj Odgovore</button>
   </form>
 </div>
-<!--<div *ngIf="showAnswersForm" class="form-container">
-  <form [formGroup]="hintForm" (ngSubmit)="submitHint()">
-    <label for="hint">Pomoć za zadatak</label>
-    <textarea id="hint" formControlName="hint" rows="5" required></textarea>
-    <button type="submit">Dodaj Hint</button>
-  </form>
-</div>-->
-
 
 <div *ngIf="showdefinitionForm" class="form-container">
   <form [formGroup]="definitionForm" (ngSubmit)="submitDefinition()">
     <label for="tekst">Definicija zadatka</label>
-    <textarea id="tekst" formControlName="tekst" rows="5" required></textarea>
+    <div>
+      <label for="latexOption">Uneti tekst zadatka je Latex kod:</label>
+      <input type="checkbox" id="latexOption" formControlName="defLatex" (change)="updateDefLatex()">
+    </div>
+    <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateDefLatex()" required></textarea>
+    
+    <div  *ngIf="definitionForm.get('defLatex')?.value">
+      <label>Latex:</label>
+      <div class="latex-output">
+        <div [innerHTML]="defMathString"></div>
+      </div>
+    </div>
     <label for="document">Upload photo</label>
     <input type="file" id="document" (change)="onFileChangeDefinition($event)">
     <button type="submit">Dodaj Definiciju</button>

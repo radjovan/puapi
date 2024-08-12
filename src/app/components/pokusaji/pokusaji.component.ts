@@ -16,7 +16,10 @@ import { Odgovor } from '../../models/odgovor';
 export class PokusajiComponent implements OnInit {
 
   pokusaji: Pokusaj[] = [];
+  filteredPokusaji: Pokusaj[] = [];
   selectedPokusaj: Pokusaj | null = null;
+  selectedSubject: number | null = null;
+  predmeti: Predmet[] = []; // Lista predmeta za filter
 
   constructor(private vezbaService: VezbaService,
      private userService: UserService,
@@ -29,19 +32,24 @@ export class PokusajiComponent implements OnInit {
   loadPokusaji(): void {
     const userId = this.userService.getCurrentUserId();
     this.vezbaService.getPokusajiByUserId(userId).subscribe(pokusaji => {
-      this.pokusaji = pokusaji;
-      this.pokusaji.sort((a, b) => b.id - a.id);
-      this.pokusaji.forEach(element => {
+      pokusaji.sort((a, b) => b.id - a.id);
+      pokusaji.forEach(element => {
         this.vezbaService.getVezba(element.idVezbe).subscribe((v: Vezba)=> {
           element.vezba = v;
           this.zadatakService.getPredmetiById(element.vezba.idPredmeta).subscribe((p: Predmet)=> {
             if(element.vezba)
             {
               element.vezba.predmet = p;
+              if(this.predmeti.findIndex(x => x.id == p?.id) == -1)
+                {
+                    this.predmeti.push(p);   
+                }
             }
           })
         });
       });
+      this.pokusaji = pokusaji;
+      this.filteredPokusaji = pokusaji;
     });
   }
 
@@ -64,6 +72,15 @@ export class PokusajiComponent implements OnInit {
     });
   }
 
+  filterPokusaji() {
+    if (this.selectedSubject == 0) {
+      this.filteredPokusaji = [...this.pokusaji]; // Prikaz svih vezbi ako je izabrano "Svi predmeti"
+    } else {
+      this.filteredPokusaji = this.pokusaji.filter(p => p.vezba?.idPredmeta == this.selectedSubject);
+      this.filteredPokusaji.sort((a, b) => b.id - a.id);
+    }
+  }
+
   closeModal(): void {
     this.selectedPokusaj = null;
   }
@@ -71,11 +88,11 @@ export class PokusajiComponent implements OnInit {
   getNivo(nivo: number): string {
     switch (nivo) {
       case 1:
-        return 'osnovni-nivo';
+        return 'Osnovni';
       case 2:
-        return 'srednji-nivo';
+        return 'Srednji';
       case 3:
-        return 'napredni-nivo';
+        return 'Napredni';
       default:
         return '';
     }

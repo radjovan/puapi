@@ -2,7 +2,7 @@
     <h1>Statistike Vežbi</h1>
     
     <!-- Filter Section -->
-    <div class="filter-section">
+    <div *ngIf="!selectedVezba" class="filter-section">
       <div class="filter-container">
         <label for="subjectFilter">Filtriraj po predmetu:</label>
         <select id="subjectFilter" [(ngModel)]="selectedSubject" (change)="filterExercises()">
@@ -23,7 +23,7 @@
   
     <!-- Attempt Details -->
     <div *ngIf="selectedVezba && showAttempts" class="attempt-details">
-      <h2>Pokusaji za vezbu: {{ selectedVezba.naziv }}</h2>
+      <h2>Pokušaji za vezbu: {{ selectedVezba.naziv }}</h2>
       <div class="filter-container">
         <label for="classFilter">PRIKAŽI POKUŠAJE ZA ODELJENJE:</label>
         <select id="classFilter" [(ngModel)]="selectedOdeljenjeId" (change)="filterAttempts()">
@@ -39,6 +39,7 @@
         </select>
       </div>
       
+       <!-- People -->
       <div class="people-list">
         <div *ngFor="let ucenik of filteredUcenici" class="people-item" (click)="selectUcenik(ucenik)">
             <p>Škola: {{ucenik.odeljenje?.skola?.naziv}}</p>
@@ -46,41 +47,40 @@
             <p>Ime i Prezime: {{ ucenik.firstName + " " + ucenik.lastName }}</p>
           </div>
       </div>
+
+      <!-- Attempts -->
       <div class="attempt-list">
         <div *ngFor="let pokusaj of filteredPokusaji" class="attempt-item" (click)="selectAttempt(pokusaj)">
-            <p>ID: {{ pokusaj.id }}</p>
             <p>Datum: {{ pokusaj.datumPokusaja }}</p>
             <p>Tačni odgovori: {{ pokusaj.brojTacnihOdgovora }}</p>
-          </div>
-      </div>
-    </div>
-  
-    <!-- Attempt Information -->
-    <div *ngIf="selectedPokusaj" class="pokusaj-info">
-      <h3>Detalji Pokusaja</h3>
-      <p><strong>Datum Pokusaja:</strong> {{ selectedPokusaj.datumPokusaja }}</p>
-      <p><strong>Broj Tačnih Odgovora:</strong> {{ selectedPokusaj.brojTacnihOdgovora }}</p>
-      <p><strong>Broj NeTačnih Odgovora:</strong> {{ selectedPokusaj.brojNetacnihOdgovora }}</p>
-      <p><strong>Broj Uradjenih Zadataka:</strong> {{ selectedPokusaj.brojUradjenihZadataka }}</p>
-      <p><strong>Broj Neuradjenih Zadataka:</strong> {{ selectedPokusaj.brojNeuradjenihZadataka }}</p>
-      
-      <div *ngIf="selectedPokusaj.pokusajiZadataka.length > 0" class="zadaci-section">
-        <h4>Zadaci:</h4>
-        <div *ngFor="let pz of selectedPokusaj.pokusajiZadataka" class="zadatak-item">
-          <p><strong>Redni Broj:</strong> {{ pz.redniBroj }}</p>
-          <p><strong>Uspešno Uradjen:</strong> {{ pz.uspesnoUradjen }}</p>
-          <p><strong>Broj Pokušaja:</strong> {{ pz.brojPokusaja }}</p>
-          
-          <div *ngIf="pz.pokusajiZadatakOdgovor.length > 0" class="odgovori-section">
-            <h5>Odgovori:</h5>
-            <div *ngFor="let odgovor of pz.pokusajiZadatakOdgovor" class="odgovor-item">
-              <p><strong>Redni Broj:</strong> {{ odgovor.redniBroj }}</p>
-              <p><strong>Vreme:</strong> {{ odgovor.vreme }}s</p>
-              <p><strong>Rezultat: </strong> {{getTacnost(odgovor.odgovor?.tacnost) }}</p>
-              <p><strong>Odgovor:</strong> {{ odgovor.odgovor?.tekst }}</p>
+            <!-- Attempt Information -->
+            <div *ngIf="selectedPokusaj?.id == pokusaj.id" class="pokusaj-info">
+              <h3>Detalji Pokusaja</h3>
+              <p><strong>Datum Pokusaja:</strong> {{ selectedPokusaj?.datumPokusaja }}</p>
+              <p><strong>Broj Tačnih Odgovora:</strong> {{ selectedPokusaj?.brojTacnihOdgovora }}</p>
+              <p><strong>Broj NeTačnih Odgovora:</strong> {{ selectedPokusaj?.brojNetacnihOdgovora }}</p>
+              <p><strong>Broj Uradjenih Zadataka:</strong> {{ selectedPokusaj?.brojUradjenihZadataka }}</p>
+              <p><strong>Broj Neuradjenih Zadataka:</strong> {{ selectedPokusaj?.brojNeuradjenihZadataka }}</p>
+              
+              <div *ngIf="selectedPokusaj?.pokusajiZadataka?.length || 0 > 0" class="zadaci-section">
+                <h4>Zadaci:</h4>
+                <div *ngFor="let pz of selectedPokusaj?.pokusajiZadataka" class="zadatak-item">
+                  <p><strong>Redni Broj:</strong> {{ pz.redniBroj }}</p>
+                  <p><strong>Broj Pokušaja:</strong> {{ pz.brojPokusaja }}</p>
+                  
+                  <div *ngIf="pz.pokusajiZadatakOdgovor.length > 0" class="odgovori-section">
+                    <h5>Odgovori:</h5>
+                    <div *ngFor="let odgovor of pz.pokusajiZadatakOdgovor" class="odgovor-item">
+                      <p><strong>Redni Broj:</strong> {{ odgovor.redniBroj }}</p>
+                      <p><strong>Vreme:</strong> {{ odgovor.vreme }}s</p>
+                      <p><strong>Rezultat: </strong> {{getTacnost(odgovor.odgovor?.tacnost) }}</p>
+                      <p><strong>Odgovor:</strong> {{ odgovor.odgovor?.tekst }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>

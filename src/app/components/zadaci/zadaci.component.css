@@ -105,7 +105,7 @@ button:hover {
 
 .image-preview img {
   max-width: 100%;
-  height: auto;
+  height:  400px auto;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 5px;

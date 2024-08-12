@@ -99,7 +99,11 @@
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'csv-registration' }">
     <form [formGroup]="csvRegistrationForm" (ngSubmit)="processCSV()">
       <h2>Dodaj korisnike iz CSV-a</h2>
-      
+      <p>Nazivi kolona u CSV-u: Ime, Prezime, Username, Role(2-Profesor, 3-Učenik), Odeljenje, Razred, idSkole</p>
+      <label>Informacije o školama:</label>
+        <select>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv + " ID: " + s.id }}</option>
+        </select>
       <input type="file" (change)="onFileSelected($event)" accept=".csv">
   
       <button type="submit">Dodaj Odeljenje</button>

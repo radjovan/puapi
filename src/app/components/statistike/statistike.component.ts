@@ -37,6 +37,7 @@ export class StatistikeComponent implements OnInit {
   filteredVezbe: Vezba[] = [];
   filteredOdeljenja: Odeljenje[] = [];
   filteredPojedinacniUcenici: User[] = [];
+  previewUcenikId: number = 0;
 
   constructor(
     private vezbaService: VezbaService,
@@ -181,6 +182,7 @@ export class StatistikeComponent implements OnInit {
   }
 
   selectUcenik(ucenik: User){
+    this.previewUcenikId = ucenik.id;
     this.filteredPokusaji = this.selectedVezba?.pokusaji?.filter(x => x.idUcenika == ucenik.id) || [];
   }
 

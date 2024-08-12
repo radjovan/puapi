@@ -360,7 +360,7 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   }
 
   renderLatex(arg0: string) {
-    this.mathString = arg0;
+    this.mathString = "$" + arg0 + "$";;
     this.mathJaxService.render(this.el.nativeElement).catch((error) => {
       console.error('Error rendering MathJax:', error);
     });

@@ -42,8 +42,8 @@ export class ZadatakService {
     return this.http.post<any>(this.url + "zadatak.php", zadatak);
   }
 
-  addDefinition(tekst: any, taskId: number, slika: any) {
-    return this.http.post<Object>(this.url + "zadatak.php",{tekst: tekst, idZadatka: taskId, slika: slika, action: "dodajDefiniciju"});
+  addDefinition(tekst: any, taskId: number, slika: any, latex: boolean) {
+    return this.http.post<Object>(this.url + "zadatak.php",{tekst: tekst, idZadatka: taskId, slika: slika,latex: latex, action: "dodajDefiniciju"});
   }
 
   addZadatakPath(path: string, taskId: any) {

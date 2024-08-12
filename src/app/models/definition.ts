@@ -4,5 +4,6 @@ export interface Definition {
     tekst: string;
     idZadatka: number;
     slika: string;
+    latex: boolean;
 }
   

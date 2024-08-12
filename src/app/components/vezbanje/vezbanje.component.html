@@ -1,7 +1,8 @@
 <div class="exercise-container">
   <div *ngIf="!exerciseStarted" class="trajanjeVezbe">
-    <p>Trajanje vežbe: {{ vezba?.trajanjeVezbe? vezba?.trajanjeVezbe: 0 / 60 | number:'1.0-0' }} sekundi</p>
-    <label for="nivo">Početni nivo zadatka:</label>
+    <p><b>Trajanje vežbe:</b> {{ vezba?.trajanjeVezbe? vezba?.trajanjeVezbe: 0 / 60 | number:'1.0-0' }} sekundi</p>
+    <p><b>Naziv: </b>{{ vezba?.naziv}}</p>
+    <label>Početni nivo zadatka:</label>
     <select id="nivo" [(ngModel)]="defaultNivo">
       <option [value]="1">Osnovni nivo</option>
       <option [value]="2">Srednji nivo</option>
@@ -11,7 +12,7 @@
   </div>
   <div *ngIf="exerciseStarted && !showResults && vezba && vezba.zadaci.length > 0" class="exercise-details">
     <div class="timer">
-      <p> VREME: {{ minutes }}:{{ seconds | number:'2.0' }} / {{ minutesDuration | number:'1.0-0' }}:{{ secondsDuration | number:'2.0' }}</p>
+      <p> <b>VREME:</b> {{ minutes }}:{{ seconds | number:'2.0' }} / {{ minutesDuration | number:'1.0-0' }}:{{ secondsDuration | number:'2.0' }}</p>
     </div>
     <div class="exercise-description">
       <h2>{{ vezba.naziv }}</h2>
@@ -48,8 +49,11 @@
         </div>
         
         <div *ngIf="showDefinition" class="definition-popup">
-          <p>DEFINICIJA:</p>
-          <p>{{ vezba.zadaci[currentZadatakIndex].definicija.tekst }}</p>
+          <p>TEORIJA:</p>
+          <p *ngIf="!vezba.zadaci[currentZadatakIndex].definicija.latex">{{ vezba.zadaci[currentZadatakIndex].definicija.tekst }}</p>
+        <div class="latex-output" *ngIf="vezba.zadaci[currentZadatakIndex].definicija.latex">
+          <div [innerHTML]="renderLatex(vezba.zadaci[currentZadatakIndex].definicija.tekst)"></div>
+        </div>
           <div *ngIf="vezba.zadaci[currentZadatakIndex].definicija.slika">
             <img [src]="vezba.zadaci[currentZadatakIndex].definicija.slika" alt="Slika zadatka">
           </div>
