@@ -1,3 +1,4 @@
+<br>
 <div class="container">
   <div class="vezbe-container">
     <form [formGroup]="vezbaForm" (ngSubmit)="addVezba()" class="form-container">
@@ -54,7 +55,7 @@
         <li *ngFor="let odgovor of selectedZadatak?.odgovori">{{ odgovor.tekst }}</li>
       </ul>
 
-      <h3>Definicija:</h3>
+      <h3>Teorijski podsetnik:</h3>
       <p>{{ selectedZadatak?.definicija?.tekst }}</p>
 
       <h3>Hint:</h3>

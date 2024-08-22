@@ -18,32 +18,31 @@ import { Odgovor } from '../../models/odgovor';
 export class MojiZadaciComponent implements OnInit {
   zadaci: Zadatak[] = [];
   filteredZadaci: Zadatak[] = [];
-  razredi: number[] = [1,2,3,4,5,6,7,8];
   predmeti: Predmet[] = [{ id: -1, naziv: 'Svi predmeti', razred: 0 }]; // Dodavanje opcije "Svi predmeti"
   selectedRazred: number = 1;
   selectedPredmet: number = -1;
   showEditDialog: boolean = false;
   selectedTask: Zadatak | null = null;
+  profId: number = 0;
   
   showImageModal: boolean = false;
   selectedImage: string = '';
 
-  constructor(private vezbaService: VezbaService,
+  constructor(
      private userService: UserService,
-     private zaduzenjeService: ZaduzenjaService,
      private fileService: FileService,
     private zadatakService: ZadatakService) {
       this.selectedTask = this.zadaci[0];
     }
-  ngOnInit() {
-    const profId = this.userService.getCurrentUserId();
-    this.loadTasks(profId);
-    this.loadPredmeti(profId);
+  ngOnInit() {  
+    this.profId = this.userService.getCurrentUserId();
+    this.loadTasks();
+    this.loadPredmeti();
     this.filterTasks();
   }
 
-  loadTasks(profId: number) {
-    this.zadatakService.getZadaciByCreatorId(profId).subscribe((res: Zadatak[]) => {  
+  loadTasks() {
+    this.zadatakService.getZadaciByCreatorId(this.profId).subscribe((res: Zadatak[]) => {  
       res.forEach(element => {
         var pred = this.predmeti.find(p => p.id == element.idPredmeta);
         element.predmet =  pred? pred: this.predmeti[0];
@@ -66,8 +65,8 @@ export class MojiZadaciComponent implements OnInit {
     });
   }
 
-  loadPredmeti(profId: number) {
-    this.zadatakService.getPredmetiByProfesorId(profId).subscribe((res: Predmet[]) => {
+  loadPredmeti() {
+    this.zadatakService.getPredmetiByProfesorId(this.profId).subscribe((res: Predmet[]) => {
       this.predmeti.push(...res);
     });
   }
@@ -96,6 +95,17 @@ export class MojiZadaciComponent implements OnInit {
     this.showEditDialog = false;
   }
 
+  deleteZadatak(zadatak: any){
+    this.zadatakService.deleteZadatak(zadatak.id).subscribe( (res: boolean) => {
+    if(res)
+      {
+        alert('Zadatak: '+ zadatak.opis +' je obrisan!');
+        this.loadTasks();
+        this.filterTasks();
+      }
+    });
+  }
+
   updateTask() {
     if(this.selectedTask)
     {
@@ -111,19 +121,14 @@ export class MojiZadaciComponent implements OnInit {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-
-      // Upload the file and get the URL
-      // Update the selectedTask.slika.url with the new URL
     }
   }
 
-  // Metoda za otvaranje modalnog prozora slike
   openImageModal(zadatak: Zadatak) {
     this.selectedImage = zadatak.path;
     this.showImageModal = true;
   }
 
-  // Metoda za zatvaranje modalnog prozora slike
   closeImageModal() {
     this.showImageModal = false;
     //this.selectedImage = '';

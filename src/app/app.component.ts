@@ -9,8 +9,4 @@ import { UserService } from './services/user-service/user.service';
 export class AppComponent {
   title = 'pu-api';
   constructor(private userService: UserService) {}
-
-  get isLoggedIn(): boolean {
-    return true;//this.userService.isLoggedIn();
-  }
 }

@@ -15,16 +15,16 @@
       <h2>Registracija korisnika</h2>
 
       <label for="firstName">Ime</label>
-      <input type="text" id="firstName" formControlName="firstName" required>
+      <input type="text" id="firstName" formControlName="firstName" autocomplete="off" required>
 
       <label for="lastName">Prezime</label>
-      <input type="text" id="lastName" formControlName="lastName" required>
+      <input type="text" id="lastName" formControlName="lastName" autocomplete="off" required>
       
-      <label for="username">Korisničko ime</label>
-      <input type="text" id="username" formControlName="username" required>
+      <label for="username">Email</label>
+      <input type="text" id="username" formControlName="username" autocomplete="off" required>
   
       <label for="password">Lozinka</label>
-      <input type="password" id="password" formControlName="password" required>
+      <input type="password" id="password" formControlName="password" autocomplete="new-password" required>
   
       <label for="role">Tip korisnika</label>
       <select id="role" formControlName="role" required>
@@ -39,13 +39,13 @@
         </select>
       </div>
 
-      <div *ngIf="registrationForm.get('skola')?.value != 0">
+      <div *ngIf="registrationForm.get('skola')?.value != 0 && registrationForm.get('role')?.value === '3'">
         <label for="odeljenje">Odeljenje</label><br>
         <select id="odeljenje" formControlName="odeljenje" required>
           <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
         </select>
       </div>
-      <button type="submit">Registruj korisnika</button>
+      <button type="submit" [disabled]="registrationForm.invalid">Registruj korisnika</button>
     </form>
   </div>
   
@@ -59,12 +59,12 @@
         </select>
       
       <label for="razred">Razred</label>
-      <input type="number" id="razred" formControlName="razred" required>
+      <input type="number" id="razred" formControlName="razred" min="1" max="12" required>
   
-      <label for="brojOdeljenja">Broj odeljenja</label>
-      <input type="number" id="brojOdeljenja" formControlName="brojOdeljenja" required>
+      <label for="brojOdeljenja">Oznaka odeljenja</label>
+      <input type="text" id="brojOdeljenja" formControlName="brojOdeljenja" autocomplete="off" required>
   
-      <button type="submit">Dodaj Odeljenje</button>
+      <button type="submit" [disabled]="OdeljenjeForm.invalid">Dodaj Odeljenje</button>
     </form>
   </div>
   
@@ -73,12 +73,12 @@
       <h2>Dodaj predmet</h2>
       
       <label for="razred">Razred slusanja predmeta</label>
-      <input type="number" id="razred" formControlName="razred" required>
+      <input type="number" id="razred" formControlName="razred" min="1" max="12" autocomplete="off" required>
   
       <label for="naziv">Naziv predmeta</label>
-      <input type="text" id="naziv" formControlName="naziv" required>
+      <input type="text" id="naziv" formControlName="naziv" autocomplete="off" required>
   
-      <button type="submit">Dodaj Predmet</button>
+      <button type="submit" [disabled]="PredmetForm.invalid">Dodaj Predmet</button>
     </form>
   </div>
 
@@ -87,12 +87,12 @@
       <h2>Dodaj školu</h2>
       
       <label for="grad">Grad</label>
-      <input style='text-transform:uppercase' type="text" id="grad" formControlName="grad" required>
+      <input style='text-transform:uppercase' type="text" id="grad" formControlName="grad" autocomplete="off" required>
   
       <label for="naziv">Naziv škole</label>
-      <input  type="text" id="naziv" formControlName="naziv" required>
+      <input  type="text" id="naziv" formControlName="naziv" autocomplete="off" required>
   
-      <button type="submit">Dodaj školu</button>
+      <button type="submit" [disabled]="SkolaForm.invalid">Dodaj školu</button>
     </form>
   </div>
 
@@ -106,7 +106,7 @@
         </select>
       <input type="file" (change)="onFileSelected($event)" accept=".csv">
   
-      <button type="submit">Dodaj Odeljenje</button>
+      <button type="submit">Dodaj Korisnike</button>
     </form>
   </div>
   

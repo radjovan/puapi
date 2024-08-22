@@ -1,6 +1,6 @@
 export interface OdeljenjeDTO {
     razred: number;
-    brojOdeljenja: number;
+    brojOdeljenja: string;
     id: number;
     action: string;
     naziv: string;

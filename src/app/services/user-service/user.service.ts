@@ -63,7 +63,7 @@ export class UserService {
     {
       var res =  JSON.parse(currentUser);
 
-      return res.user.role === 0; //ADMIN
+      return res.user.role == 0; //ADMIN
     }
     return false;
   }
@@ -74,7 +74,7 @@ export class UserService {
     {
       var res =  JSON.parse(currentUser);
 
-      return res.user.role === 2; //PROFESOR
+      return res.user.role == 2; //PROFESOR
     }
     return false;
   }

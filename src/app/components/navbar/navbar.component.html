@@ -1,27 +1,27 @@
 <nav class="navbar" *ngIf="isAdmin()">
   <ul>
-    <li><a routerLink="/home">Home</a></li>
+    <li><a routerLink="/home">Početna strana</a></li>
     <li><a routerLink="/registration">Kontrolna Strana</a></li>
-    <li><a routerLink="/zaduzenja">Zaduzenja</a></li>
-    <li><a (click)="logout()" class="logout">Logout</a></li>
+    <li><a routerLink="/zaduzenja">Zaduženja</a></li>
+    <li><a (click)="logout()" class="logout">Odjavi se</a></li>
   </ul>
 </nav>
 <nav class="navbar" *ngIf="isProfesor()">
   <ul>
-    <li><a routerLink="/home">Home</a></li>
+    <li><a routerLink="/home">Početna strana</a></li>
     <li><a routerLink="/zadaci">Dodaj Zadatak</a></li>
     <li><a routerLink="/moji-zadaci">Zadaci</a></li>
-    <li><a routerLink="/vezbe">Dodaj Vezbu</a></li>
-    <li><a routerLink="/moje-vezbe">Vezbe</a></li>
+    <li><a routerLink="/vezbe">Dodaj Vežbu</a></li>
+    <li><a routerLink="/moje-vezbe">Vežbe</a></li>
     <li><a routerLink="/statistike">Statistike</a></li>
-    <li><a (click)="logout()" class="logout">Logout</a></li>
+    <li><a (click)="logout()" class="logout">Odjavi se</a></li>
   </ul>
 </nav>
 <nav class="navbar" *ngIf="isUcenik()">
   <ul>
-    <li><a routerLink="/home">Home</a></li>
-    <li><a routerLink="/vezbanja">Vezbe</a></li>
+    <li><a routerLink="/home">Početna strana</a></li>
+    <li><a routerLink="/vezbanja">Vežbe</a></li>
     <li><a routerLink="/pokusaji">Pokušaji</a></li>
-    <li><a (click)="logout()" class="logout">Logout</a></li>
+    <li><a (click)="logout()" class="logout">Odjavi se</a></li>
   </ul>
 </nav>

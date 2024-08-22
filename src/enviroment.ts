@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    //apiUrl: "https://imi.pmf.kg.ac.rs/programirano_ucenje/programiranoUcenjeAPI/"
     apiUrl: "http://localhost/programiranoUcenjeAPI/"
 }
 

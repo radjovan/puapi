@@ -1,3 +1,4 @@
+<br>
 <div class="container">
   <div class="moji-zadaci">
       <h1>Moji Zadaci</h1>
@@ -19,11 +20,14 @@
                   <h3>{{ zadatak.opis }}</h3>
                   <h4>Tekst zadatka:</h4>
                   <p *ngIf="zadatak.latex; else plainText">{{ zadatak.tekst }}</p>
-                  <ng-template #plainText><p>{{ zadatak.tekst }}</p></ng-template>
-                  <img *ngIf="zadatak.picture" [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
+                  <ng-template #plainText><p>{{ zadatak.tekst }}</p></ng-template>                 
+              <div *ngIf="zadatak.picture">
+                <img  [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
+              </div>
                   <br>
                   <div class="actions">
                       <button (click)="openEditDialog(zadatak)">Izmeni zadatak</button>
+                      <button class="deleteButton" (click)="deleteZadatak(zadatak)">Obriši zadatak</button>
                   </div>
               </div>
           </li>

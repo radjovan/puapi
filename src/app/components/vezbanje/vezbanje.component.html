@@ -49,7 +49,7 @@
         </div>
         
         <div *ngIf="showDefinition" class="definition-popup">
-          <p>TEORIJA:</p>
+          <p>TEORIJSKI PODSETNIK:</p>
           <p *ngIf="!vezba.zadaci[currentZadatakIndex].definicija.latex">{{ vezba.zadaci[currentZadatakIndex].definicija.tekst }}</p>
         <div class="latex-output" *ngIf="vezba.zadaci[currentZadatakIndex].definicija.latex">
           <div [innerHTML]="renderLatex(vezba.zadaci[currentZadatakIndex].definicija.tekst)"></div>

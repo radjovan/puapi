@@ -17,6 +17,20 @@ body {
   text-align: center;
   margin-bottom: 20px;
 }
+input.ng-invalid {
+  border-color: red;
+  border-width:  2px;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: red;
+  border-width:  2px;
+}
+
+input.ng-valid.ng-touched {
+  border-color: green; /* ili neka druga boja koja označava validnost */
+  border-width:  2px;
+}
 
 .nav-bar button {
   background-color: #FF914D;

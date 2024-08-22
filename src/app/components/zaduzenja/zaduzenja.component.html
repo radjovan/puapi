@@ -31,7 +31,7 @@
       </select>
     </div>
 
-    <button class="submit-button" (click)="addZaduzenje()">Dodaj Zaduženje</button>
+    <button class="submit-button" [disabled]="!newZaduzenje.idPredmeta" (click)="addZaduzenje()">Dodaj Zaduženje</button>
   </div>
 </div>
 <br>
@@ -78,18 +78,20 @@
       <thead>
         <tr>
           <th>Profesor</th>
+          <th>Email</th>
           <th>Predmet</th>
           <th>Škola</th>
           <th>Razred</th>
-          <th>Odeljenje</th>
+          <th>Oznaka odeljenja</th>
           <th>Akcije</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let zaduzenje of filteredZaduzenja">
-          <td>{{ zaduzenje.profesor?.firstName + " " + zaduzenje.profesor?.lastName + " (" + zaduzenje.profesor?.username + ")" }}</td>       
+          <td>{{ zaduzenje.profesor?.firstName + " " + zaduzenje.profesor?.lastName }}</td>       
+          <td>{{ zaduzenje.profesor?.username }}</td>
           <td>{{ zaduzenje.predmet?.naziv }}</td>
-          <td>{{ zaduzenje.odeljenje.idSkole }}</td>
+          <td>{{ zaduzenje.odeljenje.skola.naziv }}</td>
           <td>{{ zaduzenje.odeljenje?.razred }}</td>
           <td>{{ zaduzenje.odeljenje?.brojOdeljenja }}</td>
           <td>

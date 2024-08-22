@@ -180,3 +180,18 @@ button:hover {
 .zadatak-info .info-body .tekst {
   margin-top: 10px;
 }
+
+input.ng-invalid {
+  border-color: red;
+  border-width:  2px;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: red;
+  border-width:  2px;
+}
+
+input.ng-valid.ng-touched {
+  border-color: green; /* ili neka druga boja koja označava validnost */
+  border-width:  2px;
+}

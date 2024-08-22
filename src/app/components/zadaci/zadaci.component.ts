@@ -43,7 +43,6 @@ export class ZadaciComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private zadaciService: ZadatakService,
-    private sanitizer: DomSanitizer,
     private userService: UserService,
     private router: Router,
     private fileService: FileService,
@@ -52,7 +51,6 @@ export class ZadaciComponent implements OnInit {
   ) {
     this.taskForm = this.fb.group({
       nivo: [0, Validators.required],
-      opis: ['', Validators.required],
       tekst: ['', Validators.required],
       idPredmeta: [0, Validators.required],
       latex: [false],
@@ -131,20 +129,31 @@ export class ZadaciComponent implements OnInit {
       }
       zadatak.idKreatora = this.userService.getCurrentUser().user.id;
       this.zadaciService.addZadatak(zadatak).subscribe(
-        (response: number) => {
-          if(response){
-            this.zadatak = zadatak;
-            this.zadatak.id = response;
-            var p =  this.predmeti?.find(x => x.id == this.zadatak?.idPredmeta);
-            if(p)
-            {
-              this.zadatak.predmet =  p;
-            }
-            this.taskId = response;
-            this.showTaskForm = false;
-            this.showAnswersForm = true;
-            this.uploadFile();
-            this.taskAdded = true;
+        (id: number) => {
+          if(id){
+            var pred = this.predmeti?.find(x => x.id == zadatak.idPredmeta) || null;
+            var opis = pred?.naziv + " " + pred?.razred + " " + (zadatak.nivo == 1 ? "Osnovni": zadatak.nivo == 2 ? "Srednji" : "Napredni") + " Z-" + id;
+            this.zadaciService
+            .dodajOpisZadatka(id, opis)
+            .subscribe((res: any)=>{
+              if(res)
+              {
+                zadatak.opis = opis;
+                this.zadatak = zadatak;
+                this.zadatak.id = id;
+                var p =  this.predmeti?.find(x => x.id == this.zadatak?.idPredmeta);
+                if(p)
+                {
+                  this.zadatak.predmet =  p;
+                }
+                this.taskId = id;
+                this.showTaskForm = false;
+                this.showAnswersForm = true;
+                this.uploadFile();
+                this.taskAdded = true;
+              }
+            });
+            
           }
         }
       );
@@ -203,7 +212,7 @@ export class ZadaciComponent implements OnInit {
         this.zadaciService.addDefinition(this.definitionForm.value.tekst, this.taskId, null, this.definitionForm.value.defLatex).subscribe();
       }
       
-      alert('Definicija je uspešno dodata!');
+      alert('Teorijski podsetnik je uspešno dodat!');
       this.showdefinitionForm = false;
       this.router.navigate(['/moji-zadaci']);
     }
@@ -211,7 +220,7 @@ export class ZadaciComponent implements OnInit {
 
   updateLatex() {
     if (this.taskForm.get('latex')?.value) {
-      this.mathString = "$" + this.taskForm.get('tekst')?.value + "$";
+      this.mathString = this.taskForm.get('tekst')?.value;
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
         console.error('Error rendering MathJax:', error);
       });
@@ -225,7 +234,7 @@ export class ZadaciComponent implements OnInit {
 
   updateDefLatex() {
     if (this.definitionForm.get('defLatex')?.value) {
-      this.defMathString = "$" + this.definitionForm.get('tekst')?.value + "$";
+      this.defMathString = this.definitionForm.get('tekst')?.value;//izbrisan  + "$"
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
         console.error('Error rendering MathJax:', error);
       });

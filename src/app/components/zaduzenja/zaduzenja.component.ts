@@ -28,7 +28,7 @@ export class ZaduzenjaComponent implements OnInit {
   filterPredmet: string | null = null;
   filterOdeljenje: string | null = null;
   filterRazred: string | null = null;
-  razredi: number[] = [1, 2, 3, 4, 5, 6, 7, 8]; // Liste razreda koji su dostupni
+  razredi: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // Liste razreda koji su dostupni
   selectedSkola = false;
 
   newZaduzenje = {
@@ -60,8 +60,7 @@ export class ZaduzenjaComponent implements OnInit {
 
   loadZaduzenja() {
     this.zaduzenjaService.getAllZaduzenja().subscribe(data => {
-      this.zaduzenja = data;
-      this.zaduzenja.forEach(zaduzenje => {
+      data.forEach(zaduzenje => {
         zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
         zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
         zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
@@ -69,11 +68,15 @@ export class ZaduzenjaComponent implements OnInit {
         {
           if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
           {
-            //zaduzenje.odeljenje.skola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
-          }
-          
+            var fSkola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
+            if(fSkola)
+            {
+              zaduzenje.odeljenje.skola = fSkola;
+            }
+          }      
         }
       });
+      this.zaduzenja = data;
     });
   }
 
@@ -96,9 +99,18 @@ export class ZaduzenjaComponent implements OnInit {
   }
 
   addZaduzenje() {
-    this.zaduzenjaService.addZaduzenje(this.newZaduzenje).subscribe(() => {
-      alert("Dodato je novo zaduzenje!");
+    this.zaduzenjaService.addZaduzenje(this.newZaduzenje).subscribe((res: any) => {
+      if(res){
+        alert("Dodato je novo zaduzenje!");
+      this.newZaduzenje = {
+        idProfesora: '',
+        idPredmeta: '',
+        idOdeljenja: '',
+        action: "addZaduzenje",
+        idSkole: 0
+      };
       this.loadZaduzenja();
+      }
     });
   }
 
@@ -122,10 +134,10 @@ export class ZaduzenjaComponent implements OnInit {
 
   applyFilter() {
     this.filteredZaduzenja = this.zaduzenja.filter(zaduzenje =>
-      (!this.filterProfesor || zaduzenje.idProfesora.toString() === this.filterProfesor) &&
-      (!this.filterPredmet || zaduzenje.idPredmeta.toString() === this.filterPredmet) &&
-      (!this.filterOdeljenje || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.id.toString() === this.filterOdeljenje) &&
-      (!this.filterRazred || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.razred.toString() === this.filterRazred)
+      (!this.filterProfesor || zaduzenje.idProfesora.toString() == this.filterProfesor) &&
+      (!this.filterPredmet || zaduzenje.idPredmeta.toString() == this.filterPredmet) &&
+      (!this.filterOdeljenje || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.id.toString() == this.filterOdeljenje) &&
+      (!this.filterRazred || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.razred.toString() == this.filterRazred)
     );
   }
 

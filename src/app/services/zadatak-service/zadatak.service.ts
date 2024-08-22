@@ -42,6 +42,14 @@ export class ZadatakService {
     return this.http.post<any>(this.url + "zadatak.php", zadatak);
   }
 
+  dodajOpisZadatka(id: number, opis: string): Observable<any>{
+    return this.http.post<any>(this.url + "zadatak.php", {id: id, opis: opis, action:"dodajOpisZadatka"});
+  }
+
+  deleteZadatak(id: any): Observable<boolean>{
+    return this.http.get<boolean>(this.url + "zadatak.php?action=deleteZadatak&id="+id);
+  }
+
   addDefinition(tekst: any, taskId: number, slika: any, latex: boolean) {
     return this.http.post<Object>(this.url + "zadatak.php",{tekst: tekst, idZadatka: taskId, slika: slika,latex: latex, action: "dodajDefiniciju"});
   }

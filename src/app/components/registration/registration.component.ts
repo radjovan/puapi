@@ -40,23 +40,23 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
       password: ['', Validators.required],
       role: [0, Validators.required],
-      odeljenje: [''],
+      odeljenje: ['', Validators.required],
       predmet: [''],
       skola: [0, Validators.required]
     });
 
     this.OdeljenjeForm = this.formBuilder.group({
-      brojOdeljenja: [0, Validators.required],
-      razred: [0, Validators.required],
+      brojOdeljenja: ["", Validators.required],
+      razred: [0,[Validators.required, Validators.min(1), Validators.max(12)]],
       idSkole:[0, Validators.required]
     });
 
     this.PredmetForm = this.formBuilder.group({
       naziv: ['', Validators.required],
-      razred: [0, Validators.required],
+      razred: [0, [Validators.required, Validators.min(1), Validators.max(12)]],
     });
 
     this.csvRegistrationForm = this.formBuilder.group({
@@ -151,7 +151,7 @@ export class RegistrationComponent implements OnInit {
                 }
                 
                 alert('Korisnik: '+ user.username +' je uspešno dodat!');
-        
+                this.registrationForm.reset();       
                 this.router.navigate(['/registration']);
               },
             );
@@ -171,6 +171,7 @@ export class RegistrationComponent implements OnInit {
          if(response)
          {
           alert('Odeljenje je uspešno dodato!');
+          this.OdeljenjeForm.reset(); 
           this.loadOdeljenja();
          }
         },
@@ -184,6 +185,7 @@ export class RegistrationComponent implements OnInit {
         if(response)
         {
           alert('Predmet je uspešno dodat!');
+          this.PredmetForm.reset(); 
           this.loadPredmeti();
         }
         },
@@ -197,6 +199,7 @@ export class RegistrationComponent implements OnInit {
          if(response)
          {
           alert('Škola je uspešno dodata!');
+          this.SkolaForm.reset(); 
           this.loadSkole();
          }
         },

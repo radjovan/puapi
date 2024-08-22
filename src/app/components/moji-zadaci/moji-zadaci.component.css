@@ -45,6 +45,20 @@ li {
   background-color: #00bfff;
 }
 
+.actions .deleteButton {
+  background-color: #ff4b1e;
+  border: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions .deleteButton:hover {
+  background-color: #ff5e00b2;
+}
+
 .form-container {
   background-color: #e5f4fa;
   padding: 15px;

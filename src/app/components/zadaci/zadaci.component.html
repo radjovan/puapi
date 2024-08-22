@@ -10,8 +10,10 @@
         <option value="3">Napredni</option>
       </select>
       
+     <!-- 
       <label for="opis">Naslov zadatka</label>
-      <input type="text" id="opis" formControlName="opis" required>
+      <input type="text" id="opis" formControlName="opis" required> 
+     -->
 
       <label for="tekst">Tekst zadatka</label>
       <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateLatex()" required></textarea>   
@@ -37,7 +39,7 @@
       <label for="document">Upload photo</label>
       <input type="file" id="document" (change)="onFileChange($event)">
       
-      <button type="submit">Dodaj Zadatak</button>
+      <button type="submit" [disabled]="taskForm.invalid">Dodaj Zadatak</button>
     </form>
   </div>
 
@@ -85,15 +87,15 @@
     <input type="text" id="wrong" formControlName="wrong" required>
     <label for="wrong2">Pogrešan odgovor</label>
     <input type="text" id="wrong2" formControlName="wrong2">
-    <button type="submit">Dodaj Odgovore</button>
+    <button type="submit" [disabled]="answersForm.invalid">Dodaj Odgovore</button>
   </form>
 </div>
 
 <div *ngIf="showdefinitionForm" class="form-container">
   <form [formGroup]="definitionForm" (ngSubmit)="submitDefinition()">
-    <label for="tekst">Definicija zadatka</label>
+    <label for="tekst">Teorijski podsetnik</label>
     <div>
-      <label for="latexOption">Uneti tekst zadatka je Latex kod:</label>
+      <label for="latexOption">Uneti tekst je Latex kod:</label>
       <input type="checkbox" id="latexOption" formControlName="defLatex" (change)="updateDefLatex()">
     </div>
     <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateDefLatex()" required></textarea>
@@ -106,6 +108,6 @@
     </div>
     <label for="document">Upload photo</label>
     <input type="file" id="document" (change)="onFileChangeDefinition($event)">
-    <button type="submit">Dodaj Definiciju</button>
+    <button type="submit" [disabled]="definitionForm.invalid">Dodaj Teorijski podsetnik</button>
   </form>
 </div>
