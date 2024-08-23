@@ -1,12 +1,5 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /programirano_ucenje
-  
-  # Ako traženi fajl ili direktorijum postoji, prosledi ga
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
+RewriteEngine On
 
-  # Preusmeri sve ostale zahteve na index.html
-  RewriteRule ^ index.html [L]
-</IfModule>
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

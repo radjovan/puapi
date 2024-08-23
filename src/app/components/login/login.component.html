@@ -2,7 +2,7 @@
 <div class="login-container">
   <img [src]="logoPath" class="logo-image">
   <form *ngIf="!showChangePassword" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <label for="username">KORISNIČKO IME</label>
+    <label for="username">EMAIL</label>
     <input type="text" id="username" formControlName="username">
 
     <label for="password">LOZINKA</label>
