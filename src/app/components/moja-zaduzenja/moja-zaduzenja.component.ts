@@ -6,13 +6,14 @@ import { Odeljenje } from '../../models/odeljenje';
 import { Zaduzenje } from '../../models/zaduzenje';
 import { SkolaDTO } from '../../models/DTOs/skolaDTO';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user-service/user.service';
 
 @Component({
-  selector: 'app-zaduzenja',
-  templateUrl: './zaduzenja.component.html',
-  styleUrl: './zaduzenja.component.css'
+  selector: 'app-moja-zaduzenja',
+  templateUrl: './moja-zaduzenja.component.html',
+  styleUrl: './moja-zaduzenja.component.css'
 })
-export class ZaduzenjaComponent implements OnInit {
+export class MojaZaduzenjaComponent implements OnInit {
   zaduzenja: Zaduzenje[] = [];
   profesori: User[] = [];
   predmeti: Predmet[] = [];
@@ -20,6 +21,8 @@ export class ZaduzenjaComponent implements OnInit {
   skole: SkolaDTO[] = [];
   filteredPredmeti: any[] = [];
   filteredOdeljenja: Odeljenje[] = [];
+  selectedOdeljenje: Odeljenje | null = null;
+  selectedUcenici: User[] = [];
 
   //PRIKAZ
   filteredZaduzenja: any[] = [];
@@ -32,72 +35,49 @@ export class ZaduzenjaComponent implements OnInit {
   razredi: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // Liste razreda koji su dostupni
   selectedSkola = false;
 
-  newZaduzenje = {
-    idProfesora: '',
-    idPredmeta: '',
-    idOdeljenja: '',
-    action: "addZaduzenje",
-    idSkole: 0
-  };
+  constructor(private userService: UserService, private zaduzenjaService: ZaduzenjaService, private router: Router) { 
 
-  constructor(private zaduzenjaService: ZaduzenjaService, private router: Router) { }
+    this.filterProfesor = this.userService.getCurrentUserId();
+  }
 
   ngOnInit(): void {
     this.loadZaduzenja();
   }
 
-  loadZaduzenja(){
-    this.zaduzenjaService.getSkole().subscribe(
-      (response: any) => {
-        this.skole = response;
-        this.zaduzenjaService.getProfesori().subscribe(data => {
-          this.profesori = data;
-          this.zaduzenjaService.getPredmeti().subscribe(data => {
-            this.predmeti = data;
-            this.zaduzenjaService.getOdeljenja().subscribe(data => {
-              this.odeljenja = data;
-    
-              this.zaduzenjaService.getAllZaduzenja().subscribe(data => {
-                data.forEach(zaduzenje => {
-                  zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
-                  zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
-                  zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
-                  if(zaduzenje.odeljenje)
-                  {
-                    if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
-                    {
-                      var fSkola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
-                      if(fSkola)
-                      {
-                        zaduzenje.odeljenje.skola = fSkola;
-                      }
-                    }      
-                  }
-                });
-                this.zaduzenja = data;
-                this.applyFilter();
-              });             
-            });
-          });
-        });  
-      }
-    );
-  }
+  loadZaduzenja() {
+    this.zaduzenjaService.getPredmeti().subscribe(data => {
+      this.predmeti = data;
 
-  addZaduzenje() {
-    this.zaduzenjaService.addZaduzenje(this.newZaduzenje).subscribe((res: any) => {
-      if(res){
-        alert("Dodato je novo zaduzenje!");
-      this.newZaduzenje = {
-        idProfesora: '',
-        idPredmeta: '',
-        idOdeljenja: '',
-        action: "addZaduzenje",
-        idSkole: 0
-      };
-      this.loadZaduzenja();
-      }
-    });
+      this.zaduzenjaService.getOdeljenja().subscribe(data => {
+        this.odeljenja = data;
+        
+        this.zaduzenjaService.getSkole().subscribe(
+          (response: any) => {
+            this.skole = response;
+        this.zaduzenjaService.getZaduzenjaByProfesorId(this.filterProfesor).subscribe(data => {
+          data.forEach(zaduzenje => {
+            zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
+            zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
+            zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
+            if(zaduzenje.odeljenje)
+            {
+              if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
+              {
+                var fSkola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
+                if(fSkola)
+                {
+                  zaduzenje.odeljenje.skola = fSkola;
+                }
+              }      
+            }
+          });
+          this.zaduzenja = data;
+          this.applyFilter();
+        });
+      });    
+    }); 
+  }
+);  
   }
 
   deleteZaduzenje(id: number) {
@@ -121,7 +101,6 @@ export class ZaduzenjaComponent implements OnInit {
   applyFilter() {
     this.filteredZaduzenja = this.zaduzenja.filter(zaduzenje =>
       (!this.filterSkola || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.skola.id.toString() == this.filterSkola) &&
-      (!this.filterProfesor || zaduzenje.idProfesora.toString() == this.filterProfesor) &&
       (!this.filterPredmet || zaduzenje.idPredmeta.toString() == this.filterPredmet) &&
       (!this.filterOdeljenje || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.id.toString() == this.filterOdeljenje) &&
       (!this.filterRazred || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.razred.toString() == this.filterRazred)
@@ -131,4 +110,19 @@ export class ZaduzenjaComponent implements OnInit {
   getPredmetiByRazred(razred: string) {
     return this.predmeti.filter(predmet => predmet.razred.toString() === razred);
   }
+
+  showOdeljenje(odeljenje: any){
+    this.userService.getUceniciByOdeljenjeId(odeljenje.id).subscribe((res: User[])=>{
+      console.log(odeljenje);
+      console.log(res);
+      this.selectedUcenici = res;
+      this.selectedOdeljenje = odeljenje;
+    })
+  }
+
+  closeModal() {
+    this.selectedOdeljenje = null; // Resetuje selektovano odeljenje na null da sakrije modal
+    this.selectedUcenici = []; // Resetuje listu učenika
+  }
+  
 }

@@ -24,6 +24,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { PokusajDetaljiComponent } from './components/pokusaj-detalji/pokusaj-detalji.component';
 import { PokusajiComponent } from './components/pokusaji/pokusaji.component';
 import { StatistikeComponent } from './components/statistike/statistike.component';
+import { MojaZaduzenjaComponent } from './components/moja-zaduzenja/moja-zaduzenja.component';
+import { UsersComponent } from './components/users/users.component';
 
 
 
@@ -46,7 +48,9 @@ import { StatistikeComponent } from './components/statistike/statistike.componen
     MathJaxParagraphComponent,
     PokusajDetaljiComponent,
     PokusajiComponent,
-    StatistikeComponent
+    StatistikeComponent,
+    MojaZaduzenjaComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

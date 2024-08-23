@@ -1,173 +1,206 @@
-.container {
-  background-color: #D8FEFF;
-  color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 800px;
-  margin: auto;
-}
-
-h1 {
-  text-align: center;
-  color: #00bfff;
-  margin-bottom: 20px;
-}
-
-ul {
-  list-style-type: none;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
   padding: 0;
+  background-color: #D8FEFF; /* Light blue background for the whole page */
 }
 
-li {
-  background-color: #aeeaec;
+.container {
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.moji-zadaci {
+  padding: 20px;
+  background-color: #D8FEFF; /* Light blue background */
+  border-radius: 8px;
+}
+
+.moji-zadaci h1 {
+  text-align: center;
+  color: #004AAD; /* Dark blue text */
   margin-bottom: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  font-weight: bold;
+  color: #004AAD; /* Dark blue text */
+}
+
+.filter-container select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4d94ff; /* Light blue border */
+  background-color: #FFFFFF; /* White background */
+  color: #004AAD; /* Dark blue text */
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.vezba-info {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
 .vezba-info h3 {
-  margin: 0;
-  color: #ff4500;
+  color: #004AAD; /* Dark blue text */
+}
+
+.vezba-info h4 {
+  color: #004AAD; /* Dark blue text */
+  margin-top: 15px;
+}
+
+.latex-output {
+  margin-top: 10px;
+  color: #004AAD; /* Dark blue text */
+}
+
+.task-image {
+  max-width: 270px; /* Fixed width for images */
+  height: auto;
+  border: 1px solid #004AAD; /* Dark blue border */
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions {
+  margin-top: 15px;
 }
 
 .actions button {
-  background-color: #1e90ff;
-  border: none;
-  color: #ffffff;
+  background-color: #FF914D; /* Orange button */
+  color: #FFFFFF; /* White text */
   padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.actions button.deleteButton {
+  background-color: #FF6F6F; /* Light red for delete button */
 }
 
 .actions button:hover {
-  background-color: #00bfff;
-}
-
-.actions .deleteButton {
-  background-color: #ff4b1e;
-  border: none;
-  color: #ffffff;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.actions .deleteButton:hover {
-  background-color: #ff5e00b2;
-}
-
-.form-container {
-  background-color: #e5f4fa;
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-.form-container h2 {
-  margin-top: 0;
-  color: #00bfff;
-}
-
-.form-container label {
-  display: block;
-  margin-top: 10px;
-}
-
-.form-container input,
-.form-container select,
-.form-container textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: none;
-  border-radius: 5px;
-}
-
-.form-container button {
-  background-color: #1e90ff;
-  border: none;
-  color: #ffffff;
-  padding: 10px 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.form-container button:hover {
-  background-color: #00bfff;
-}
-
-h3 {
-  color: #ff4500;
-}
-
-h3 ul {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-h3 ul li {
-  background-color: #3e3e3e;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
+  background-color: #FFA500; /* Light orange on hover */
 }
 
 .image-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
+}
+
+.image-modal-content {
+  max-width: 60%; /* Modal width to 60% of the screen */
+  margin: auto;
+  background-color: #FFFFFF; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-modal img {
+  width: 100%;
+  height: auto;
 }
 
 .image-modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  color: #fff;
-  font-size: 30px;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #FF914D; /* Orange color for close icon */
   cursor: pointer;
 }
 
-.image-modal-content img {
-  max-width: 90%;
-  max-height: 80vh;
-}
-
 .modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000;
+  overflow: auto;
 }
 
 .modal-content {
-  background-color: #00bfff;
+  width: 60%; /* Modal width to 60% of the screen */
+  background-color: #D8FEFF; /* Light blue background */
   padding: 20px;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  height: 80%;
 }
 
-.close {
+.modal-content h2 {
+  color: #004AAD; /* Dark blue text */
+  margin-bottom: 20px;
+}
+
+.modal-content .close {
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 40px;
+  font-size: 24px;
+  color: #FF914D; /* Orange color for close icon */
   cursor: pointer;
-  color: #ffffff;
+}
+
+.modal-content label {
+  font-weight: bold;
+  color: #004AAD; /* Dark blue text */
+  display: block;
+  margin-top: 10px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 90%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4d94ff; /* Light blue border */
+  background-color: #FFFFFF; /* White background */
+  color: #004AAD; /* Dark blue text */
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.modal-content button {
+  background-color: #FF914D; /* Orange button */
+  color: #FFFFFF; /* White text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #FFA500; /* Light orange on hover */
 }

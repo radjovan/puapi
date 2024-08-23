@@ -27,9 +27,14 @@ export class RegistrationComponent implements OnInit {
 
   odeljenja: Odeljenje[] | undefined;
   predmeti: Predmet[] | undefined;
+  filteredPredmeti: Predmet[] | undefined;
   skole: SkolaDTO[] | undefined;
   filterOdeljenja: Odeljenje[] | undefined;
   activeForm: string = 'registration';
+
+  filterRazred: string | null = null;
+
+  razredi = [1,2,3,4,5,6,7,8,9,10,11,12];
 
   csvData: any;
 
@@ -90,6 +95,7 @@ export class RegistrationComponent implements OnInit {
     this.zaduzenjaService.getPredmeti().subscribe(
       (response: any) => {
         this.predmeti = response;
+        this.filteredPredmeti = this.predmeti;
       }
     );
   }
@@ -287,6 +293,11 @@ export class RegistrationComponent implements OnInit {
 
   filter(){
     this.filterOdeljenja = this.odeljenja?.filter(x => x.idSkole == this.registrationForm.get('skola')?.value);
+  }
+
+  filterSubjects()
+  {
+    this.filteredPredmeti = this.filterRazred == ''? this.predmeti : this.predmeti?.filter(x => x.razred.toString() == this.filterRazred);
   }
 }
 

@@ -4,60 +4,64 @@ body {
 
 .registration {
   padding: 20px;
-  background-color: #004AAD;
+  background-color: #D8FEFF; /* Svetlo plava pozadina */
   border-radius: 8px;
-  color: #D8FEFF;
+  color: #004AAD; /* Tamniji plavi tekst */
 }
 
 .registration h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: #004AAD; /* Tamniji plavi tekst */
 }
 
 .form-container {
-  background-color: #D8FEFF;
+  background-color: #D8FEFF; /* Svetlo plava pozadina za formu */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: #004AAD;
   margin-bottom: 20px;
 }
 
 .form-field {
   margin-bottom: 15px;
+  display: flex; /* Koristimo flex za poravnanje elemenata */
+  align-items: center; /* Vertikalno poravnanje elemenata u flex containeru */
 }
 
 .form-field label {
   font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
+  width: 12%; /* Fiksna širina za label da bude poravnato */
+  color: #004AAD; /* Tamniji plavi tekst */
 }
 
 .custom-select {
-  width: 100%;
+  width: 70%; /* Fleksibilna širina za select polje */
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #004AAD;
+  border: 1px solid #4d94ff; /* Svijetlo plavi okvir */
   font-size: 16px;
+  background-color: #FFFFFF; /* Bijela pozadina za select */
+  color: #004AAD; /* Tamniji plavi tekst */
   box-sizing: border-box;
-  background-color: #D8FEFF;
-  color: #004AAD;
+  margin-left: 10px; /* Razmak između labela i select polja */
 }
 
 .submit-button,
 .delete-button {
-  background-color: #FF914D;
-  color: #004AAD;
+  background-color: #FF914D; /* Narandžasta boja za dugmad */
+  color: #FFFFFF; /* Bijeli tekst */
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  margin-top: 10px; /* Razmak iznad dugmeta */
 }
 
 .submit-button:hover,
 .delete-button:hover {
-  background-color: #FFA500;
+  background-color: #FFA500; /* Svetlija narandžasta na hover */
 }
 
 .table-container {
@@ -72,23 +76,23 @@ table {
 
 th, td {
   padding: 10px;
-  border-bottom: 1px solid #162447;
+  border-bottom: 1px solid #004AAD; /* Tamniji plavi za liniju između redova */
   text-align: left;
 }
 
 th {
-  background-color: #004AAD;
-  color: #D8FEFF;
+  background-color: #004AAD; /* Tamniji plavi za zaglavlje */
+  color: #D8FEFF; /* Svetlo plavi tekst za zaglavlje */
 }
 
 td {
-  background-color: #D8FEFF;
-  color: #004AAD;
+  background-color: #FFFFFF; /* Bijela pozadina za ćelije */
+  color: #004AAD; /* Tamniji plavi tekst za ćelije */
 }
 
 td button {
-  background-color: #FF914D;
-  color: #004AAD;
+  background-color: #FF914D; /* Narandžasta boja za dugmad u tabeli */
+  color: #FFFFFF; /* Bijeli tekst za dugmad */
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -96,5 +100,5 @@ td button {
 }
 
 td button:hover {
-  background-color: #FFA500;
+  background-color: #FFA500; /* Svetlija narandžasta na hover */
 }

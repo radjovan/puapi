@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .registration {
+    padding: 20px;
+    background-color: #004AAD;
+    border-radius: 8px;
+    color: #D8FEFF;
+  }
+  
+  .registration h1 {
+    text-align: center;
+  }
+  
+  .nav-bar {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  input.ng-invalid {
+    border-color: red;
+    border-width:  2px;
+  }
+  
+  input.ng-invalid.ng-touched {
+    border-color: red;
+    border-width:  2px;
+  }
+  
+  input.ng-valid.ng-touched {
+    border-color: green; /* ili neka druga boja koja označava validnost */
+    border-width:  2px;
+  }
+  
+  .nav-bar button {
+    background-color: #FF914D;
+    color: #004AAD;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+  
+  .nav-bar button:hover {
+    background-color: #FFA500;
+  }
+  
+  .form-container {
+    margin: 30px;
+    background-color: #D8FEFF;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #004AAD;
+  }
+
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  form input,
+  form select,
+  form button {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #004AAD;
+    font-size: 16px;
+  }
+  
+  form button {
+    background-color: #FF914D;
+    color: #004AAD;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #FFA500;
+  }
+  

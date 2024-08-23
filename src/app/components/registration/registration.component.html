@@ -4,12 +4,13 @@
   
   <div class="nav-bar">
     <button (click)="showForm('registration')">Registracija korisnika</button>
-    <button (click)="showForm('csv-registration')">Dodaj korisnike iz CSV</button>
-    <button (click)="showForm('odeljenje')">Dodaj odeljenje</button>
-    <button (click)="showForm('predmet')">Dodaj predmet</button>
-    <button (click)="showForm('skola')">Dodaj skolu</button>
+    <button (click)="showForm('csv-registration')">Učitavanje korisnika iz CSV</button>
+    <button (click)="showForm('odeljenje')">Upravljanje Odeljenjima</button>
+    <button (click)="showForm('predmet')">Upravljanje Predmetima</button>
+    <button (click)="showForm('skola')">Upravljanje Školama</button>
   </div>
   
+  <!-- Forma za registraciju korisnika -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'registration' }">
     <form [formGroup]="registrationForm" (ngSubmit)="register()">
       <h2>Registracija korisnika</h2>
@@ -49,6 +50,7 @@
     </form>
   </div>
   
+  <!-- Forma za dodavanje odeljenja -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'odeljenje' }">
     <form [formGroup]="OdeljenjeForm" (ngSubmit)="addOdeljenje()">
       <h2>Dodaj odeljenje</h2>
@@ -68,6 +70,7 @@
     </form>
   </div>
   
+  <!-- Forma za dodavanje predmeta -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'predmet' }">
     <form [formGroup]="PredmetForm" (ngSubmit)="addPredmet()">
       <h2>Dodaj predmet</h2>
@@ -80,8 +83,36 @@
   
       <button type="submit" [disabled]="PredmetForm.invalid">Dodaj Predmet</button>
     </form>
-  </div>
+    
+        <!-- Dugme za prikaz predmeta sa filterom po razredu -->
+        <div class="subject-display">
+          <h2>Prikaz predmeta</h2>
+          Razred:  <select class="filter-subject" id="filterRazred" [(ngModel)]="filterRazred" (change)="filterSubjects()">
+            <option value="">Svi razredi</option>
+            <option *ngFor="let razred of razredi" [value]="razred">{{ razred }}</option>
+          </select>
+          
+          
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Naziv</th>
+                  <th>Razred</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let predmet of filteredPredmeti">
+                  <td>{{ predmet.naziv }}</td>
+                  <td>{{ predmet.razred }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
+  <!-- Forma za dodavanje škole -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'skola' }">
     <form [formGroup]="SkolaForm" (ngSubmit)="addSkola()">
       <h2>Dodaj školu</h2>
@@ -94,8 +125,30 @@
   
       <button type="submit" [disabled]="SkolaForm.invalid">Dodaj školu</button>
     </form>
+    
+    <div class="school-display">
+      <h2 class="form-field">Prikaz škola</h2>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Naziv</th>
+              <th>Grad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let skola of skole">
+              <td>{{ skola.naziv }}</td>
+              <td>{{ skola.grad }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
+  <!-- Forma za dodavanje korisnika iz CSV -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'csv-registration' }">
     <form [formGroup]="csvRegistrationForm" (ngSubmit)="processCSV()">
       <h2>Dodaj korisnike iz CSV-a</h2>

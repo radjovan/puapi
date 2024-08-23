@@ -26,6 +26,12 @@ export class UserService {
     return this.http.post<number>(this.url + "user.php", user);
   }
 
+  editUser(user: UserDTO): Observable<boolean> {
+    user.action = "editUser";
+    console.log(user);
+    return this.http.post<boolean>(this.url + "user.php", user);
+  }
+
   changePassword(username: string, newPassword: any): Observable<any> {
     return this.http.get<Object>(this.url + "user.php?action=changePassword&username="+username+"&password="+newPassword);
   }  
@@ -40,7 +46,7 @@ export class UserService {
 
   getCurrentUser(): any {
     var currentUser = localStorage.getItem('currentUser');
-    if(currentUser !== null)
+    if(currentUser != null)
     {
       return JSON.parse(currentUser);
     }
@@ -94,11 +100,19 @@ export class UserService {
     return this.http.get<Object>(this.url + "user.php?action=getUsersByRole&roleId=3");
   }
 
+  getAllUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.url + "user.php?action=getUsers");
+  }
+
   getUserById(id: number): Observable<Object>{
     return this.http.get<Object>(this.url + "user.php?action=getUserById&id="+id);
   }
 
   checkUsername(username: string): Observable<boolean> {
     return this.http.get<boolean>(this.url + "user.php?action=checkUsername&un="+username);
+  }
+
+  getUceniciByOdeljenjeId(idOdeljenja: any): Observable<User[]> {
+    return this.http.get<User[]>(this.url + "user.php?action=getUceniciByOdeljenjeId&id="+idOdeljenja);
   }
 }

@@ -23,6 +23,10 @@ export class ZaduzenjaService {
     return this.http.get<Zaduzenje[]>(this.url + "zaduzenja.php?action=getZaduzenja");
   }
 
+  getZaduzenjaByProfesorId(id: any): Observable<Zaduzenje[]> {
+    return this.http.get<Zaduzenje[]>(this.url + "zaduzenja.php?action=getZaduzenjaByProfesorId&id="+id);
+  }
+
   addZaduzenje(zaduzenje: any): Observable<any> {
     return this.http.post<any>(this.url + "zaduzenja.php", zaduzenje);
   }

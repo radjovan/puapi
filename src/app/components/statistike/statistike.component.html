@@ -26,19 +26,22 @@
     <div *ngIf="selectedVezba && showAttempts" class="attempt-details">
       <h2>Pokušaji za vezbu: {{ selectedVezba.naziv }}</h2>
       <div class="filter-container">
-        <label for="classFilter">PRIKAŽI POKUŠAJE ZA ODELJENJE:</label>
+        <label for="classFilter">Prikaži pokušaje za odeljenje:</label>
         <select id="classFilter" [(ngModel)]="selectedOdeljenjeId" (change)="filterAttempts()">
           <!-- <option value="0">Sva odeljenja</option> -->
           <option *ngFor="let o of filteredOdeljenja" [value]="o.id">({{ o.skola.naziv + ") " + o.razred + "/" + o.brojOdeljenja }}</option>
         </select>
       </div>
+      <!--
+      
       <div class="filter-container">
         <label for="classFilter">PRIKAŽI POKUŠAJE ZA POJEDINAČNE UČENIKE:</label>
         <select id="classFilter" [(ngModel)]="selectedUcenikId" (change)="filterAttemptsUcenik()">
-          <!-- <option value="0">Sva odeljenja</option> -->
           <option *ngFor="let u of filteredPojedinacniUcenici" [value]="u.id">{{ u.firstName + " " + u.lastName }}</option>
         </select>
       </div>
+      
+      -->
       
        <!-- People -->
       <div class="people-list">

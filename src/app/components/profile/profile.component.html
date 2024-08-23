@@ -1,1 +1,25 @@
-<p>profile works!</p>
+<div class="form-container">
+    <form [formGroup]="editForm" (ngSubmit)="editUser()">
+      <h2>Izmeni moje podatke</h2>
+
+      <label for="firstName">Ime (obavezno)</label>
+      <input type="text" id="firstName" formControlName="firstName" autocomplete="off" required>
+
+      <label for="lastName">Prezime (obavezno)</label>
+      <input type="text" id="lastName" formControlName="lastName" autocomplete="off" required>
+      
+      <label for="username">Email (obavezno)</label>
+      <input type="text" id="username" formControlName="username" autocomplete="off" required>
+
+      <label for="newPassword">Nova Lozinka (opciono)</label>
+      <input type="text" id="newPassword" formControlName="newPassword" autocomplete="new-password">
+
+      <label for="newPasswordAgain">Nova Lozinka Ponovo (obavezno uz Nova Lozinka)</label>
+      <input type="text" id="newPasswordAgain" formControlName="newPasswordAgain" autocomplete="new-password">
+      
+      <label for="password">Trenutna Lozinka (obavezno)</label>
+      <input type="password" id="password" formControlName="password" autocomplete="current-password" required>
+
+      <button type="submit" [disabled]="editForm.invalid">Izmeni Podatke</button>
+    </form>
+</div>

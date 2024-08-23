@@ -8,6 +8,7 @@ export interface User {
     id: number;
     firstName: string;
     lastName: string;
+    idOdeljenja?: number;
     pokusaji?: Pokusaj[];
     odeljenje?: Odeljenje;
   }

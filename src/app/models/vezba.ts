@@ -12,6 +12,7 @@ export interface Vezba {
     idProfesora?: number;
     trajanjeVezbe: number;//u sekundama
     nazivPredmeta?: string;
+    action?: string;
     naziv?: string;
     profesor?: User;
     zadaci: Zadatak[];

@@ -1,20 +1,24 @@
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
+body {
   font-family: Arial, sans-serif;
-  background-color: #f0f4f8; /* Light blue-grey background */
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  padding: 20px;
+  background-color: #D8FEFF;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #004AAD; /* Dark blue text */
+  margin-bottom: 20px;
 }
 
 .filter-section {
-  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -22,119 +26,129 @@ h1 {
   margin-bottom: 15px;
 }
 
-label {
+.filter-container label {
   font-weight: bold;
-  margin-right: 10px;
+  color: #004AAD; /* Dark blue text */
+  display: block;
 }
 
-select {
-  padding: 7px;
-  font-size: 1em;
+.filter-container select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4d94ff; /* Light blue border */
+  background-color: #FFFFFF; /* White background */
+  color: #004AAD; /* Dark blue text */
+  box-sizing: border-box;
   margin-top: 5px;
+}
+
+.exercise-list {
   margin-bottom: 20px;
 }
 
-.exercise-list, .attempt-list, .people-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.exercise-item, .attempt-item, .people-item {
-  background-color: #fff;
-  padding: 15px;
+.exercise-item {
+  background-color: #FFFFFF; /* White background */
   border-radius: 8px;
-  border: 1px solid #ddd;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.exercise-item:hover, .attempt-item:hover, .people-item:hover {
-  background-color: #e9f0f7; /* Lighter blue-grey on hover */
+.exercise-item h3 {
+  color: #004AAD; /* Dark blue text */
+  margin: 0 0 10px 0;
 }
 
-.exercise-item h3, .attempt-item h3 {
-  margin-bottom: 10px;
+.exercise-item p {
+  margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
 }
 
 .attempt-details {
   margin-top: 20px;
 }
 
-.pokusaj-info, .zadaci-section, .odgovori-section {
-  background-color: #fff;
-  padding: 15px;
+.attempt-details h2 {
+  color: #004AAD; /* Dark blue text */
+  margin-bottom: 20px;
+}
+
+.people-list {
+  margin-bottom: 20px;
+}
+
+.people-item {
+  background-color: #FFFFFF; /* White background */
   border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-top: 10px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 
-.pokusaj-info h3, .zadaci-section h4, .odgovori-section h5 {
-  margin-bottom: 10px;
-}
-
-.zadatak-item, .odgovor-item {
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-}
-
-.zadatak-item p, .odgovor-item p {
+.people-item p {
   margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
 }
 
-/* Modal styling */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+.attempt-list {
+  margin-top: 20px;
 }
 
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 700px;
-  border-radius: 10px;
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover, .close:focus {
-  color: black;
-  text-decoration: none;
+.attempt-item {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
   cursor: pointer;
 }
 
-button {
-  display: block;
-  width: 100%;
+.attempt-item p {
+  margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
+}
+
+.pokusaj-info {
+  margin-top: 15px;
+}
+
+.pokusaj-info h3 {
+  color: #004AAD; /* Dark blue text */
+}
+
+.zadaci-section {
+  margin-top: 20px;
+}
+
+.zadatak-item {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
   padding: 10px;
-  font-size: 1em;
-  margin-top: 10px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
-button:hover {
-  background-color: #0056b3;
+.zadatak-item p {
+  margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
+}
+
+.odgovori-section {
+  margin-top: 10px;
+}
+
+.odgovor-item {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.odgovor-item p {
+  margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
 }

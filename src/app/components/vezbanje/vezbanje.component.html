@@ -28,7 +28,7 @@
           <div [innerHTML]="renderLatex(vezba.zadaci[currentZadatakIndex].tekst)"></div>
         </div>
         
-        <div *ngIf="vezba.zadaci[currentZadatakIndex].picture">
+        <div *ngIf="vezba.zadaci[currentZadatakIndex].picture && vezba.zadaci[currentZadatakIndex].path">
           <img [src]="vezba.zadaci[currentZadatakIndex].path" alt="Slika zadatka">
         </div>
         

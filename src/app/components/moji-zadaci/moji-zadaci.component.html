@@ -19,9 +19,11 @@
               <div class="vezba-info">
                   <h3>{{ zadatak.opis }}</h3>
                   <h4>Tekst zadatka:</h4>
-                  <p *ngIf="zadatak.latex; else plainText">{{ zadatak.tekst }}</p>
-                  <ng-template #plainText><p>{{ zadatak.tekst }}</p></ng-template>                 
-              <div *ngIf="zadatak.picture">
+                  <p *ngIf="!zadatak.latex">{{ zadatak.tekst }}</p>
+                    <div class="latex-output" *ngIf="zadatak.latex">
+                    <div [innerHTML]="renderLatex(zadatak.tekst)"></div>
+                    </div>                
+              <div *ngIf="zadatak.picture && zadatak.path">
                 <img  [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
               </div>
                   <br>
@@ -58,7 +60,7 @@
               <input id="slika" type="file" (change)="onFileSelected($event)">
               -->
 
-              <label for="hint">Pomoć:</label>
+              <label for="hint">Pomoć za približno tačan odgovor:</label>
               <textarea id="hint" [(ngModel)]="selectedTask.hint.tekst" name="hint"></textarea>
 
               <!--
@@ -67,11 +69,8 @@
               -->
 
               <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
-                  <label [for]="'odgovor' + i">Odgovor {{ i + 1 }}:</label>
+                  <label [for]="'odgovor' + i">{{odgovor.tacnost === 1? "Tačan odgovor": odgovor.tacnost === 2? "Približno tačan odgovor" : "Netačan odgovor"}}:</label>
                   <textarea id="'odgovor' + i" [(ngModel)]="odgovor.tekst" [name]="'odgovor' + i"></textarea>
-                  <span *ngIf="odgovor.tacnost === 1">(Tačan odgovor)</span>
-                  <span *ngIf="odgovor.tacnost === 2">(Približno tačan odgovor)</span>
-                  <span *ngIf="odgovor.tacnost === 3 || odgovor.tacnost === 4">(Netačan odgovor)</span>
               </div>
 
               <div class="actions">

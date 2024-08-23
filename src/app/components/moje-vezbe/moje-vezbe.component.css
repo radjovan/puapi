@@ -1,16 +1,183 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .container {
-  background-color: #D8FEFF;
-  color: #ffffff;
   padding: 20px;
-  border-radius: 10px;
-  max-width: 800px;
-  margin: auto;
+  margin: 20px;
+  background-color: #D8FEFF; /* Light blue background for the whole page */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
-  color: #00bfff;
+  color: #004AAD; /* Dark blue text */
   margin-bottom: 20px;
+}
+
+.vezba-info {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.vezba-info h3 {
+  color: #004AAD; /* Dark blue text */
+  margin-bottom: 10px;
+}
+
+.vezba-info p {
+  margin: 5px 0;
+  color: #004AAD; /* Dark blue text */
+}
+
+.actions {
+  margin-top: 15px;
+}
+
+.actions button {
+  background-color: #FF914D; /* Orange button */
+  color: #FFFFFF; /* White text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.actions button.deleteButton {
+  background-color: #FF6F6F; /* Light red for delete button */
+}
+
+.actions button:hover {
+  background-color: #FFA500; /* Light orange on hover */
+}
+
+.form-container {
+  background-color: #FFFFFF; /* White background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.form-container h2 {
+  color: #004AAD; /* Dark blue text */
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  font-weight: bold;
+  color: #004AAD; /* Dark blue text */
+  display: block;
+  margin-top: 10px;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4d94ff; /* Light blue border */
+  background-color: #FFFFFF; /* White background */
+  color: #004AAD; /* Dark blue text */
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.form-container button {
+  background-color: #FF914D; /* Orange button */
+  color: #FFFFFF; /* White text */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.form-container button:hover {
+  background-color: #FFA500; /* Light orange on hover */
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+}
+
+.modal-content {
+  background-color: #FFFFFF; /* White background for the modal content */
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: #004AAD; /* Dark blue text for the close button */
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #FF914D; /* Orange color on hover */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+h2 {
+  color: #004AAD; /* Dark blue text */
+}
+
+label {
+  font-weight: bold;
+  color: #004AAD; /* Dark blue text */
+  display: block;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #4d94ff; /* Light blue border */
+  background-color: #FFFFFF; /* White background */
+  color: #004AAD; /* Dark blue text */
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+button {
+  background-color: #FF914D; /* Orange background */
+  color: #FFFFFF; /* White text */
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #FFA500; /* Lighter orange on hover */
 }
 
 ul {
@@ -19,85 +186,27 @@ ul {
 }
 
 li {
-  background-color: #aeeaec;
-  margin-bottom: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.vezba-info h3 {
-  margin: 0;
-  color: #ff4500;
+  margin-bottom: 10px;
 }
 
 .actions button {
-  background-color: #1e90ff;
-  border: none;
-  color: #ffffff;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.task-image {
+  max-width: 270px; /* Fixed width for images */
+  height: auto;
+  border: 1px solid #004AAD; /* Dark blue border */
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.actions button:hover {
-  background-color: #00bfff;
+input.ng-invalid {
+  border-color: red;
+  border-width: 2px;
 }
 
-.form-container {
-  background-color: #e5f4fa;
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 10px;
-}
-
-.form-container h2 {
-  margin-top: 0;
-  color: #00bfff;
-}
-
-.form-container label {
-  display: block;
-  margin-top: 10px;
-}
-
-.form-container input,
-.form-container select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: none;
-  border-radius: 5px;
-}
-
-.form-container button {
-  background-color: #1e90ff;
-  border: none;
-  color: #ffffff;
-  padding: 10px 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.form-container button:hover {
-  background-color: #00bfff;
-}
-
-h3 {
-  color: #ff4500;
-}
-
-h3 ul {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-h3 ul li {
-  background-color: #3e3e3e;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
+input.ng-valid.ng-touched {
+  border-color: green; /* Color for valid fields */
+  border-width: 2px;
 }

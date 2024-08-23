@@ -2,7 +2,7 @@
 <div class="container">
   <div class="vezbe-container">
     <form [formGroup]="vezbaForm" (ngSubmit)="addVezba()" class="form-container">
-      <h2>DODAJ NOVU VEŽBU</h2>
+      <h1>Kreiraj Novu Vežbu</h1>
 
       <label for="predmet">Predmet</label>
       <select id="predmet" formControlName="idPredmeta" required>
@@ -26,7 +26,7 @@
       <div class="zadaci-section">
         <label>Odaberi zadatke:</label>
         <div *ngFor="let zadatak of filteredZadaci" [ngClass]="getZadatakClass(zadatak.nivo)">
-          <div class="zadaci-naziv"><label>{{ "Naziv: " + zadatak.opis }}</label></div>
+          <div class="zadaci-naziv"><label>{{ zadatak.opis }}</label></div>
           <label class="zadaci-level">{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
           <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
           <div class="actions">
@@ -46,8 +46,10 @@
       <span class="close" (click)="closeZadatakModal()">&times;</span>
       <h2>{{ selectedZadatak?.opis }}</h2>
       <p><strong>Tekst zadatka:</strong></p>
-      <p *ngIf="selectedZadatak?.latex; else plainText">{{ selectedZadatak?.tekst }}</p>
-      <ng-template #plainText><p>{{ selectedZadatak?.tekst }}</p></ng-template>
+      <p *ngIf="!selectedZadatak?.latex">{{ selectedZadatak?.tekst }}</p>
+      <div class="latex-output" *ngIf="selectedZadatak?.latex">
+      <div [innerHTML]="renderLatex(selectedZadatak?.tekst)"></div>
+      </div>                
       <img *ngIf="selectedZadatak?.picture" [src]="selectedZadatak?.path" class="task-image">
 
       <h3>Odgovori:</h3>
@@ -56,9 +58,12 @@
       </ul>
 
       <h3>Teorijski podsetnik:</h3>
-      <p>{{ selectedZadatak?.definicija?.tekst }}</p>
+      <p *ngIf="!selectedZadatak?.latex">{{ selectedZadatak?.definicija?.tekst }}</p>
+      <div class="latex-output" *ngIf="selectedZadatak?.definicija?.latex">
+      <div [innerHTML]="renderLatex(selectedZadatak?.definicija?.tekst)"></div>
+      </div> 
 
-      <h3>Hint:</h3>
+      <h3>Pomoć za približan zadatak</h3>
       <p>{{ selectedZadatak?.hint?.tekst }}</p>
     </div>
   </div>

@@ -1,0 +1,83 @@
+<br>
+<div class="container_all registration">
+  <h1>Sva Zaduženja</h1> 
+  <!-- Forma za filtriranje -->
+  <div class="form-container active">
+    <div class="form-field">
+      <label>Razred:</label>
+      <select class="custom-select" [(ngModel)]="filterRazred" (ngModelChange)="applyFilter()">
+        <option value="">Svi razredi</option>
+        <option *ngFor="let razred of razredi" [value]="razred">{{ razred }}</option>
+      </select>
+    </div>
+
+    <div class="form-field" *ngIf="filterRazred">
+      <label>Predmet:</label>
+      <select class="custom-select" [(ngModel)]="filterPredmet" (ngModelChange)="applyFilter()">
+        <option value="">Svi predmeti</option>
+        <option *ngFor="let predmet of getPredmetiByRazred(filterRazred)" [value]="predmet.id">{{ predmet.naziv }}</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+        <label>Škola:</label>
+        <select class="custom-select" [(ngModel)]="filterSkola" (ngModelChange)="applyFilter()">
+          <option value="">Sve škole</option>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }} ({{s.grad}})</option>
+        </select>
+      </div>
+
+    <div class="form-field" *ngIf="filterSkola">
+      <label>Odeljenje:</label>
+      <select class="custom-select" [(ngModel)]="filterOdeljenje" (ngModelChange)="applyFilter()">
+        <option value="">Sva odeljenja</option>
+        <option *ngFor="let odeljenje of odeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
+      </select>
+    </div>
+  </div>
+  <br>
+  <!-- Tabela sa zaduženjima -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Predmet</th>
+          <th>Škola</th>
+          <th>Razred</th>
+          <th>Oznaka odeljenja</th>
+          <th>Akcije</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let zaduzenje of filteredZaduzenja">
+          <td>{{ zaduzenje.predmet?.naziv }}</td>
+          <td>{{ zaduzenje.odeljenje.skola.naziv }}</td>
+          <td>{{ zaduzenje.odeljenje?.razred }}</td>
+          <td>{{ zaduzenje.odeljenje?.brojOdeljenja }}</td>
+          <td>
+            <button class="delete-button" (click)="showOdeljenje(zaduzenje.odeljenje)">Učenici</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal prozor za prikaz učenika i informacija o odeljenju -->
+<div class="modal" *ngIf="selectedOdeljenje">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2 class="modal-title">Informacije o odeljenju {{ selectedOdeljenje.razred }}/{{ selectedOdeljenje.brojOdeljenja }}</h2>
+      <p><strong>Naziv odeljenja:</strong> {{ selectedOdeljenje.naziv }}</p>
+      <p><strong>Broj učenika:</strong> {{ selectedUcenici.length }}</p>
+  
+      <h3 class="modal-subtitle">Učenici:</h3>
+      <ul class="student-list">
+        <li *ngFor="let ucenik of selectedUcenici" class="student-item">
+          {{ ucenik.firstName }} {{ ucenik.lastName }} ({{ ucenik.username }})
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  

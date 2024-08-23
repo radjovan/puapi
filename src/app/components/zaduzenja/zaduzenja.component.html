@@ -1,46 +1,10 @@
 <br>
-<div class="container_add registration">
-  <h1>Novo Zaduženje</h1>
-  
-  <div class="form-container active">
-    <div class="form-field">
-      <label>Profesor:</label>
-      <select class="custom-select" [(ngModel)]="newZaduzenje.idProfesora">
-        <option *ngFor="let profesor of profesori" [value]="profesor.id">{{ profesor.firstName + " " + profesor.lastName + " (" + profesor.username + ")" }}</option>
-      </select>
-    </div>
-
-    <div class="form-field">
-      <label>Škola:</label>
-      <select class="custom-select" [(ngModel)]="newZaduzenje.idSkole" (ngModelChange)="filterOdeljenja($event)" required>
-        <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
-      </select>
-    </div>
-
-    <div class="form-field" *ngIf="this.selectedSkola">
-      <label>Odeljenje:</label>
-      <select class="custom-select" [(ngModel)]="newZaduzenje.idOdeljenja" (ngModelChange)="filterPredmete($event)">
-        <option *ngFor="let odeljenje of filteredOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
-      </select>
-    </div>
-
-    <div class="form-field">
-      <label>Predmet:</label>
-      <select class="custom-select" [(ngModel)]="newZaduzenje.idPredmeta">
-        <option *ngFor="let predmet of filteredPredmeti" [value]="predmet.id">{{ predmet.naziv }}</option>
-      </select>
-    </div>
-
-    <button class="submit-button" [disabled]="!newZaduzenje.idPredmeta" (click)="addZaduzenje()">Dodaj Zaduženje</button>
-  </div>
-</div>
-<br>
 <div class="container_all registration">
   <h1>Sva Zaduženja</h1> 
   <!-- Forma za filtriranje -->
   <div class="form-container active">
     <div class="form-field">
-      <label>Profesor:</label>
+      <label>Profesor: </label>
       <select class="custom-select" [(ngModel)]="filterProfesor" (ngModelChange)="applyFilter()">
         <option value="">Svi profesori</option>
         <option *ngFor="let profesor of profesori" [value]="profesor.id">{{ profesor.username }}</option>
@@ -64,6 +28,14 @@
     </div>
 
     <div class="form-field">
+      <label>Škola:</label>
+      <select class="custom-select" [(ngModel)]="filterSkola" (ngModelChange)="applyFilter()">
+        <option value="">Sve škole</option>
+        <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }} ({{s.grad}})</option>
+      </select>
+    </div>
+
+    <div class="form-field" *ngIf="filterSkola">
       <label>Odeljenje:</label>
       <select class="custom-select" [(ngModel)]="filterOdeljenje" (ngModelChange)="applyFilter()">
         <option value="">Sva odeljenja</option>
@@ -100,5 +72,40 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+<br>
+<div class="container_add registration">
+  <h1>Novo Zaduženje</h1>
+  <div class="form-container active">
+    <div class="form-field">
+      <label>Profesor:</label>
+      <select class="custom-select" [(ngModel)]="newZaduzenje.idProfesora">
+        <option *ngFor="let profesor of profesori" [value]="profesor.id">{{ profesor.firstName + " " + profesor.lastName + " (" + profesor.username + ")" }}</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label>Škola:</label>
+      <select class="custom-select" [(ngModel)]="newZaduzenje.idSkole" (ngModelChange)="filterOdeljenja($event)" required>
+        <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }} ({{s.grad}})</option>
+      </select>
+    </div>
+
+    <div class="form-field" *ngIf="this.selectedSkola">
+      <label>Odeljenje:</label>
+      <select class="custom-select" [(ngModel)]="newZaduzenje.idOdeljenja" (ngModelChange)="filterPredmete($event)">
+        <option *ngFor="let odeljenje of filteredOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label>Predmet:</label>
+      <select class="custom-select" [(ngModel)]="newZaduzenje.idPredmeta">
+        <option *ngFor="let predmet of filteredPredmeti" [value]="predmet.id">{{ predmet.naziv }}</option>
+      </select>
+    </div>
+
+    <button class="submit-button" [disabled]="!newZaduzenje.idPredmeta" (click)="addZaduzenje()">Dodaj Zaduženje</button>
   </div>
 </div>

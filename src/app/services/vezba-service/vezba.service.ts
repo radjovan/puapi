@@ -74,8 +74,10 @@ export class VezbaService {
     return this.http.post<boolean>(this.url + "vezba.php", {action: "dodajVezbaZadatak", idVezbe: vezbaId, idZadatka: zadatakId});
   }
   
-  updateVezba(selectedVezba: Vezba): Observable<boolean> {
-    return this.http.get<boolean>(this.url + "vezba.php?action=getUceniciByVezbaId&id=");
+  updateVezba(selectedVezba: any): Observable<boolean> {
+    selectedVezba.action = "updateVezba";
+    console.log(selectedVezba);
+    return this.http.post<boolean>(this.url + "vezba.php", selectedVezba);
   }
 
   //POKUSAJI

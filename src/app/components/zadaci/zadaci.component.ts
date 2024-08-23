@@ -50,9 +50,9 @@ export class ZadaciComponent implements OnInit {
      private mathJaxService: MathJaxService
   ) {
     this.taskForm = this.fb.group({
-      nivo: [0, Validators.required],
+      nivo: ['', Validators.required],
       tekst: ['', Validators.required],
-      idPredmeta: [0, Validators.required],
+      idPredmeta: ['', Validators.required],
       latex: [false],
       picture: [false]
     });
@@ -255,7 +255,7 @@ export class ZadaciComponent implements OnInit {
     }
   }
 
-  renderLatex(arg0: string) {
+  renderLatex(arg0: any) {
     this.mathString = arg0;
     this.mathJaxService.render(this.el.nativeElement).catch((error) => {
       console.error('Error rendering MathJax:', error);

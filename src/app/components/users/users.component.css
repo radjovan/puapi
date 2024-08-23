@@ -1,0 +1,166 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .user-list-page {
+    padding: 20px;
+    background-color: #D8FEFF; /* Svetlo plava pozadina */
+    border-radius: 8px;
+    color: #004AAD; /* Tamniji plavi tekst */
+  }
+  
+  .user-list-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #004AAD; /* Tamniji plavi tekst */
+  }
+  
+  .form-container {
+    background-color: #D8FEFF; /* Svetlo plava pozadina za formu */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .form-field {
+    margin-bottom: 15px;
+    display: flex; /* Koristimo flex za poravnanje elemenata */
+    align-items: center; /* Vertikalno poravnanje elemenata u flex containeru */
+  }
+  
+  .form-field label {
+    font-weight: bold;
+    width: 30%; /* Fiksna širina za label da bude poravnato */
+    color: #004AAD; /* Tamniji plavi tekst */
+  }
+  
+  .custom-select,
+  .custom-input {
+    width: 70%; /* Fleksibilna širina za select polje i input */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #4d94ff; /* Svijetlo plavi okvir */
+    font-size: 16px;
+    background-color: #FFFFFF; /* Bijela pozadina za select i input */
+    color: #004AAD; /* Tamniji plavi tekst */
+    box-sizing: border-box;
+    margin-left: 10px; /* Razmak između labela i polja */
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #004AAD; /* Tamniji plavi za liniju između redova */
+    text-align: left;
+  }
+  
+  th {
+    background-color: #004AAD; /* Tamniji plavi za zaglavlje */
+    color: #D8FEFF; /* Svetlo plavi tekst za zaglavlje */
+  }
+  
+  td {
+    background-color: #FFFFFF; /* Bijela pozadina za ćelije */
+    color: #004AAD; /* Tamniji plavi tekst za ćelije */
+  }
+  
+  .delete-button {
+    background-color: #FF914D;
+    color: #004AAD;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    background-color: #FFA500;
+  }
+  
+  /* Stilovi za overlay i edit-container */
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Poluprovidna crna pozadina */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Veći z-index da bude iznad svega */
+  }
+  
+  .edit-container {
+    background-color: #D8FEFF; /* Svetlo plava pozadina */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Blagi shadow za dubinu */
+    width: 400px;
+    z-index: 1001; /* Iznad overlay-a */
+  }
+  
+  .edit-container h2 {
+    color: #004AAD; /* Tamniji plavi tekst */
+    text-align: center;
+  }
+  
+  .edit-container label {
+    color: #004AAD; /* Tamniji plavi tekst */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .edit-container input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #4d94ff;
+    margin-bottom: 15px;
+    background-color: #FFFFFF; /* Bijela pozadina */
+    color: #004AAD; /* Tamniji plavi tekst */
+  }
+  
+  .edit-container-button {
+    background-color: #FF914D;
+    color: #004AAD;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .edit-container-button:hover {
+    background-color: #FFA500;
+  }
+
+/* Dugme za zatvaranje */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; /* Tamniji plavi tekst */
+    cursor: pointer;
+  }
+  .close-button:hover {
+    background-color: #818181;
+  }
+  
+  

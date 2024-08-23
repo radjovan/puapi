@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Zadatak } from '../../models/zadatak';
 import { VezbaService } from '../../services/vezba-service/vezba.service';
 import { UserService } from '../../services/user-service/user.service';
@@ -9,6 +9,7 @@ import { FileService } from '../../services/file-service/file.service';
 import { Hint } from '../../models/hint';
 import { Definition } from '../../models/definition';
 import { Odgovor } from '../../models/odgovor';
+import { MathJaxService } from '../../services/math-jax/math-jax.service';
 
 @Component({
   selector: 'app-moji-zadaci',
@@ -28,10 +29,14 @@ export class MojiZadaciComponent implements OnInit {
   showImageModal: boolean = false;
   selectedImage: string = '';
 
+  @Input() mathString!: string;
+
   constructor(
      private userService: UserService,
      private fileService: FileService,
-    private zadatakService: ZadatakService) {
+     private zadatakService: ZadatakService,
+     private el: ElementRef,
+     private mathJaxService: MathJaxService) {
       this.selectedTask = this.zadaci[0];
     }
   ngOnInit() {  
@@ -114,6 +119,14 @@ export class MojiZadaciComponent implements OnInit {
       }
       );
     }
+  }
+
+  renderLatex(arg0: any) {
+    this.mathString = arg0;//izbrisan $$
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+    return this.mathString;
   }
 
   onFileSelected(event: any) {

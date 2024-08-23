@@ -1,0 +1,99 @@
+<br>
+<div class="container_all user-list-page">
+    <h1>Lista Korisnika</h1>
+  
+    <!-- Forma za filtriranje korisnika -->
+    <div class="form-container active">
+      <div class="form-field">
+        <label>Tip korisnika:</label>
+        <select class="custom-select" [(ngModel)]="filterTipKorisnika" (ngModelChange)="applyFilter()">
+          <option value="">Svi korisnici</option>
+          <option value="2">Profesori</option>
+          <option value="3">Učenici</option>
+        </select>
+      </div>
+  
+      <div class="form-field" *ngIf="filterTipKorisnika == '3'">
+        <label>Škola:</label>
+        <select class="custom-select" [(ngModel)]="filterSkola" (ngModelChange)="applyFilter()">
+          <option value="">Sve škole</option>
+          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }} ({{ s.grad }})</option>
+        </select>
+      </div>
+  
+      <div class="form-field" *ngIf="filterTipKorisnika == '3'">
+        <label>Razred:</label>
+        <select class="custom-select" [(ngModel)]="filterRazred" (ngModelChange)="applyFilter()">
+          <option value="">Svi razredi</option>
+          <option *ngFor="let razred of razredi" [value]="razred">{{ razred }}</option>
+        </select>
+      </div>
+  
+      <div class="form-field" *ngIf="filterTipKorisnika == '3' && filterSkola">
+        <label>Odeljenje:</label>
+        <select class="custom-select" [(ngModel)]="filterOdeljenje" (ngModelChange)="applyFilter()">
+          <option value="">Sva odeljenja</option>
+          <option *ngFor="let odeljenje of filteredOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
+        </select>
+      </div>
+  
+      <div class="form-field">
+        <label>Pretraga:</label>
+        <input type="text" class="custom-input" placeholder="Pretraži korisnike" [(ngModel)]="searchTerm" (input)="applyFilter()" />
+      </div>
+    </div>
+    <br>
+    <!-- Tabela sa korisnicima -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Ime i Prezime</th>
+            <th>Email</th>
+            <th>Tip Korisnika</th>
+            <th>Škola</th>
+            <th>Razred</th>
+            <th>Oznaka Odeljenja</th>
+            <th>Akcija</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td>{{ user.firstName + " " + user.lastName }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.role == 2 ? "Profesor" : user.role == 3? "Učenik": "Admin" }}</td>
+            <td>{{ user.odeljenje?.skola?.naziv || '-' }}</td>
+            <td>{{ user.odeljenje?.razred || '-' }}</td>
+            <td>{{ user.odeljenje?.brojOdeljenja || '-' }}</td>
+            <td>
+                <button class="delete-button" (click)="openEditUser(user)">Izmeni</button>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="overlay"  *ngIf="editOpen">
+    <div class="edit-container">
+        <button class="close-button" (click)="closeEdit()">X</button>
+        <form [formGroup]="editForm" (ngSubmit)="editUser()">
+          <h2>Izmeni moje podatke</h2>
+    
+          <label for="firstName">Ime (obavezno)</label>
+          <input type="text" id="firstName" formControlName="firstName" autocomplete="off" required>
+    
+          <label for="lastName">Prezime (obavezno)</label>
+          <input type="text" id="lastName" formControlName="lastName" autocomplete="off" required>
+          
+          <label for="username">Email (obavezno)</label>
+          <input type="text" id="username" formControlName="username" autocomplete="off" required>
+          
+          <label for="password">Trenutna Lozinka (obavezno)</label>
+          <input type="text" id="password" formControlName="password" autocomplete="off" required>
+    
+          <button type="submit" [disabled]="editForm.invalid" class="edit-container-button">Izmeni Podatke</button>
+        </form>
+    </div>
+  </div>
+  

@@ -1,4 +1,3 @@
-<br>
 <div class="container">
   <h1>Moje Vežbe</h1>
 
@@ -10,72 +9,84 @@
         <p>Predmet: {{ vezba.nazivPredmeta }}</p>
         <p>Broj zadataka: {{ vezba.brojZadataka }}</p>
         <p>Trajanje vežbe: {{ vezba.trajanjeVezbe }} sekundi</p>
+        <div class="actions">
+          <button (click)="prikaziIzmenaForm(vezba.id)">Izmeni vežbu</button>
+          <button (click)="prikaziUcenikForm(vezba.id)">Prikaz i dodela učenika</button>
+          <button (click)="prikaziOdeljenjeForm(vezba.id)">Prikaz i dodela odeljenja</button>
+          <button (click)="prikaziZadatkeForm(vezba.id)">Prikaz i izmena zadataka</button>
+        </div>
       </div>
-      <div class="actions">
-        <button (click)="prikaziIzmenaForm(vezba.id)">Izmeni vežbu</button>
-        <button (click)="prikaziUcenikForm(vezba.id)">Prikaz i dodela učenika</button>
-        <button (click)="prikaziOdeljenjeForm(vezba.id)">Prikaz i dodela odeljenja</button>
-        <button (click)="prikaziZadatkeForm(vezba.id)">Prikaz i izmena zadataka</button>
+
+      <!-- Izmena vežbe Modal -->
+      <div *ngIf="showIzmenaForm && selectedVezbaId === vezba.id" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="zatvoriForme()">&times;</span>
+          <h2>Izmeni vežbu</h2>
+          <label for="naziv">Naziv vežbe:</label>
+          <input [(ngModel)]="selectedVezba.naziv" id="naziv">
+          <label for="trajanje">Trajanje vežbe (sekunde):</label>
+          <input type="number" [(ngModel)]="selectedVezba.trajanjeVezbe" id="trajanje">
+          <button (click)="izmeniVezbu(selectedVezbaId)">Izmeni</button>
+        
+        </div>
       </div>
+
+      <!-- Prikaz i dodela učenika Modal -->
+      <div *ngIf="showUcenikForm && selectedVezbaId === vezba.id" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="zatvoriForme()">&times;</span>
+          <h2>Dodeli vežbu učeniku</h2>
+          <label for="ucenici">Izaberite učenika:</label>
+         <!-- <input type="text" placeholder="Pretraga učenika" [(ngModel)]="ucenikPretraga">-->
+          <select [(ngModel)]="selectedUcenikId" id="ucenici">
+            <option *ngFor="let ucenik of filtriraniUcenici()" [value]="ucenik.id">{{ ucenik.firstName + " " + ucenik.lastName }}</option>
+          </select>
+          <button (click)="dodeliVezbuUceniku()">Dodeli</button>
+          
+          <h3>Učenici kojima je vežba dodeljena:</h3>
+          <ul>
+            <li *ngFor="let ucenik of vezba.ucenici">{{ ucenik.firstName }} {{ ucenik.lastName }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Prikaz i dodela odeljenja Modal -->
+      <div *ngIf="showOdeljenjeForm && selectedVezbaId === vezba.id" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="zatvoriForme()">&times;</span>
+          <h2>Dodeli vežbu odeljenju</h2>
+          <label for="skola">Škola</label><br>
+          <select id="idSkole" [(ngModel)]="selectedSkolaId" (change)="filter()" required>
+            <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
+          </select>
+          <label for="idOdeljenja">Izaberite odeljenje:</label>
+          <select *ngIf="selectedSkolaId" [(ngModel)]="selectedOdeljenjeId" id="idOdeljenja">
+            <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}</option>
+          </select>
+          <button (click)="dodeliVezbuOdeljenju()">Dodeli</button>
       
-      <!-- Izmena vežbe -->
-      <div *ngIf="showIzmenaForm && selectedVezbaId === vezba.id" class="form-container">
-        <h2>Izmeni vežbu</h2>
-        <label for="naziv">Naziv vežbe:</label>
-        <input [(ngModel)]="selectedVezba.naziv" id="naziv">
-        <label for="trajanje">Trajanje vežbe (sekunde):</label>
-        <input type="number" [(ngModel)]="selectedVezba.trajanjeVezbe" id="trajanje">
-        <button (click)="izmeniVezbu()">Izmeni</button>
-        <button (click)="zatvoriForme()">Zatvori</button>
+          <h3>Odeljenja(Škola) kojima je vežba dodeljena:</h3>
+          <ul>
+            <li *ngFor="let odeljenje of vezba.odeljenja">{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}  ({{ odeljenje.skola.naziv }})</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Prikaz i dodela učenika -->
-      <div *ngIf="showUcenikForm && selectedVezbaId === vezba.id" class="form-container">
-        <h2>Dodeli vežbu učeniku</h2>
-        <label for="ucenici">Izaberite učenika:</label>
-        <input type="text" placeholder="Pretraga učenika" [(ngModel)]="ucenikPretraga">
-        <select [(ngModel)]="selectedUcenikId" id="ucenici">
-          <option *ngFor="let ucenik of filtriraniUcenici()" [value]="ucenik.id">{{ ucenik.firstName + " " + ucenik.lastName }}</option>
-        </select>
-        <button (click)="dodeliVezbuUceniku()">Dodeli</button>
-        <button (click)="zatvoriForme()">Zatvori</button>
-        <h3>Učenici kojima je vežba dodeljena:</h3>
-        <ul>
-          <li *ngFor="let ucenik of vezba.ucenici">{{ ucenik.firstName }} {{ ucenik.lastName }}</li>
-        </ul>
-      </div>
+      <!-- Prikaz i izmena zadataka Modal -->
+      <div *ngIf="showZadatkeForm && selectedVezbaId === vezba.id" class="modal">
+        <div class="modal-content">
+          <span class="close" (click)="zatvoriForme()">&times;</span>
+          <h2>Zadaci na vežbi</h2>
+          <ul>
+            <li *ngFor="let zadatak of vezba.zadaci">{{ zadatak.opis }} <button (click)="ukloniZadatak(vezba.id, zadatak.id)">Ukloni</button></li>
+          </ul>
+          <label for="noviZadatak">Dodaj novi zadatak:</label>
+          <select [(ngModel)]="noviZadatakId" id="noviZadatak">
+            <option *ngFor="let zadatak of vezba.predmet?.zadaci" [value]="zadatak.id">{{ zadatak.opis }}</option>
+          </select>
+          <button (click)="dodajZadatak(vezba.id)">Dodaj</button>
 
-      <!-- Prikaz i dodela odeljenja -->
-      <div *ngIf="showOdeljenjeForm && selectedVezbaId === vezba.id" class="form-container">
-        <h2>Dodeli vežbu odeljenju</h2>
-        <label for="skola">Škola </label><br>
-        <select id="idSkole" [(ngModel)]="selectedSkolaId" (change)="filter()" required>
-          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
-        </select>
-        <label for="idOdeljenja">Izaberite odeljenje:</label>
-        <select *ngIf="selectedSkolaId" [(ngModel)]="selectedOdeljenjeId" id="idOdeljenja">
-          <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{odeljenje.razred}}/{{odeljenje.brojOdeljenja}}</option>
-        </select>
-        <button (click)="dodeliVezbuOdeljenju()">Dodeli</button>
-        <button (click)="zatvoriForme()">Zatvori</button>
-        <h3>Odeljenja(Škola) kojima je vežba dodeljena:</h3>
-        <ul>
-          <li *ngFor="let odeljenje of vezba.odeljenja">{{odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}  ({{odeljenje.skola.naziv }})</li>
-        </ul>
-      </div>
-
-      <!-- Prikaz i izmena zadataka -->
-      <div *ngIf="showZadatkeForm && selectedVezbaId === vezba.id" class="form-container">
-        <h2>Zadaci na vežbi</h2>
-        <ul>
-          <li *ngFor="let zadatak of vezba.zadaci">{{ zadatak.opis }} <button (click)="ukloniZadatak(vezba.id, zadatak.id)">Ukloni</button></li>
-        </ul>
-        <label for="noviZadatak">Dodaj novi zadatak:</label>
-        <select [(ngModel)]="noviZadatakId" id="idOdeljenja">
-          <option *ngFor="let zadatak of vezba.predmet?.zadaci" [value]="zadatak.id">{{zadatak.opis}}</option>
-        </select>
-        <button (click)="dodajZadatak(vezba.id)">Dodaj</button>
-        <button (click)="zatvoriForme()">Zatvori</button>
+        </div>
       </div>
 
     </li>

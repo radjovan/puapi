@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ZadatakService } from '../../services/zadatak-service/zadatak.service';
 import { Zadatak } from '../../models/zadatak';
@@ -12,6 +12,7 @@ import { Hint } from '../../models/hint';
 import { Definition } from '../../models/definition';
 import { Odgovor } from '../../models/odgovor';
 import { FileService } from '../../services/file-service/file.service';
+import { MathJaxService } from '../../services/math-jax/math-jax.service';
 
 @Component({
   selector: 'app-vezbe',
@@ -33,12 +34,16 @@ export class VezbeComponent implements OnInit {
 
   predmetId: string | null = null;
 
+  @Input() mathString!: string;
+  
   constructor(private fb: FormBuilder,
      private zadaciService: ZadatakService,
       private vezbaService: VezbaService,
     private userService: UserService,
   private router: Router,
-private fileService: FileService) {
+private fileService: FileService,
+private el: ElementRef,
+     private mathJaxService: MathJaxService) {
     this.vezbaForm = this.fb.group({
       idPredmeta: [0, Validators.required],
       naziv: ['', Validators.required],
@@ -156,5 +161,13 @@ private fileService: FileService) {
       default:
         return '';
     }
+  }
+
+  renderLatex(arg0: any) {
+    this.mathString = arg0;//izbrisan $$
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+    return this.mathString;
   }
 }

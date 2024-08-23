@@ -1,7 +1,7 @@
 <br>
-<div *ngIf="showTaskForm" class="task-container">
+<div *ngIf="showTaskForm" class="form-container task-container">
     <form [formGroup]="taskForm" (ngSubmit)="addTask()">
-      <label>Dodaj zadatak:</label>
+      <h1>Kreiraj Novi Zadatak</h1>
       
       <label for="nivo">Nivo težine</label>
       <select id="nivo" formControlName="nivo" required>
@@ -10,11 +10,6 @@
         <option value="3">Napredni</option>
       </select>
       
-     <!-- 
-      <label for="opis">Naslov zadatka</label>
-      <input type="text" id="opis" formControlName="opis" required> 
-     -->
-
       <label for="tekst">Tekst zadatka</label>
       <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateLatex()" required></textarea>   
       
@@ -23,14 +18,13 @@
         <input type="checkbox" id="latexOption" formControlName="latex" (change)="updateLatex()">
       </div>
 
-      <div  *ngIf="taskForm.get('latex')?.value">
+      <div *ngIf="taskForm.get('latex')?.value">
         <label>Latex:</label>
         <div class="latex-output">
-          <div [innerHTML]="mathString"></div>
+          <div [innerHTML]="renderLatex(taskForm.get('tekst')?.value)"></div>
         </div>
       </div>
     
-      
       <label for="idPredmeta">Predmet</label>
       <select id="idPredmeta" formControlName="idPredmeta" required>
         <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv +" ("+ predmet.razred + ". razred)" }}</option>
@@ -43,45 +37,40 @@
     </form>
   </div>
 
-  <div *ngIf="!showTaskForm" class="parent-container">
-    <div  class="zadatak-info">
+<div *ngIf="!showTaskForm" class="parent-container">
+    <div class="zadatak-info">
       <div class="info-header">
-        <h3>Opis Zadataka</h3>
+        <h3>KREIRAN ZADATAK:</h3>
       </div>
       <div class="info-body">
-        <label>Opis:</label>
-        <p>{{ zadatak?.opis }}</p>
-    
+        <label>Opis: {{ zadatak?.opis }}</label>
+        <br>
         <label>Tekst:</label>
         <p *ngIf="!taskForm.get('latex')?.value">{{ zadatak?.tekst }}</p>
-        <div  *ngIf="taskForm.get('latex')?.value">
-          <label>Latex:</label>
+        <div *ngIf="taskForm.get('latex')?.value">
           <div class="latex-output">
-            <div [innerHTML]="renderLatex(mathString)"></div>
+            <div [innerHTML]="renderLatex(zadatak?.tekst)"></div>
           </div>
         </div>
-    
-        <label>Nivo težine:</label>
-        <p class="nivo">{{ getZadatakClass(zadatak?.nivo) }}</p>
-    
-        <label>Predmet:</label>
-        <p>{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</p>
-    
+        
+        <!--<label>Nivo težine: {{ getZadatakClass(taskForm.get('nivo')?.value) }}</label>
+        <br>-->
+        <label>Predmet:{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</label>  
         <div *ngIf="imageUrl" class="image-preview">
           <img [src]="imageUrl" alt="Uploaded Image Preview" />
         </div>
       </div>
     </div>
   </div>
-  
-  
+  <br>
 <div *ngIf="showAnswersForm" class="form-container">
+  <h3>DODAJ ODGOVORE:</h3>
   <form [formGroup]="answersForm" (ngSubmit)="submitAnswers()">
     <label for="correct">Tačan odgovor</label>
     <input type="text" id="correct" formControlName="correct" required>
     <label for="forHint">Približan odgovor</label>
     <input type="text" id="forHint" formControlName="forHint" required>
-    <label for="hint">Pomoć za zadatak sa približnim odgovorom</label>
+    <label for="hint" style="color:#FFA500;">Pomoć za zadatak sa približnim odgovorom</label>
     <textarea id="hint" formControlName="hint" rows="5" required></textarea>
     <label for="wrong">Pogrešan odgovor</label>
     <input type="text" id="wrong" formControlName="wrong" required>
@@ -100,7 +89,7 @@
     </div>
     <textarea id="tekst" formControlName="tekst" rows="5" (input)="updateDefLatex()" required></textarea>
     
-    <div  *ngIf="definitionForm.get('defLatex')?.value">
+    <div *ngIf="definitionForm.get('defLatex')?.value">
       <label>Latex:</label>
       <div class="latex-output">
         <div [innerHTML]="defMathString"></div>
