@@ -51,8 +51,11 @@ export class MojiZadaciComponent implements OnInit {
       res.forEach(element => {
         var pred = this.predmeti.find(p => p.id == element.idPredmeta);
         element.predmet =  pred? pred: this.predmeti[0];
-        if(element.picture){
+        if(element.picture == true){
           element.path = this.fileService.getImageUrlByName(element.path);
+        }
+        else{
+          element.path = ""; 
         }
         this.zadatakService.dajHintPoIdZadatka(element.id).subscribe((res: Hint) => {
           element.hint = res;
@@ -66,6 +69,7 @@ export class MojiZadaciComponent implements OnInit {
       });
       res.sort((a, b) => b.id - a.id);
       this.zadaci = res;
+      console.log(this.zadaci);
       this.filteredZadaci = res;
     });
   }
@@ -146,4 +150,5 @@ export class MojiZadaciComponent implements OnInit {
     this.showImageModal = false;
     //this.selectedImage = '';
   }
+
 }

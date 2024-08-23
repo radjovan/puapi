@@ -22,8 +22,10 @@
                   <p *ngIf="!zadatak.latex">{{ zadatak.tekst }}</p>
                     <div class="latex-output" *ngIf="zadatak.latex">
                     <div [innerHTML]="renderLatex(zadatak.tekst)"></div>
-                    </div>                
-              <div *ngIf="zadatak.picture && zadatak.path">
+                    </div>    
+                    
+                <br>
+              <div *ngIf="zadatak.picture == true">
                 <img  [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
               </div>
                   <br>

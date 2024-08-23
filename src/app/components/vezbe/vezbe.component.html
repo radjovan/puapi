@@ -50,7 +50,7 @@
       <div class="latex-output" *ngIf="selectedZadatak?.latex">
       <div [innerHTML]="renderLatex(selectedZadatak?.tekst)"></div>
       </div>                
-      <img *ngIf="selectedZadatak?.picture" [src]="selectedZadatak?.path" class="task-image">
+      <img *ngIf="selectedZadatak?.picture == true" [src]="selectedZadatak?.path" class="task-image">
 
       <h3>Odgovori:</h3>
       <ul>
