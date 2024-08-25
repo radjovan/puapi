@@ -80,4 +80,8 @@ export class ZaduzenjaService {
   getSkole(): Observable<SkolaDTO[]> {
     return this.http.get<SkolaDTO[]>(this.url + "zaduzenja.php?action=getSkole");
   }
+
+  editSkola(naziv: string, grad: string, id: any): Observable<boolean>{
+     return this.http.get<boolean>(this.url + "zaduzenja.php?action=editSkola&naziv=" + naziv + "&grad=" + grad + "&id=" + id);
+  }
 }

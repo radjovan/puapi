@@ -64,16 +64,20 @@ body {
 
 .zadatak-info .info-header h3 {
   margin: 0;
-  font-size: 18px; /* Veličina naslova */
+  font-size: 22px; /* Veličina naslova */
   font-weight: bold; /* Bold naslov */
   color: #004AAD; /* Tamniji plavi tekst */
 }
 
 .zadatak-info .info-body {
-  font-size: 14px; /* Font veličina za telo informacija */
+
+  font-size: 16px; /* Font veličina za telo informacija */
+  color: #FF914D; /* Tamniji plavi tekst */
+  margin-top: 10px;
 }
 
 .zadatak-info .info-body label {
+  padding-top: 10px;
   font-weight: bold;
 }
 

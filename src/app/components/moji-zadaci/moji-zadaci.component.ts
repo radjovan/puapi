@@ -10,6 +10,7 @@ import { Hint } from '../../models/hint';
 import { Definition } from '../../models/definition';
 import { Odgovor } from '../../models/odgovor';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-moji-zadaci',
@@ -36,7 +37,8 @@ export class MojiZadaciComponent implements OnInit {
      private fileService: FileService,
      private zadatakService: ZadatakService,
      private el: ElementRef,
-     private mathJaxService: MathJaxService) {
+     private mathJaxService: MathJaxService,
+    private router: Router) {
       this.selectedTask = this.zadaci[0];
     }
   ngOnInit() {  
@@ -69,8 +71,8 @@ export class MojiZadaciComponent implements OnInit {
       });
       res.sort((a, b) => b.id - a.id);
       this.zadaci = res;
-      console.log(this.zadaci);
       this.filteredZadaci = res;
+      this.mathJaxService.render(this.el.nativeElement);
     });
   }
 
@@ -92,12 +94,15 @@ export class MojiZadaciComponent implements OnInit {
       this.filteredZadaci = this.zadaci.filter(zadatak =>
         zadatak.idPredmeta == this.selectedPredmet);
     }
-
+    this.mathJaxService.render(this.el.nativeElement);
   }
 
   openEditDialog(zadatak: Zadatak) {
     this.selectedTask = zadatak;
     this.showEditDialog = true;
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
   }
 
   closeEditDialog() {

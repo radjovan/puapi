@@ -37,25 +37,25 @@
     </form>
   </div>
 
-<div *ngIf="!showTaskForm" class="parent-container">
+<div  class="parent-container" *ngIf="!showTaskForm"> 
     <div class="zadatak-info">
       <div class="info-header">
-        <h3>KREIRAN ZADATAK:</h3>
+        <h3>Informacije o Kreiranom Zadatku:</h3>
       </div>
       <div class="info-body">
-        <label>Opis: {{ zadatak?.opis }}</label>
+        <label><span style="color: #004AAD;">Opis: </span> {{ zadatak?.opis }}</label>
         <br>
-        <label>Tekst:</label>
+        <label><span style="color: #004AAD;">Tekst: </span></label>
         <p *ngIf="!taskForm.get('latex')?.value">{{ zadatak?.tekst }}</p>
         <div *ngIf="taskForm.get('latex')?.value">
           <div class="latex-output">
             <div [innerHTML]="renderLatex(zadatak?.tekst)"></div>
           </div>
-        </div>
-        
+        </div>      
         <!--<label>Nivo težine: {{ getZadatakClass(taskForm.get('nivo')?.value) }}</label>
         <br>-->
-        <label>Predmet:{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</label>  
+        <label><span style="color: #004AAD;">Predmet: </span>{{ zadatak?.predmet?.naziv +" ("+ zadatak?.predmet?.razred + ". razred)" }}</label>  
+        <br>
         <div *ngIf="imageUrl" class="image-preview">
           <img [src]="imageUrl" alt="Uploaded Image Preview" />
         </div>
@@ -64,18 +64,26 @@
   </div>
   <br>
 <div *ngIf="showAnswersForm" class="form-container">
-  <h3>DODAJ ODGOVORE:</h3>
+  <h3>Dodaj Odgovore:</h3>
   <form [formGroup]="answersForm" (ngSubmit)="submitAnswers()">
     <label for="correct">Tačan odgovor</label>
     <input type="text" id="correct" formControlName="correct" required>
-    <label for="forHint">Približan odgovor</label>
+    <label for="forHintLabel">Približan odgovor</label>
     <input type="text" id="forHint" formControlName="forHint" required>
     <label for="hint" style="color:#FFA500;">Pomoć za zadatak sa približnim odgovorom</label>
-    <textarea id="hint" formControlName="hint" rows="5" required></textarea>
+    <textarea id="hint" formControlName="hint" rows="5" (input)="updateHintLatex()" required ></textarea>
+    <label style="color:#FFA500;">Uneti tekst je Latex kod:</label>
+    <input type="checkbox" id="latexOption" formControlName="hintLatex"  (change)="updateHintLatex()">
+    <div *ngIf="answersForm.get('hintLatex')?.value">
+      <label style="color:#FFA500;">Pomoć za zadatak sa približnim odgovorom(Latex)</label>
+      <div class="latex-output">
+        <div [innerHTML]="answersForm.get('hint')?.value"></div>
+      </div>
+    </div>
     <label for="wrong">Pogrešan odgovor</label>
     <input type="text" id="wrong" formControlName="wrong" required>
     <label for="wrong2">Pogrešan odgovor</label>
-    <input type="text" id="wrong2" formControlName="wrong2">
+    <input type="text" id="wrong2" formControlName="wrong2"required>
     <button type="submit" [disabled]="answersForm.invalid">Dodaj Odgovore</button>
   </form>
 </div>

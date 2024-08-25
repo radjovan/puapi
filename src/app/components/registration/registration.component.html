@@ -35,14 +35,14 @@
   
       <div *ngIf="registrationForm.get('role')?.value === '3'">
         <label for="skola">Škola </label><br>
-        <select id="skola" formControlName="skola" (change)="filter()" required>
+        <select id="skola" formControlName="skola" (change)="filter()">
           <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
         </select>
       </div>
 
       <div *ngIf="registrationForm.get('skola')?.value != 0 && registrationForm.get('role')?.value === '3'">
         <label for="odeljenje">Odeljenje</label><br>
-        <select id="odeljenje" formControlName="odeljenje" required>
+        <select id="odeljenje" formControlName="odeljenje">
           <option *ngFor="let odeljenje of filterOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
         </select>
       </div>
@@ -57,6 +57,7 @@
 
       <label for="idSkole">Škola</label>
         <select id="idSkole" formControlName="idSkole" required>
+          <option value="" disabled selected></option>
           <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
         </select>
       
@@ -135,12 +136,16 @@
             <tr>
               <th>Naziv</th>
               <th>Grad</th>
+              <th>Akcija</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let skola of skole">
               <td>{{ skola.naziv }}</td>
               <td>{{ skola.grad }}</td>
+              <td>
+                <button class="delete-button" (click)="openEditSkola(skola)">Izmeni</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -148,13 +153,31 @@
     </div>
   </div>
 
+  <div class="overlay"  *ngIf="editSkolaOpen">
+    <div class="edit-container">
+        <button class="close-button" (click)="closeEditSkola()">X</button>
+        <form [formGroup]="editSkolaForm" (ngSubmit)="editSkola()">
+          <h2>Izmena Podataka Škole</h2>
+    
+          <label for="naziv">Naziv (obavezno)</label>
+          <input type="text" id="naziv" formControlName="naziv" autocomplete="off" required>
+    
+          <label for="grad">Grad (obavezno)</label>
+          <input type="grad" id="grad" formControlName="grad" autocomplete="off" required>
+  
+          <button type="submit" [disabled]="editSkolaForm.invalid" class="edit-container-button">Izmeni Podatke</button>
+        </form>
+    </div>
+  </div>
+
   <!-- Forma za dodavanje korisnika iz CSV -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'csv-registration' }">
     <form [formGroup]="csvRegistrationForm" (ngSubmit)="processCSV()">
       <h2>Dodaj korisnike iz CSV-a</h2>
-      <p>Nazivi kolona u CSV-u: Ime, Prezime, Username, Role(2-Profesor, 3-Učenik), Odeljenje, Razred, idSkole</p>
+      <p>Nazivi kolona u CSV-u: Ime, Prezime, Email, Role (2-Profesor, 3-Učenik), Odeljenje, Razred, idSkole</p>
       <label>Informacije o školama:</label>
         <select>
+          <option value="" disabled selected>Izaberite školu</option>
           <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv + " ID: " + s.id }}</option>
         </select>
       <input type="file" (change)="onFileSelected($event)" accept=".csv">
@@ -164,3 +187,5 @@
   </div>
   
 </div>
+
+

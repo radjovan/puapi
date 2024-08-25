@@ -32,8 +32,12 @@ export class MojaZaduzenjaComponent implements OnInit {
   filterOdeljenje: string | null = null;
   filterRazred: string | null = null;
   filterSkola: string | null = null;
-  razredi: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; // Liste razreda koji su dostupni
+  razredi: number[] = []; // Liste razreda koji su dostupni
   selectedSkola = false;
+
+  profPredmeti: Predmet[] = [];
+  profOdeljenja: Odeljenje[] = [];
+  profSkole: SkolaDTO[] = [];
 
   constructor(private userService: UserService, private zaduzenjaService: ZaduzenjaService, private router: Router) { 
 
@@ -54,22 +58,41 @@ export class MojaZaduzenjaComponent implements OnInit {
         this.zaduzenjaService.getSkole().subscribe(
           (response: any) => {
             this.skole = response;
-        this.zaduzenjaService.getZaduzenjaByProfesorId(this.filterProfesor).subscribe(data => {
-          data.forEach(zaduzenje => {
-            zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
-            zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
-            zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
-            if(zaduzenje.odeljenje)
-            {
-              if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
+            this.zaduzenjaService.getZaduzenjaByProfesorId(this.filterProfesor).subscribe(data => {
+            data.forEach(zaduzenje => {
+              zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
+              zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
+              zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
+
+              if(this.profPredmeti.findIndex(x => x.id == zaduzenje.predmet?.id) == -1 && zaduzenje.predmet)
               {
-                var fSkola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
-                if(fSkola)
+                this.profPredmeti.push(zaduzenje.predmet);
+              }
+              if(zaduzenje.odeljenje)
+              {
+                if(this.profOdeljenja.findIndex(x => x.id == zaduzenje.odeljenje?.id) == -1)
+                  {
+                    this.profOdeljenja.push(zaduzenje.odeljenje);
+
+                    if(this.razredi.findIndex( x => x == zaduzenje.odeljenje?.razred) == -1)
+                    {
+                      this.razredi.push(zaduzenje.odeljenje.razred);
+                    }
+                  }
+
+                if(this.skole.findIndex(x => x.id == zaduzenje.odeljenje?.idSkole) != -1)
                 {
-                  zaduzenje.odeljenje.skola = fSkola;
-                }
-              }      
-            }
+                  var fSkola = this.skole.find(x => x.id == zaduzenje.odeljenje?.idSkole);
+                  if(fSkola)
+                  {
+                    zaduzenje.odeljenje.skola = fSkola;
+                    if(this.profSkole.findIndex(x => x.id == fSkola?.id) == -1)
+                    {
+                      this.profSkole.push(fSkola);
+                    }
+                  }
+                }      
+              }
           });
           this.zaduzenja = data;
           this.applyFilter();
@@ -87,15 +110,10 @@ export class MojaZaduzenjaComponent implements OnInit {
     });
   }
 
-  filterPredmete(idOdeljenja: string) {
-    var o = this.filteredOdeljenja.find(o => o.id.toString() === idOdeljenja);
-    this.filteredPredmeti = this.predmeti.filter(predmet => predmet.razred === o?.razred);
-  }
-
   filterOdeljenja(idSkole: any){
-    console.log(idSkole);
-    this.filteredOdeljenja = this.odeljenja.filter(x => x.idSkole == idSkole);
+    this.filteredOdeljenja = this.profOdeljenja.filter(x => x.idSkole == idSkole);
     this.selectedSkola = true;
+    this.applyFilter();
   }
 
   applyFilter() {
@@ -108,13 +126,11 @@ export class MojaZaduzenjaComponent implements OnInit {
   }
 
   getPredmetiByRazred(razred: string) {
-    return this.predmeti.filter(predmet => predmet.razred.toString() === razred);
+    return this.profPredmeti.filter(predmet => predmet.razred.toString() === razred);
   }
 
   showOdeljenje(odeljenje: any){
     this.userService.getUceniciByOdeljenjeId(odeljenje.id).subscribe((res: User[])=>{
-      console.log(odeljenje);
-      console.log(res);
       this.selectedUcenici = res;
       this.selectedOdeljenje = odeljenje;
     })

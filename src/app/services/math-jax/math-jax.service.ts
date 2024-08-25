@@ -9,13 +9,13 @@ export class MathJaxService {
   constructor() {}
 
   render(element: HTMLElement): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (typeof MathJax !== 'undefined' && MathJax.Hub && MathJax.Hub.Queue) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, element], () => {
+    return new Promise((resolve, reject) => {
+      try {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub], () => {
           resolve();
         });
-      } else {
-        reject(new Error('MathJax is not loaded properly.'));
+      } catch (error) {
+        reject(error);
       }
     });
   }

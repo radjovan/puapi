@@ -21,9 +21,9 @@
 
     <div class="form-field">
         <label>Škola:</label>
-        <select class="custom-select" [(ngModel)]="filterSkola" (ngModelChange)="applyFilter()">
+        <select class="custom-select" [(ngModel)]="filterSkola" (ngModelChange)="filterOdeljenja(filterSkola)">
           <option value="">Sve škole</option>
-          <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }} ({{s.grad}})</option>
+          <option *ngFor="let s of profSkole" [value]="s.id">{{ s.naziv }} ({{s.grad}})</option>
         </select>
       </div>
 
@@ -31,7 +31,7 @@
       <label>Odeljenje:</label>
       <select class="custom-select" [(ngModel)]="filterOdeljenje" (ngModelChange)="applyFilter()">
         <option value="">Sva odeljenja</option>
-        <option *ngFor="let odeljenje of odeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
+        <option *ngFor="let odeljenje of filteredOdeljenja" [value]="odeljenje.id">{{ odeljenje.razred + "/" + odeljenje.brojOdeljenja }}</option>
       </select>
     </div>
   </div>

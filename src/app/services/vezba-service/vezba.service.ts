@@ -76,7 +76,6 @@ export class VezbaService {
   
   updateVezba(selectedVezba: any): Observable<boolean> {
     selectedVezba.action = "updateVezba";
-    console.log(selectedVezba);
     return this.http.post<boolean>(this.url + "vezba.php", selectedVezba);
   }
 

@@ -40,7 +40,7 @@ const routes: Routes = [
   { path: 'vezbanja', component: VezbanjaComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: 'vezbanje/:id', component: VezbanjeComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
   { path: 'pokusaji', component: PokusajiComponent, canActivate: [() => inject(UcenikGuard).canActivate()]},
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: "**", component: PageNotFoundComponent}
 ];
 

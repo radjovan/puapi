@@ -55,7 +55,6 @@ export class UsersComponent implements OnInit{
         this.skole = response;
             this.zaduzenjaService.getOdeljenja().subscribe(data => {
               this.odeljenja = data;
-              console.log(this.odeljenja);
               this.odeljenja.forEach(element => {
                   var skola = this.skole.find(x => x.id == element.idSkole);
                   if(skola)
@@ -71,7 +70,6 @@ export class UsersComponent implements OnInit{
                 });
                   
                 this.users = users;
-                console.log(this.users); 
                 this.applyFilter();   
               }); 
                   

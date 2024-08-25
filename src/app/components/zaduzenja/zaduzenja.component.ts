@@ -18,7 +18,7 @@ export class ZaduzenjaComponent implements OnInit {
   predmeti: Predmet[] = [];
   odeljenja: Odeljenje[] = [];
   skole: SkolaDTO[] = [];
-  filteredPredmeti: any[] = [];
+  filteredPredmeti: Predmet[] = [];
   filteredOdeljenja: Odeljenje[] = [];
 
   //PRIKAZ
@@ -40,7 +40,10 @@ export class ZaduzenjaComponent implements OnInit {
     idSkole: 0
   };
 
-  constructor(private zaduzenjaService: ZaduzenjaService, private router: Router) { }
+  showModal: boolean = false; // Dodato za modal kontrolu
+
+  constructor(private zaduzenjaService: ZaduzenjaService, private router: Router) {
+   }
 
   ngOnInit(): void {
     this.loadZaduzenja();
@@ -48,17 +51,16 @@ export class ZaduzenjaComponent implements OnInit {
 
   loadZaduzenja(){
     this.zaduzenjaService.getSkole().subscribe(
-      (response: any) => {
-        this.skole = response;
-        this.zaduzenjaService.getProfesori().subscribe(data => {
-          this.profesori = data;
-          this.zaduzenjaService.getPredmeti().subscribe(data => {
-            this.predmeti = data;
-            this.zaduzenjaService.getOdeljenja().subscribe(data => {
-              this.odeljenja = data;
-    
-              this.zaduzenjaService.getAllZaduzenja().subscribe(data => {
-                data.forEach(zaduzenje => {
+      (skole: any) => {
+        this.skole = skole;
+        this.zaduzenjaService.getProfesori().subscribe(profesori => {
+          this.profesori = profesori;
+          this.zaduzenjaService.getPredmeti().subscribe(predmeti => {
+            this.predmeti = predmeti;
+            this.zaduzenjaService.getOdeljenja().subscribe(odeljenja => {
+              this.odeljenja = odeljenja;
+              this.zaduzenjaService.getAllZaduzenja().subscribe(zaduzenja => {
+                zaduzenja.forEach(zaduzenje => {
                   zaduzenje.odeljenje = this.odeljenja.find(x => x.id === zaduzenje.idOdeljenja);
                   zaduzenje.predmet = this.predmeti.find(x => x.id === zaduzenje.idPredmeta);
                   zaduzenje.profesor = this.profesori.find(x => x.id === zaduzenje.idProfesora);
@@ -74,7 +76,7 @@ export class ZaduzenjaComponent implements OnInit {
                     }      
                   }
                 });
-                this.zaduzenja = data;
+                this.zaduzenja = zaduzenja;
                 this.applyFilter();
               });             
             });
@@ -88,7 +90,7 @@ export class ZaduzenjaComponent implements OnInit {
     this.zaduzenjaService.addZaduzenje(this.newZaduzenje).subscribe((res: any) => {
       if(res){
         alert("Dodato je novo zaduzenje!");
-      this.newZaduzenje = {
+        this.newZaduzenje = {
         idProfesora: '',
         idPredmeta: '',
         idOdeljenja: '',
@@ -108,27 +110,36 @@ export class ZaduzenjaComponent implements OnInit {
   }
 
   filterPredmete(idOdeljenja: string) {
-    var o = this.filteredOdeljenja.find(o => o.id.toString() === idOdeljenja);
-    this.filteredPredmeti = this.predmeti.filter(predmet => predmet.razred === o?.razred);
+    var o = this.filteredOdeljenja.find(o => o.id.toString() == idOdeljenja);
+    this.filteredPredmeti = this.predmeti.filter(predmet => predmet.razred == o?.razred);
   }
 
-  filterOdeljenja(idSkole: any){
-    console.log(idSkole);
+  filterOdeljenja(idSkole: number){
     this.filteredOdeljenja = this.odeljenja.filter(x => x.idSkole == idSkole);
     this.selectedSkola = true;
   }
 
   applyFilter() {
     this.filteredZaduzenja = this.zaduzenja.filter(zaduzenje =>
-      (!this.filterSkola || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.skola.id.toString() == this.filterSkola) &&
+      (!this.filterSkola || this.odeljenja.find(odeljenje => odeljenje.id == zaduzenje.idOdeljenja)?.skola.id.toString() == this.filterSkola) &&
       (!this.filterProfesor || zaduzenje.idProfesora.toString() == this.filterProfesor) &&
       (!this.filterPredmet || zaduzenje.idPredmeta.toString() == this.filterPredmet) &&
-      (!this.filterOdeljenje || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.id.toString() == this.filterOdeljenje) &&
-      (!this.filterRazred || this.odeljenja.find(odeljenje => odeljenje.id === zaduzenje.idOdeljenja)?.razred.toString() == this.filterRazred)
+      (!this.filterOdeljenje || this.odeljenja.find(odeljenje => odeljenje.id == zaduzenje.idOdeljenja)?.id.toString() == this.filterOdeljenje) &&
+      (!this.filterRazred || this.odeljenja.find(odeljenje => odeljenje.id == zaduzenje.idOdeljenja)?.razred.toString() == this.filterRazred)
     );
   }
 
   getPredmetiByRazred(razred: string) {
-    return this.predmeti.filter(predmet => predmet.razred.toString() === razred);
+    return this.predmeti.filter(predmet => predmet.razred.toString() == razred);
+  }
+
+   // Funkcija za otvaranje modala
+   openModal() {
+    this.showModal = true;
+  }
+
+  // Funkcija za zatvaranje modala
+  closeModal() {
+    this.showModal = false;
   }
 }

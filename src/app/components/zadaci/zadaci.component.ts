@@ -39,6 +39,7 @@ export class ZadaciComponent implements OnInit {
 
   @Input() mathString!: string;
   @Input() defMathString!: string;
+  @Input() defHintString!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -67,7 +68,8 @@ export class ZadaciComponent implements OnInit {
       forHint: ['', Validators.required],
       wrong: ['', Validators.required],
       wrong2: ['', Validators.required],
-      hint: ['', Validators.required]
+      hint: ['', Validators.required],
+      hintLatex: [false]
     });
   }
 
@@ -191,7 +193,6 @@ export class ZadaciComponent implements OnInit {
   submitHint() {
     if (this.answersForm.valid) {
       this.zadaciService.addHint(this.answersForm.value.hint, this.taskId).subscribe();
-      //alert('Hint je uspešno dodat!');
       this.showdefinitionForm = true;
     }
   }
@@ -235,6 +236,20 @@ export class ZadaciComponent implements OnInit {
   updateDefLatex() {
     if (this.definitionForm.get('defLatex')?.value) {
       this.defMathString = this.definitionForm.get('tekst')?.value;//izbrisan  + "$"
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
+      this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+        console.error('Error rendering MathJax:', error);
+      });
+    }
+
+    return true;
+  }
+
+  updateHintLatex() {
+    if (this.answersForm.get('hintLatex')?.value) {
+      this.defHintString = this.answersForm.get('hint')?.value;//izbrisan  + "$"
       this.mathJaxService.render(this.el.nativeElement).catch((error) => {
         console.error('Error rendering MathJax:', error);
       });

@@ -24,6 +24,7 @@ export class RegistrationComponent implements OnInit {
   PredmetForm: FormGroup;
   csvRegistrationForm: FormGroup;
   SkolaForm: FormGroup;
+  editSkolaForm: FormGroup;
 
   odeljenja: Odeljenje[] | undefined;
   predmeti: Predmet[] | undefined;
@@ -38,6 +39,8 @@ export class RegistrationComponent implements OnInit {
 
   csvData: any;
 
+  editSkolaOpen: boolean = false;
+
   constructor(private userService: UserService,
      private formBuilder: FormBuilder,
      private zaduzenjaService: ZaduzenjaService,
@@ -48,20 +51,20 @@ export class RegistrationComponent implements OnInit {
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]],
       password: ['', Validators.required],
       role: [0, Validators.required],
-      odeljenje: ['', Validators.required],
+      odeljenje: [''],
       predmet: [''],
-      skola: [0, Validators.required]
+      skola: [0]
     });
 
     this.OdeljenjeForm = this.formBuilder.group({
       brojOdeljenja: ["", Validators.required],
-      razred: [0,[Validators.required, Validators.min(1), Validators.max(12)]],
+      razred: ['',[Validators.required, Validators.min(1), Validators.max(12)]],
       idSkole:[0, Validators.required]
     });
 
     this.PredmetForm = this.formBuilder.group({
       naziv: ['', Validators.required],
-      razred: [0, [Validators.required, Validators.min(1), Validators.max(12)]],
+      razred: ['', [Validators.required, Validators.min(1), Validators.max(12)]],
     });
 
     this.csvRegistrationForm = this.formBuilder.group({
@@ -70,6 +73,12 @@ export class RegistrationComponent implements OnInit {
     this.SkolaForm = this.formBuilder.group({
       naziv: ['', Validators.required],
       grad: ['', Validators.required],
+    });
+
+    this.editSkolaForm = this.formBuilder.group({
+      naziv: ['', Validators.required],
+      grad: ['', Validators.required],
+      id: [0]
     });
   }
   ngOnInit(): void {
@@ -120,7 +129,6 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm.get('roleId')?.valueChanges.subscribe(roleId => {
       const odeljenje = this.registrationForm.get('odeljenje');
       const predmet = this.registrationForm.get('predmet');
-      console.log(this.registrationForm.getRawValue())
       if (roleId === 3) {
         odeljenje?.setValidators([Validators.required]);
        } else if (roleId === '2') {
@@ -180,6 +188,9 @@ export class RegistrationComponent implements OnInit {
           this.OdeljenjeForm.reset(); 
           this.loadOdeljenja();
          }
+         else{
+          alert('Odeljenje već postoji!');
+         }
         },
       );
   }
@@ -194,6 +205,9 @@ export class RegistrationComponent implements OnInit {
           this.PredmetForm.reset(); 
           this.loadPredmeti();
         }
+        else{
+          alert('Predmet već postoji!');
+         }
         },
       );
   }
@@ -208,75 +222,79 @@ export class RegistrationComponent implements OnInit {
           this.SkolaForm.reset(); 
           this.loadSkole();
          }
+         else{
+          alert('Škola već postoji!');
+         }
         },
       );
   }
 
-  processCSV() {
+  async processCSV() {
     var success = 0;
     var failed = 0;
     var sum = 0;
     var badUserNames: any[] = [];
-
+  
     for (const row of this.csvData) {
       sum++;
       const newUser: UserDTO = {
         firstName: row['Ime'],
         lastName: row['Prezime'],
-        username: row['Username'],
+        username: row['Email'],
         password: '123',
         role: row['Role'],
         id: 0,
         action: 'addUser',
         idSkole: row['idSkole']
       };
-      this.userService.checkUsername(newUser.username).subscribe((res: boolean) => {
-        if(res)
-        {
-          this.userService.registerUser(newUser).subscribe(   
-            (userId: any) => {
-              if(userId != null){
-                if (newUser.role == 3) {
-                  var odeljenje = this.odeljenja?.find(x => x.brojOdeljenja == row['Odeljenje'] && x.razred == row['Razred'] && x.idSkole == row['idSkole']);
-                  if(odeljenje)
-                  {      
-                    this.zaduzenjaService.addOdeljenjeUcenik(userId, odeljenje.id).subscribe((res: boolean)=>{
-                      if(res)
-                      {
-                        success++;
-                      }
-                      else{
-                        failed++;
-                      }
-                    });
-                  }
+  
+      // Sačekaj odgovor iz checkUsername
+      const res = await this.userService.checkUsername(newUser.username).toPromise();
+      if (res) {
+        try {
+          // Sačekaj odgovor iz registerUser
+          const userId = await this.userService.registerUser(newUser).toPromise();
+          if (userId != null) {
+            if (newUser.role == 3) {
+              var odeljenje = this.odeljenja?.find(x => x.brojOdeljenja == row['Odeljenje'] && x.razred == row['Razred'] && x.idSkole == row['idSkole']);
+              if (odeljenje) {
+                // Sačekaj odgovor iz addOdeljenjeUcenik
+                const odeljenjeRes = await this.zaduzenjaService.addOdeljenjeUcenik(userId, odeljenje.id).toPromise();
+                if (odeljenjeRes) {
+                  success = success + 1;
+                } else {
+                  failed = failed + 1;
                 }
               }
-              else{
-                failed++;
-              }
+            } else {
+              success = success + 1;
             }
-          );
+          } else {
+            failed = failed + 1;
+          }
+        } catch (error) {
+          console.error("Greška prilikom registracije korisnika:", error);
+          failed = failed + 1;
         }
-        else{
-          failed++;
-          badUserNames.push(newUser.username);
-        }
-    });
-  } 
-
-    if(badUserNames.length > 0)
-    {
-        var text = "";
-        badUserNames.forEach(element => {
-          text = text + element + " ";
-        });
-        text = text + ";";
-        alert("Korisnici koji imaju nevalidnan username: " + text);
+      } else {
+        failed = failed + 1;
+        badUserNames.push(newUser.username);
+      }
     }
-      
-    alert("Od ukupno " + sum+ " uspešno dodato "+ success+ " korisnika, neuspešno dodato "+ failed + " korisnika.");
+  
+    // Prikaz rezultata nakon što se svi HTTP pozivi završe
+    if (badUserNames.length > 0) {
+      var text = "";
+      badUserNames.forEach(element => {
+        text = text + element + " ";
+      });
+      text = text + ";";
+      alert("Korisnici koji imaju nevalidan username: " + text);
+    }
+  
+    alert("Od ukupno " + sum + "učitanih podataka. Uspešno dodato: " + success + " korisnika, neuspešno dodato " + failed + " korisnika.");
   }
+  
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -298,6 +316,39 @@ export class RegistrationComponent implements OnInit {
   filterSubjects()
   {
     this.filteredPredmeti = this.filterRazred == ''? this.predmeti : this.predmeti?.filter(x => x.razred.toString() == this.filterRazred);
+  }
+
+  openEditSkola(skola: any){
+    this.editSkolaForm = this.formBuilder.group({
+      naziv: [skola.naziv, Validators.required],
+      grad: [skola.grad, Validators.required],
+      id: [skola.id]
+    });
+    this.editSkolaOpen = true;
+
+    
+  }
+
+  editSkola(){
+    const skola: SkolaDTO = this.editSkolaForm.value;
+
+    this.zaduzenjaService.editSkola(skola.naziv, skola.grad, skola.id).subscribe((response: boolean) =>
+      {
+        if(response){
+          alert('Podaci škole su izmenjeni uspešno!');
+          this.editSkolaForm.reset();
+          this.closeEditSkola();     
+          this.loadSkole();
+         }
+        else{
+          alert('Škola sa identicnim nazivom i gradom već postoji!');
+          this.editSkolaForm.reset();
+        }
+      });
+  }
+
+  closeEditSkola(){
+    this.editSkolaOpen = false;
   }
 }
 
