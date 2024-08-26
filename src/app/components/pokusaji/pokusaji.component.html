@@ -28,14 +28,14 @@
     <div class="modal-content">
       
       <div class="zadaci-section">
-        <div *ngFor="let zadatak of selectedPokusaj.pokusajiZadataka">
+        <div *ngFor="let pz of selectedPokusaj.pokusajiZadataka">
           <div class="zadatak">
-            <div class="zadaci-naziv"><b>Zadatak:</b> {{ zadatak.zadatak?.opis }}</div>
-          <div class="zadaci-level"><b>Nivo:</b> {{ getNivo(zadatak.zadatak?.nivo || 0) }}</div>
-          <p><b>Broj pokušaja zadatka:</b> {{ zadatak.brojPokusaja }}</p>
+            <div class="zadaci-naziv"><b>Zadatak:</b> {{ pz.zadatak?.opis }}</div>
+          <div class="zadaci-level"><b>Nivo:</b> {{ getNivo(pz.zadatak?.nivo) }}</div>
+          <p><b>Broj pokušaja zadatka:</b> {{ pz.brojPokusaja }}</p>
           <div>    
             <ul>
-              <li *ngFor="let odgovor of zadatak.pokusajiZadatakOdgovor" [ngClass]="getOdgovorClass(odgovor.odgovor?.tacnost)">
+              <li *ngFor="let odgovor of pz.pokusajiZadatakOdgovor" [ngClass]="getOdgovorClass(odgovor.odgovor?.tacnost)">
                 {{getTacnost(odgovor.odgovor?.tacnost) }} - ({{ odgovor.vreme }}s)
                 
               </li>

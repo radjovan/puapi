@@ -36,6 +36,10 @@ export class UserService {
     return this.http.get<Object>(this.url + "user.php?action=changePassword&username="+username+"&password="+newPassword);
   }  
 
+  deleteUser(id: number): Observable<boolean>{
+    return this.http.delete<boolean>(this.url + "user.php?action=deleteUser&id=" + id);
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
   }
@@ -99,6 +103,11 @@ export class UserService {
   getUcenici(): Observable<Object>{
     return this.http.get<Object>(this.url + "user.php?action=getUsersByRole&roleId=3");
   }
+
+  getUceniciByProfesorId(id: number): Observable<Object>{
+    return this.http.get<Object>(this.url + "user.php?action=getUceniciByProfesorId&id="+ id);
+  }
+
 
   getAllUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.url + "user.php?action=getUsers");

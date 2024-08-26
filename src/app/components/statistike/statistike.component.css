@@ -152,3 +152,17 @@ h1 {
   margin: 5px 0;
   color: #004AAD; /* Dark blue text */
 }
+
+
+.delete-button {
+  background-color: #FF914D;
+  color: #004AAD;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #FFA500;
+}

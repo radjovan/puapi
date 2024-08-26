@@ -24,6 +24,7 @@
   
     <!-- Attempt Details -->
     <div *ngIf="selectedVezba && showAttempts" class="attempt-details">
+      <button class="delete-button" (click)="allExcercises()">Nazad na Vežbe</button>
       <h2>Pokušaji za vezbu: {{ selectedVezba.naziv }}</h2>
       <div class="filter-container">
         <label for="classFilter">Prikaži pokušaje za odeljenje:</label>
@@ -49,9 +50,7 @@
             <p>Škola: {{ucenik.odeljenje?.skola?.naziv}}</p>
             <p>Odeljenje: {{ ucenik.odeljenje?.razred + "/" + ucenik.odeljenje?.brojOdeljenja }}</p>
             <p>Ime i Prezime: {{ ucenik.firstName + " " + ucenik.lastName }}</p>
-          </div>
-      </div>
-
+            
       <!-- Attempts -->
       <div class="attempt-list">
         <div *ngFor="let pokusaj of filteredPokusaji" class="attempt-item" (click)="selectAttempt(pokusaj)">
@@ -86,6 +85,9 @@
             </div>
           </div>
       </div>
+          </div>
+      </div>
+
     </div>
   </div>
   

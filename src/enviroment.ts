@@ -9,3 +9,4 @@ export const tacnostOdgovora = {
     wrong: 3,
     wrong2: 4
 }
+

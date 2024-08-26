@@ -111,6 +111,18 @@ export class UsersComponent implements OnInit{
       });
   }
 
+  deleteUser(user: User){
+    this.userService.deleteUser(user.id).subscribe((response: boolean) =>
+      {
+        if(response){
+          alert('Korisnik: '+ user.username +' je uspešno obrisan!');   
+          this.loadUsers();
+        }
+        else{
+          alert('Problem sa brisanjem korisnika: '+ user.username +'!');
+        }
+      });
+  }
 
   closeEdit() {
     this.editOpen = false;

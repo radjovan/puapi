@@ -137,10 +137,13 @@ export class StatistikeComponent implements OnInit {
   filterAttempts() {
     if (this.selectedOdeljenjeId) {
       this.zaduzenjeService.getUceniciByOdeljenjeId(this.selectedOdeljenjeId).subscribe((ucenici: User[]) => {
-        ucenici.forEach(element => {
-          element.odeljenje = this.filteredOdeljenja.find(x => x.id == this.selectedOdeljenjeId);
+        ucenici.forEach(u => {
+          if(this.selectedVezba?.pokusaji?.findIndex(x => x.idUcenika == u.id) != -1)
+          {
+            u.odeljenje = this.filteredOdeljenja.find(x => x.id == this.selectedOdeljenjeId);
+            this.filteredUcenici.push(u);
+          }
         });
-        this.filteredUcenici = ucenici;
       });
     }
   }
@@ -187,7 +190,13 @@ export class StatistikeComponent implements OnInit {
   }
 
   filterExercises() {
-    this.filteredVezbe = this.vezbe.filter(x => x.idPredmeta == this.selectedSubject);  
+    if (this.selectedSubject == 0)
+    {
+      this.filteredVezbe = this.vezbe;
+    }
+    else{
+      this.filteredVezbe = this.vezbe.filter(x => x.idPredmeta == this.selectedSubject);  
+    }
   }
 
   goBack() {
@@ -198,13 +207,13 @@ export class StatistikeComponent implements OnInit {
     this.selectedPokusaj = null;
   }
 
-  etNivo(nivo: number): string {
+  etNivo(nivo: any): string {
     switch (nivo) {
-      case 1:
+      case "1":
         return 'osnovni-nivo';
-      case 2:
+      case "2":
         return 'srednji-nivo';
-      case 3:
+      case "3":
         return 'napredni-nivo';
       default:
         return '';
@@ -237,5 +246,9 @@ export class StatistikeComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  allExcercises(){
+    this.selectedVezba = null;
   }
 }

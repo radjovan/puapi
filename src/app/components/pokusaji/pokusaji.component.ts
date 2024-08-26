@@ -45,11 +45,11 @@ export class PokusajiComponent implements OnInit {
                     this.predmeti.push(p);   
                 }
             }
-          })
+          });
+          this.pokusaji = pokusaji;
+          this.filteredPokusaji = pokusaji;
         });
       });
-      this.pokusaji = pokusaji;
-      this.filteredPokusaji = pokusaji;
     });
   }
 
@@ -85,27 +85,27 @@ export class PokusajiComponent implements OnInit {
     this.selectedPokusaj = null;
   }
 
-  getNivo(nivo: number): string {
+  getNivo(nivo: any): string {
     switch (nivo) {
-      case 1:
+      case "1":
         return 'Osnovni';
-      case 2:
+      case "2":
         return 'Srednji';
-      case 3:
+      case "3":
         return 'Napredni';
       default:
         return '';
     }
   }
 
-  getTacnost(tacnost: number|undefined) {
+  getTacnost(tacnost: any) {
     switch (tacnost) {
-      case 1:
+      case "1":
         return 'Tačan odgovor';
-      case 2:
+      case "2":
         return 'Približan odgovor';
-      case 3:
-      case 4:
+      case "3":
+      case "4":
         return 'Netačan odgovor';
       default:
         return '';
@@ -114,12 +114,12 @@ export class PokusajiComponent implements OnInit {
 
   getOdgovorClass(tacnost: any): string {
     switch (tacnost) {
-      case 1:
+      case "1":
         return 'tacan';
-      case 2:
+      case "2":
         return 'delimicno';
-      case 3:
-      case 4:
+      case "3":
+      case "4":
         return 'netacan';
       default:
         return '';

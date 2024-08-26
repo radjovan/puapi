@@ -84,4 +84,8 @@ export class ZaduzenjaService {
   editSkola(naziv: string, grad: string, id: any): Observable<boolean>{
      return this.http.get<boolean>(this.url + "zaduzenja.php?action=editSkola&naziv=" + naziv + "&grad=" + grad + "&id=" + id);
   }
+
+  getOdeljenjaByProfesorId(id: number): Observable<Odeljenje[]>{
+    return this.http.get<Odeljenje[]>(this.url + "zaduzenja.php?action=getOdeljenjaByProfesorId&id=" + id);
+  }
 }

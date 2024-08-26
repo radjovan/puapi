@@ -32,6 +32,8 @@ export class MojeVezbeComponent implements OnInit {
   showZadatkeForm: boolean = false;
   noviZadatakId: number | null = null;
   selectedSkolaId: number | null = null;
+  UcenikSelectedSkolaId: number | null = null;
+  UcenikSelectedOdeljenjeId: number | null = null;
 
   constructor(private vezbaService: VezbaService,
      private userService: UserService,
@@ -50,10 +52,9 @@ export class MojeVezbeComponent implements OnInit {
         this.vezbaService.getOdeljenjaByVezbaId(vezba.id).subscribe((res: Odeljenje[]) =>{
         
           this.zaduzenjeService.getSkole().subscribe(
-            (response: any) => {
-              this.skole = response;
+            (skole: SkolaDTO[]) => {
               res.forEach(o => {
-                o.skola = this.skole.find(x => x.id === o.idSkole) ?? { naziv: "", id: 0, grad: "", action: "" };
+                o.skola = skole.find(x => x.id === o.idSkole) ?? { naziv: "", id: 0, grad: "", action: "" };
               });
     
               vezba.odeljenja = res;
@@ -75,14 +76,27 @@ export class MojeVezbeComponent implements OnInit {
   }
 
   ucitajOdeljenja() {
-    this.zaduzenjeService.getOdeljenja().subscribe((odeljenja: Odeljenje[]) => {
+    this.zaduzenjeService.getOdeljenjaByProfesorId(this.userService.getCurrentUserId()).subscribe((odeljenja: Odeljenje[]) => {
       this.odeljenja = odeljenja;
       this.zaduzenjeService.getSkole().subscribe(
-        (response: any) => {
-          this.skole = response;
-          this.odeljenja.forEach(o => {
-            o.skola = this.skole.find(x => x.id === o.idSkole) ?? { naziv: "", id: 0, grad: "", action: "" };
+        (skole: SkolaDTO[]) => {
+          this.odeljenja.forEach(o => { 
+            this.zaduzenjeService.getUceniciByOdeljenjeId(o.id).subscribe((ucenici: User[])=>{
+              o.ucenici = ucenici;
+              var sk = skole.find(x => x.id === o.idSkole);
+            if(sk)
+            {
+              o.skola = sk;
+
+              if(this.skole.findIndex(x => x.id == o.skola.id) == -1)
+              {
+                this.skole.push(sk);
+              }
+            }
+            });  
+
           });
+
         }
       );
     });
@@ -95,11 +109,12 @@ export class MojeVezbeComponent implements OnInit {
   }
 
   filtriraniUcenici() {
-    return this.ucenici.filter(ucenik =>
-      (ucenik.firstName + ' ' + ucenik.lastName).toLowerCase().includes(this.ucenikPretraga.toLowerCase())
-    );
+    return this.odeljenja.find(x => x.id == this.UcenikSelectedOdeljenjeId)?.ucenici;
   }
 
+  filtriranaOdeljenja() {
+    return this.odeljenja.filter(x => x.idSkole == this.UcenikSelectedSkolaId);
+  }
   dodeliVezbuOdeljenju() {
     if (this.selectedVezbaId && this.selectedOdeljenjeId) {
       this.vezbaService.addVezbaOdeljenje(this.selectedOdeljenjeId, this.selectedVezbaId).subscribe((success: boolean) => {
@@ -123,6 +138,8 @@ export class MojeVezbeComponent implements OnInit {
           this.ucitajVezbe();
           this.selectedUcenikId = null;
           this.selectedVezbaId = null;
+          this.UcenikSelectedOdeljenjeId = null;
+          this.UcenikSelectedSkolaId = null;
           //this.zatvoriForme();
         }
       });
@@ -201,9 +218,11 @@ export class MojeVezbeComponent implements OnInit {
     this.showOdeljenjeForm = false;
     this.showUcenikForm = false;
     this.showZadatkeForm = false;
+    this.ucitajVezbe();
   }
 
   filter(){
     this.filterOdeljenja = this.odeljenja?.filter(x => x.idSkole == this.selectedSkolaId);
+    this.UcenikSelectedOdeljenjeId = null;
   }
 }

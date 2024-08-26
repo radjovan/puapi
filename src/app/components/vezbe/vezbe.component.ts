@@ -150,13 +150,13 @@ private el: ElementRef,
     }
   }
 
-  getZadatakClass(nivo: number): string {
+  getZadatakClass(nivo: any): string {
     switch (nivo) {
-      case 1:
+      case "1":
         return 'osnovni-nivo';
-      case 2:
+      case "2":
         return 'srednji-nivo';
-      case 3:
+      case "3":
         return 'napredni-nivo';
       default:
         return '';

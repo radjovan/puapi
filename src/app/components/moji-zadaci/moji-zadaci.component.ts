@@ -123,10 +123,14 @@ export class MojiZadaciComponent implements OnInit {
   updateTask() {
     if(this.selectedTask)
     {
-      this.zadatakService.updateZadatak(this.selectedTask).subscribe( (res: boolean) => {
-        this.showEditDialog = false;
-      }
-      );
+      this.zadatakService.updateZadatak(this.selectedTask).subscribe();
+      this.zadatakService.updateDefinition(this.selectedTask?.definicija).subscribe();
+      this.zadatakService.updateHint(this.selectedTask?.hint).subscribe();    
+      this.selectedTask.odgovori.forEach(odgovor => {
+        this.zadatakService.updateOdgovor(odgovor).subscribe();    
+      });
+      this.showEditDialog = false;
+      this.loadTasks();
     }
   }
 

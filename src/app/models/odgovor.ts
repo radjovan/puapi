@@ -4,5 +4,6 @@ export interface Odgovor {
     tekst: string;
     idZadatka: number;
     tacnost: number;
+    action?: string;
 }
   

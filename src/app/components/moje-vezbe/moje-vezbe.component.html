@@ -36,16 +36,23 @@
         <div class="modal-content">
           <span class="close" (click)="zatvoriForme()">&times;</span>
           <h2>Dodeli vežbu učeniku</h2>
-          <label for="ucenici">Izaberite učenika:</label>
-         <!-- <input type="text" placeholder="Pretraga učenika" [(ngModel)]="ucenikPretraga">-->
-          <select [(ngModel)]="selectedUcenikId" id="ucenici">
+          <label for="skola">Škola</label><br>
+          <select id="idSkole" [(ngModel)]="UcenikSelectedSkolaId" (change)="filter()" required>
+            <option *ngFor="let s of skole" [value]="s.id">{{ s.naziv }}</option>
+          </select>
+          <label *ngIf="UcenikSelectedSkolaId" for="idOdeljenja">Izaberite odeljenje:</label>
+          <select *ngIf="UcenikSelectedSkolaId" [(ngModel)]="UcenikSelectedOdeljenjeId" id="idOdeljenja">
+            <option *ngFor="let odeljenje of filtriranaOdeljenja()" [value]="odeljenje.id">{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}</option>
+          </select>
+          <label *ngIf="UcenikSelectedOdeljenjeId"  for="ucenici">Izaberite učenika:</label>
+          <select *ngIf="UcenikSelectedOdeljenjeId" [(ngModel)]="selectedUcenikId" id="ucenici">
             <option *ngFor="let ucenik of filtriraniUcenici()" [value]="ucenik.id">{{ ucenik.firstName + " " + ucenik.lastName }}</option>
           </select>
           <button (click)="dodeliVezbuUceniku()">Dodeli</button>
           
-          <h3>Učenici kojima je vežba dodeljena:</h3>
+          <h2>Učenici kojima je vežba dodeljena:</h2>
           <ul>
-            <li *ngFor="let ucenik of vezba.ucenici">{{ ucenik.firstName }} {{ ucenik.lastName }}</li>
+            <li *ngFor="let ucenik of vezba.ucenici"><label>{{ ucenik.firstName }} {{ ucenik.lastName }} ({{ ucenik.username }})</label></li>
           </ul>
         </div>
       </div>
@@ -65,9 +72,9 @@
           </select>
           <button (click)="dodeliVezbuOdeljenju()">Dodeli</button>
       
-          <h3>Odeljenja(Škola) kojima je vežba dodeljena:</h3>
+          <h2>Odeljenja(Škola) kojima je vežba dodeljena:</h2>
           <ul>
-            <li *ngFor="let odeljenje of vezba.odeljenja">{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}  ({{ odeljenje.skola.naziv }})</li>
+            <li *ngFor="let odeljenje of vezba.odeljenja"><label>{{ odeljenje.razred }}/{{ odeljenje.brojOdeljenja }}  ({{ odeljenje.skola.naziv }})</label></li>
           </ul>
         </div>
       </div>
