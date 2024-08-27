@@ -121,13 +121,27 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     this.zadatakPoRedu = 1;
     this.exerciseStarted = true;
     this.startTime = Date.now();
-    this.zadatakStartTime = Date.now();
+    this.setFirstZadatak();
     this.timer = setInterval(() => {
       this.elapsedTime = Math.floor((Date.now() - this.startTime) / 1000);
       this.minutes = Math.floor(this.elapsedTime / 60);
       this.seconds = this.elapsedTime % 60;
     }, 1000);
     
+  }
+
+  
+  resetExercise(): void {
+    this.exerciseStarted = false;
+    this.showResults = false;
+    this.elapsedTime = 0;
+    this.minutes = 0;
+    this.seconds = 0;
+    this.zadatakPoRedu = 0;
+    this.zadatakStartTime = 0;
+    this.pokusaj = null;
+
+    this.setFirstZadatak();
   }
 
   odgovoriNaZadatak(zadatak: Zadatak, odgovor: Odgovor): void {
@@ -182,8 +196,12 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
 
       pokusajZadatak.uspesnoUradjen = 1;
       this.pokusaj.brojTacnihOdgovora++;
-      this.brojTacnihZaNivo++;
-      this.brojNetacnihZaNivo = 0;
+      
+      if(prviOdgovor)
+      {
+        this.brojTacnihZaNivo++;
+        this.brojNetacnihZaNivo = 0;
+      }
       this.nextZadatak();
 
     } else if (odgovor.tacnost == 2) {
@@ -215,13 +233,10 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     }
 
     this.pokusaj.brojUradjenihZadataka = this.pokusaj.pokusajiZadataka.filter(pz => pz.uspesnoUradjen === 1).length;
-    //this.pokusaj.brojNeuradjenihZadataka = this.vezba?.zadaci.length ? this.vezba?.zadaci.length: 0 - this.pokusaj.brojUradjenihZadataka;
   }
 
   nextZadatak(): void {
-
     var kraj = false;
-    let zadaciZaNivo = this.getZadaciZaTrenutniNivo();
     this.zadatakPoRedu++;
 
     if (this.brojTacnihZaNivo >= 3) {
@@ -233,26 +248,30 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       this.brojNetacnihZaNivo = 0;
     }
 
+    let zadaciZaNivo = this.getZadaciZaTrenutniNivo();
+
     if (this.selectedNivo == 1) {
       if (this.currentZadatakIndexOsnovni < zadaciZaNivo.length - 1) {
-        this.currentZadatakIndexOsnovni++;
         this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexOsnovni].id);
+        this.currentZadatakIndexOsnovni++;//sledeci koji se radi za ovaj nivo
       } else {
         kraj = true;
         this.endExercise();
       }
-    } else if (this.selectedNivo == 2) {
+    } 
+    else if (this.selectedNivo == 2) {
       if (this.currentZadatakIndexSrednji < zadaciZaNivo.length - 1) {
-        this.currentZadatakIndexSrednji++;
         this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexSrednji].id);
+        this.currentZadatakIndexSrednji++;//sledeci koji se radi za ovaj nivo
       } else {
         kraj = true;
         this.endExercise();
       }
-    } else if (this.selectedNivo == 3) {
+    } 
+    else if (this.selectedNivo == 3) {
       if (this.currentZadatakIndexNapredni < zadaciZaNivo.length - 1) {
-        this.currentZadatakIndexNapredni++;
         this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexNapredni].id);
+        this.currentZadatakIndexNapredni++;//sledeci koji se radi za ovaj nivo
       } else {
         kraj = true;
         this.endExercise();
@@ -274,9 +293,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getZadatakIndexById(id: number): number {
+  getZadatakIndexById(id: number): any {
     var index = this.vezba?.zadaci.findIndex(z => z.id == id);
-    return index? index: -1;
+    return index;
   }
 
   endExercise(): void {
@@ -307,20 +326,81 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     }
   }
 
-  resetExercise(): void {
-    this.exerciseStarted = false;
-    this.showResults = false;
-    this.currentZadatakIndex = 0;
-    this.elapsedTime = 0;
-    this.minutes = 0;
-    this.seconds = 0;
-    this.zadatakPoRedu = 0;
-    this.zadatakStartTime = 0;
-    this.pokusaj = null;
+  setFirstZadatak(){
+    var kraj = false;
+    let zadaciZaNivo = this.getZadaciZaTrenutniNivo();
+
+    if (this.selectedNivo == 1) {
+      console.log(this.currentZadatakIndexOsnovni);
+      if (this.currentZadatakIndexOsnovni < zadaciZaNivo.length) {
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexOsnovni].id);
+        this.currentZadatakIndexOsnovni++;//sledeci koji se radi za ovaj nivo
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    } else if (this.selectedNivo == 2) {
+      if (this.currentZadatakIndexSrednji < zadaciZaNivo.length) {
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexSrednji].id);
+        this.currentZadatakIndexSrednji++;//sledeci koji se radi za ovaj nivo
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    } else if (this.selectedNivo == 3) {
+      if (this.currentZadatakIndexNapredni < zadaciZaNivo.length) {
+        this.currentZadatakIndex = this.getZadatakIndexById(zadaciZaNivo[this.currentZadatakIndexNapredni].id);
+        this.currentZadatakIndexNapredni++;//sledeci koji se radi za ovaj nivo
+
+      } else {
+        kraj = true;
+        this.endExercise();
+      }
+    }
+    if(!kraj)
+    {
+      this.zadatakStartTime = Date.now();
+    }
   }
+  
+  podigniNivo(): void {
+    if (this.selectedNivo < 3) {
+      this.selectedNivo++;
+    }
+  }
+
+  spustiNivo(): void {
+    if (this.selectedNivo > 1) {
+      this.selectedNivo--;
+    }
+  }
+
+  izmesajOdgovore(odgovori: Odgovor[]){
+    let currentIndex = odgovori.length, randomIndex;
+
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [odgovori[currentIndex], odgovori[randomIndex]] = [odgovori[randomIndex], odgovori[currentIndex]];
+    }
+
+    return odgovori;
+  }
+
+  renderLatex(arg0: string) {
+    this.mathString = arg0;
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+    return this.mathString;
+  }
+
   goBack(): void{
     this.router.navigate(['/vezbanja']);
   }
+
+  /*
   preskociZadatak(id: any): void{
     if(this.pokusaj)
     {
@@ -345,37 +425,5 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
       this.endExercise();
     }
   }
-
-  izmesajOdgovore(odgovori: Odgovor[]){
-    let currentIndex = odgovori.length, randomIndex;
-
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [odgovori[currentIndex], odgovori[randomIndex]] = [odgovori[randomIndex], odgovori[currentIndex]];
-    }
-
-    return odgovori;
-  }
-
-  renderLatex(arg0: string) {
-    this.mathString = arg0;//izbrisan $$
-    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
-      console.error('Error rendering MathJax:', error);
-    });
-    return this.mathString;
-  }
-
-  podigniNivo(): void {
-    if (this.selectedNivo < 3) {
-      this.selectedNivo++;
-    }
-  }
-
-  spustiNivo(): void {
-    if (this.selectedNivo > 1) {
-      this.selectedNivo--;
-    }
-  }
+  */
 }

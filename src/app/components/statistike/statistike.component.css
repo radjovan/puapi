@@ -166,3 +166,30 @@ h1 {
 .delete-button:hover {
   background-color: #FFA500;
 }
+
+.tacan {
+  background-color: #b7e1cd; /* Light green */
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.delimicno {
+  background-color: #fff3cd; /* Light yellow */
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.netacan {
+  background-color: #e9abab; /* Light blue */
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}

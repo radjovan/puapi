@@ -223,6 +223,12 @@ export class MojeVezbeComponent implements OnInit {
 
   filter(){
     this.filterOdeljenja = this.odeljenja?.filter(x => x.idSkole == this.selectedSkolaId);
+    var vezba = this.vezbe.find(x => x.id == this.selectedVezbaId);
+    if(vezba?.odeljenja)
+    {
+      var odeljenja = vezba.odeljenja;
+      this.filterOdeljenja = this.filterOdeljenja?.filter(x => odeljenja.findIndex(v => v.id == x.id) == -1);
+    }
     this.UcenikSelectedOdeljenjeId = null;
   }
 }

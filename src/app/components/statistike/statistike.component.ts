@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { VezbaService } from '../../services/vezba-service/vezba.service';
 import { UserService } from '../../services/user-service/user.service';
 import { ZadatakService } from '../../services/zadatak-service/zadatak.service';
@@ -11,6 +11,7 @@ import { Predmet } from '../../models/predmet';
 import { Zadatak } from '../../models/zadatak';
 import { Pokusaj } from '../../models/pokusaj';
 import { Odgovor } from '../../models/odgovor';
+import { MathJaxService } from '../../services/math-jax/math-jax.service';
 
 @Component({
   selector: 'app-statistike',
@@ -43,7 +44,9 @@ export class StatistikeComponent implements OnInit {
     private vezbaService: VezbaService,
     private userService: UserService,
     private zaduzenjeService: ZaduzenjaService,
-    private zadaciService: ZadatakService
+    private zadaciService: ZadatakService,
+    private el: ElementRef,
+    private mathJaxService: MathJaxService
   ) {}
 
   ngOnInit() {
@@ -134,6 +137,12 @@ export class StatistikeComponent implements OnInit {
     this.selectedPokusaj = t;
   }
 
+  render(){
+    this.mathJaxService.render(this.el.nativeElement).catch((error) => {
+      console.error('Error rendering MathJax:', error);
+    });
+  }
+
   filterAttempts() {
     if (this.selectedOdeljenjeId) {
       this.zaduzenjeService.getUceniciByOdeljenjeId(this.selectedOdeljenjeId).subscribe((ucenici: User[]) => {
@@ -205,9 +214,12 @@ export class StatistikeComponent implements OnInit {
     this.selectedVezba = null;
     this.selectedOdeljenjeId = 0;
     this.selectedPokusaj = null;
+    this.filteredPokusaji = [];
+    this.filteredUcenici = [];
+    this.filteredOdeljenja = [];
   }
 
-  etNivo(nivo: any): string {
+  getNivo(nivo: any): string {
     switch (nivo) {
       case "1":
         return 'osnovni-nivo';
@@ -220,14 +232,14 @@ export class StatistikeComponent implements OnInit {
     }
   }
 
-  getTacnost(tacnost: number|undefined) {
+  getTacnost(tacnost: any) {
     switch (tacnost) {
-      case 1:
+      case "1":
         return 'Tačan odgovor';
-      case 2:
+      case "2":
         return 'Približan odgovor';
-      case 3:
-      case 4:
+      case "3":
+      case "4":
         return 'Netačan odgovor';
       default:
         return '';
@@ -235,13 +247,14 @@ export class StatistikeComponent implements OnInit {
   }
 
   getOdgovorClass(tacnost: any): string {
+    this.render();
     switch (tacnost) {
-      case 1:
+      case "1":
         return 'tacan';
-      case 2:
+      case "2":
         return 'delimicno';
-      case 3:
-      case 4:
+      case "3":
+      case "4":
         return 'netacan';
       default:
         return '';
