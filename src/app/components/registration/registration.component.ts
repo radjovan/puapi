@@ -350,5 +350,15 @@ export class RegistrationComponent implements OnInit {
   closeEditSkola(){
     this.editSkolaOpen = false;
   }
+
+  isAdmin(){
+    return this.userService.isAdmin();
+  }
+  isUcenik(){
+    return this.userService.isUcenik();
+  }
+  isProfesor(){
+    return this.userService.isProfesor();
+  }
 }
 

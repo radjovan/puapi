@@ -2,7 +2,15 @@
 <div class="registration">
   <h1>Kontrolna strana</h1>
   
-  <div class="nav-bar">
+  <div class="nav-bar" *ngIf="isProfesor()">
+    <button (click)="showForm('registration')">Registracija korisnika</button>
+    <button (click)="showForm('csv-registration')">Učitavanje korisnika iz CSV</button>
+    <button (click)="showForm('odeljenje')">Upravljanje Odeljenjima</button>
+    <button (click)="showForm('predmet')">Upravljanje Predmetima</button>
+    <button (click)="showForm('skola')">Upravljanje Školama</button>
+  </div>
+
+  <div class="nav-bar" *ngIf="isAdmin()">
     <button (click)="showForm('registration')">Registracija korisnika</button>
     <button (click)="showForm('csv-registration')">Učitavanje korisnika iz CSV</button>
     <button (click)="showForm('odeljenje')">Upravljanje Odeljenjima</button>
