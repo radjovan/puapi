@@ -31,19 +31,21 @@ export class VezbeComponent implements OnInit {
   showImageModal = false;
   showZadatakModal = false;
   selectedZadatak: Zadatak | null = null;
-
+  currentUserId: number = 0;
   predmetId: string | null = null;
+
+  onlyMyZadaci = false;
 
   @Input() mathString!: string;
   
   constructor(private fb: FormBuilder,
-     private zadaciService: ZadatakService,
-      private vezbaService: VezbaService,
+    private zadaciService: ZadatakService,
+    private vezbaService: VezbaService,
     private userService: UserService,
-  private router: Router,
-private fileService: FileService,
-private el: ElementRef,
-     private mathJaxService: MathJaxService) {
+    private router: Router,
+    private fileService: FileService,
+    private el: ElementRef,
+    private mathJaxService: MathJaxService) {
     this.vezbaForm = this.fb.group({
       idPredmeta: [0, Validators.required],
       naziv: ['', Validators.required],
@@ -53,7 +55,8 @@ private el: ElementRef,
   }
 
   ngOnInit(): void {
-    this.zadaciService.getPredmetiByProfesorId(this.userService.getCurrentUserId()).subscribe((res: Predmet[])=>{
+    this.currentUserId = this.userService.getCurrentUserId();
+    this.zadaciService.getPredmetiByProfesorId(this.currentUserId).subscribe((res: Predmet[])=>{
       this.predmeti = res;
     });
     this.vezbaForm.get('idPredmeta')?.valueChanges.subscribe(value => {
@@ -76,16 +79,16 @@ private el: ElementRef,
                 element.odgovori = res;
               })
             });
-            this.ucitaniZadaci = this.filteredZadaci = res;
+            this.ucitaniZadaci = this.filteredZadaci = res.sort((a, b) => a.nivo - b.nivo);
           }
         }
       );});
 
       this.vezbaForm.get('selectedNivo')?.valueChanges.subscribe(value => {
         if (value == 0) {
-          this.filteredZadaci = this.ucitaniZadaci;
+          this.filteredZadaci = this.ucitaniZadaci.sort((a, b) => a.nivo - b.nivo);
         } else {
-          this.filteredZadaci = this.ucitaniZadaci.filter(z => z.nivo == value);
+          this.filteredZadaci = this.ucitaniZadaci.filter(z => z.nivo == value).sort((a, b) => a.nivo - b.nivo);
         }
       });
   }
@@ -169,5 +172,9 @@ private el: ElementRef,
       console.error('Error rendering MathJax:', error);
     });
     return this.mathString;
+  }
+  
+  showMyZadaci(){
+    this.onlyMyZadaci = !this.onlyMyZadaci;
   }
 }

@@ -124,4 +124,8 @@ export class UserService {
   getUceniciByOdeljenjeId(idOdeljenja: any): Observable<User[]> {
     return this.http.get<User[]>(this.url + "user.php?action=getUceniciByOdeljenjeId&id="+idOdeljenja);
   }
+
+  startNewSeason(): Observable<boolean> {
+    return this.http.get<boolean>(this.url + "user.php?action=startNewSeason");
+  }
 }

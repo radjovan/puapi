@@ -65,13 +65,11 @@
               <label for="hint">Pomoć za približno tačan odgovor:</label>
               <textarea id="hint" [(ngModel)]="selectedTask.hint.tekst" name="hint"></textarea>
 
-              <!--
               <label for="definicija">Definicija:</label>
               <textarea id="definicija" [(ngModel)]="selectedTask.definicija.tekst" name="definicija"></textarea>
-              -->
 
               <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
-                  <label [for]="'odgovor' + i">{{odgovor.tacnost === 1? "Tačan odgovor": odgovor.tacnost === 2? "Približno tačan odgovor" : "Netačan odgovor"}}:</label>
+                  <label [for]="'odgovor' + i">{{odgovor.tacnost == 1? "Tačan odgovor": odgovor.tacnost == 2? "Približno tačan odgovor" : "Netačan odgovor"}}:</label>
                   <textarea id="'odgovor' + i" [(ngModel)]="odgovor.tekst" [name]="'odgovor' + i"></textarea>
               </div>
 

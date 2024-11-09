@@ -10,6 +10,7 @@ import { Slika } from '../../models/slika';
 import { Definition } from '../../models/definition';
 import { Hint } from '../../models/hint';
 import { Odgovor } from '../../models/odgovor';
+import { Tema } from '../../models/tema';
 
 @Injectable({
   providedIn: 'root'
@@ -117,4 +118,11 @@ export class ZadatakService {
     return this.http.get<Odgovor>(this.url + "zadatak.php?action=dajOdgovorPoId&id="+taskId);
   }
 
+  getTemeByPredmetId(idPredmeta: number): Observable<Tema[]>{
+    return this.http.get<Tema[]>(this.url + "zadatak.php?action=getTemeByPredmetId&id=" + idPredmeta);
+  }
+
+  addTema(naziv: string, idPredmeta: number): Observable<Tema>{
+    return this.http.get<Tema>(this.url + "zadatak.php?action=addTema&idPredmeta=" + idPredmeta + "&naziv=" + naziv);
+  }
 }

@@ -21,6 +21,7 @@ import { StatistikeComponent } from './components/statistike/statistike.componen
 import { MojaZaduzenjaComponent } from './components/moja-zaduzenja/moja-zaduzenja.component';
 import { UsersComponent } from './components/users/users.component';
 import { AdminGuard } from './services/guards/admin.guard';
+import { UserAdminGuard } from './services/guards/user-admin.guard.spec';
 
 
 const routes: Routes = [
@@ -28,7 +29,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
   { path: 'profile', component: ProfileComponent, canActivate: [() => inject(AuthGuard).canActivate()]},
   { path: 'settings', component: SettingsComponent },
-  { path: 'registration', component: RegistrationComponent, canActivate: [() => inject(AdminGuard).canActivate()]},
+  { path: 'registration', component: RegistrationComponent, canActivate: [() => inject(UserAdminGuard).canActivate()]},
   { path: 'users', component: UsersComponent, canActivate: [() => inject(AdminGuard).canActivate()]},
   { path: 'zaduzenja', component: ZaduzenjaComponent, canActivate: [() => inject(AdminGuard).canActivate()]},
   { path: 'zadaci', component: ZadaciComponent, canActivate: [() => inject(ProfesorGuard).canActivate()]},

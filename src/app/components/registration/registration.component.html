@@ -7,7 +7,7 @@
     <button (click)="showForm('csv-registration')">Učitavanje korisnika iz CSV</button>
     <button (click)="showForm('odeljenje')">Upravljanje Odeljenjima</button>
     <button (click)="showForm('predmet')">Upravljanje Predmetima</button>
-    <button (click)="showForm('skola')">Upravljanje Školama</button>
+   <!-- <button (click)="showForm('skola')">Upravljanje Školama</button> --> 
   </div>
 
   <div class="nav-bar" *ngIf="isAdmin()">
@@ -108,18 +108,41 @@
                 <tr>
                   <th>Naziv</th>
                   <th>Razred</th>
+                  <th>Teme</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let predmet of filteredPredmeti">
                   <td>{{ predmet.naziv }}</td>
                   <td>{{ predmet.razred }}</td>
+                  <td>
+                    <button class="delete-button" (click)="openTeme(predmet)">Teme</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+
+                          <!-- Modal for displaying and adding topics -->
+<div class="modal-overlay-tema" *ngIf="isTemaModalOpen">
+  <div class="modal-tema">
+    <h2>Teme za predmet: {{ selectedPredmet?.naziv }}</h2>
+    
+    <!-- List of existing topics -->
+    <ul>
+      <li *ngFor="let tema of selectedPredmet?.teme">{{ tema.naziv }}</li>
+    </ul>
+    
+    <!-- Field to add a new topic -->
+    <label for="novaTema">Dodaj novu temu:</label>
+    <input type="text" id="novaTema" [(ngModel)]="novaTemaNaziv" placeholder="Unesite naziv teme">
+    
+    <button class="delete-button" (click)="addTema(selectedPredmet.id)">Dodaj temu</button> <br>
+    <button class="delete-button" (click)="closeModal()">Zatvori</button>
+  </div>
+</div>
 
   <!-- Forma za dodavanje škole -->
   <div class="form-container" [ngClass]="{ 'active': activeForm === 'skola' }">

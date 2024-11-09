@@ -9,11 +9,12 @@ import { User } from '../../models/user';
 import { OdeljenjeDTO } from '../../models/DTOs/odeljenjeDTO';
 import { PredmetDTO } from '../../models/DTOs/predmetDTO';
 import { SkolaDTO } from '../../models/DTOs/skolaDTO';
+import { Tema } from '../../models/tema';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ZaduzenjaService {
+export class ZaduzenjaService {  
 
   url = environment.apiUrl + "Controllers/";
 

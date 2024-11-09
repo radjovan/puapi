@@ -46,7 +46,7 @@
           </select>
           <label *ngIf="UcenikSelectedOdeljenjeId"  for="ucenici">Izaberite učenika:</label>
           <select *ngIf="UcenikSelectedOdeljenjeId" [(ngModel)]="selectedUcenikId" id="ucenici">
-            <option *ngFor="let ucenik of filtriraniUcenici()" [value]="ucenik.id">{{ ucenik.firstName + " " + ucenik.lastName }}</option>
+            <option *ngFor="let ucenik of filtriraniUcenici(vezba)" [value]="ucenik.id">{{ ucenik.firstName + " " + ucenik.lastName }}</option>
           </select>
           <button (click)="dodeliVezbuUceniku()">Dodeli</button>
           
@@ -91,7 +91,7 @@
           <select [(ngModel)]="noviZadatakId" id="noviZadatak">
             <option *ngFor="let zadatak of vezba.predmet?.zadaci" [value]="zadatak.id">{{ zadatak.opis }}</option>
           </select>
-          <button (click)="dodajZadatak(vezba.id)">Dodaj</button>
+          <button (click)="dodajZadatak(vezba.id)">Dodaj zadatak</button>
 
         </div>
       </div>

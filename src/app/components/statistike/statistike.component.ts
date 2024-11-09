@@ -39,6 +39,8 @@ export class StatistikeComponent implements OnInit {
   filteredOdeljenja: Odeljenje[] = [];
   filteredPojedinacniUcenici: User[] = [];
   previewUcenikId: number = 0;
+  isAttemptSelected: boolean = false;
+  isUcenikSelected: boolean = false;
 
   constructor(
     private vezbaService: VezbaService,
@@ -52,7 +54,6 @@ export class StatistikeComponent implements OnInit {
   ngOnInit() {
     this.ucitajVezbe();
     this.ucitajOdeljenja();
-    this.ucitajUcenike();
     this.ucitajPredmete();
   }
 
@@ -117,10 +118,6 @@ export class StatistikeComponent implements OnInit {
     });
   }
 
-  ucitajUcenike() {
-
-  }
-
   ucitajPredmete() {
     this.zadaciService.getPredmetiByProfesorId(this.userService.getCurrentUserId()).subscribe((res: Predmet[]) => {
       this.predmeti = res;
@@ -132,9 +129,17 @@ export class StatistikeComponent implements OnInit {
       (ucenik.firstName + ' ' + ucenik.lastName).toLowerCase().includes(this.ucenikPretraga.toLowerCase())
     );
   }
-
+  
   selectAttempt(t: Pokusaj) {
-    this.selectedPokusaj = t;
+    if(!this.isAttemptSelected || this.selectedPokusaj?.id != t.id)
+    {
+      this.selectedPokusaj = t;
+      this.isAttemptSelected = true;
+    }
+    else{
+      this.selectedPokusaj = null;
+      this.isAttemptSelected = false;
+    }
   }
 
   render(){
@@ -194,8 +199,19 @@ export class StatistikeComponent implements OnInit {
   }
 
   selectUcenik(ucenik: User){
-    this.previewUcenikId = ucenik.id;
-    this.filteredPokusaji = this.selectedVezba?.pokusaji?.filter(x => x.idUcenika == ucenik.id) || [];
+    if(!this.isUcenikSelected || this.previewUcenikId != ucenik.id)
+    {
+      this.previewUcenikId = ucenik.id;
+      this.filteredPokusaji = this.selectedVezba?.pokusaji?.filter(x => x.idUcenika == ucenik.id) || [];
+      this.isUcenikSelected = true;
+      this.isAttemptSelected = false;
+    }
+    else{
+      this.previewUcenikId = 0;
+      this.filteredPokusaji = [];
+      this.isUcenikSelected = false;
+      this.isAttemptSelected = false;
+    }
   }
 
   filterExercises() {
@@ -217,6 +233,8 @@ export class StatistikeComponent implements OnInit {
     this.filteredPokusaji = [];
     this.filteredUcenici = [];
     this.filteredOdeljenja = [];
+    this.isAttemptSelected = false;
+    this.isUcenikSelected = false;
   }
 
   getNivo(nivo: any): string {

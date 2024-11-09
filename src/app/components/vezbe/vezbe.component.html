@@ -15,22 +15,25 @@
       <label for="trajanjeVezbe">Trajanje vežbe (u sekundama)</label>
       <input type="number" id="trajanjeVezbe" formControlName="trajanjeVezbe" required>
 
-      <label for="nivo">Filter po nivou:</label>
+      <label for="nivo">Odabir zadataka za vežbu</label>
+      Prikaži samo moje zadatke <input type="checkbox" [value]="onlyMyZadaci" (change)="showMyZadaci()">
+      Izaberi nivo 
       <select id="nivo" formControlName="selectedNivo" required>
         <option [value]="0">Svi Nivoi</option>
         <option [value]="1">Osnovni Nivo</option>
         <option [value]="2">Srednji Nivo</option>
         <option [value]="3">Napredni Nivo</option>
       </select>
-
       <div class="zadaci-section">
-        <label>Odaberi zadatke:</label>
-        <div *ngFor="let zadatak of filteredZadaci" [ngClass]="getZadatakClass(zadatak.nivo)">
-          <div class="zadaci-naziv"><label>{{ zadatak.opis }}</label></div>
-          <label class="zadaci-level">{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
-          <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
-          <div class="actions">
-            <button class="zadaci-details" type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
+        <!--<label>Iza:</label>-->
+        <div *ngFor="let zadatak of filteredZadaci">
+          <div *ngIf="onlyMyZadaci == false || (onlyMyZadaci == true && zadatak.idKreatora == currentUserId)" [ngClass]="getZadatakClass(zadatak.nivo)">
+                <div class="zadaci-naziv"><label>{{ zadatak.opis }}</label></div>
+                <label class="zadaci-level">{{ zadatak.nivo == 1 ? "Osnovni Nivo" : zadatak.nivo == 2 ? "Srednji Nivo" : "Napredni Nivo" }}</label>
+                <input class="zadaci-checkbox" type="checkbox" [value]="zadatak.id" (change)="toggleZadatak(zadatak.id, $event)">
+                <div class="actions">
+                  <button class="zadaci-details" type="button" (click)="openZadatakModal(zadatak)">Pogledaj zadatak</button>
+                </div>
           </div>
         </div>
       </div>

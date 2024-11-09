@@ -62,13 +62,15 @@ export class MojeVezbeComponent implements OnInit {
         });
         this.vezbaService.getUceniciByVezbaId(vezba.id).subscribe((res: User[]) =>{vezba.ucenici = res;});
         this.zadaciService.getPredmetiById(vezba.idPredmeta).subscribe((p: Predmet) => {vezba.predmet = p;});
-        this.zadaciService.getZadaciByPredmetId(vezba.idPredmeta).subscribe((z: Zadatak[]) => {
-          if(vezba.predmet)
-          {
-            vezba.predmet.zadaci = z;
-          }
-        });
-        this.zadaciService.getZadaciByVezbaId(vezba.id).subscribe((res: Zadatak[]) => {vezba.zadaci = res;});
+        this.zadaciService.getZadaciByVezbaId(vezba.id).subscribe((res: Zadatak[]) => {
+          vezba.zadaci = res;
+          this.zadaciService.getZadaciByPredmetId(vezba.idPredmeta).subscribe((z: Zadatak[]) => {    
+            if(vezba.predmet)
+            {
+              vezba.predmet.zadaci = z.filter(zadatak => vezba.zadaci.findIndex(vz=> vz.id == zadatak.id) == -1);
+            }
+          });   
+        });   
       });
       this.vezbe = vezbe;
       this.vezbe.sort((a, b) => b.id - a.id);
@@ -108,8 +110,8 @@ export class MojeVezbeComponent implements OnInit {
     });
   }
 
-  filtriraniUcenici() {
-    return this.odeljenja.find(x => x.id == this.UcenikSelectedOdeljenjeId)?.ucenici;
+  filtriraniUcenici(vezba: Vezba) {
+    return this.odeljenja.find(x => x.id == this.UcenikSelectedOdeljenjeId)?.ucenici.filter(ucenik => vezba.ucenici?.findIndex(vu => vu.id == ucenik.id) == -1);
   }
 
   filtriranaOdeljenja() {

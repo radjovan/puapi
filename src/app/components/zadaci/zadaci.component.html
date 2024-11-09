@@ -26,8 +26,13 @@
       </div>
     
       <label for="idPredmeta">Predmet</label>
-      <select id="idPredmeta" formControlName="idPredmeta" required>
+      <select id="idPredmeta" formControlName="idPredmeta" (change)="onPredmetChange($event)" required>
         <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv +" ("+ predmet.razred + ". razred)" }}</option>
+      </select>
+
+      <label for="idTeme">Tema</label>
+      <select id="idTeme" formControlName="idTeme" (change)="onPredmetChange($event)" required>
+        <option *ngFor="let tema of teme" [value]="tema.id">{{zadatak?.tema?.naziv}}</option>
       </select>
   
       <label for="document">Upload photo</label>
@@ -43,6 +48,7 @@
         <h3>Informacije o Kreiranom Zadatku:</h3>
       </div>
       <div class="info-body">
+        <label><span style="color: #004AAD;">Tema: </span> {{ zadatak?.tema?.naziv }}</label>
         <label><span style="color: #004AAD;">Opis: </span> {{ zadatak?.opis }}</label>
         <br>
         <label><span style="color: #004AAD;">Tekst: </span></label>

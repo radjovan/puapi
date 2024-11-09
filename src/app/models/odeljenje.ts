@@ -11,6 +11,7 @@ export interface Odeljenje {
     predmeti: Predmet[];
     ucenici: User[];
     skola: SkolaDTO;
+    godina: number;
   }
 
   

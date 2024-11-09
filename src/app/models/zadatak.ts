@@ -3,6 +3,7 @@ import { Hint } from "./hint";
 import { Odgovor } from "./odgovor";
 import { Predmet } from "./predmet";
 import { Slika } from "./slika";
+import { Tema } from "./tema";
 
 export interface Zadatak {
     id: number;
@@ -22,5 +23,7 @@ export interface Zadatak {
     loadedPicture: boolean;
     path: string;
     predmet: Predmet;
+    idTeme: number;
+    tema?: Tema;
   }
   

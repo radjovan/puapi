@@ -11,6 +11,8 @@ import { PredmetDTO } from '../../models/DTOs/predmetDTO';
 import { Router } from '@angular/router';
 import * as Papa from 'papaparse';
 import { SkolaDTO } from '../../models/DTOs/skolaDTO';
+import { Tema } from '../../models/tema';
+import { ZadatakService } from '../../services/zadatak-service/zadatak.service';
 
 @Component({
   selector: 'app-registration',
@@ -41,10 +43,15 @@ export class RegistrationComponent implements OnInit {
 
   editSkolaOpen: boolean = false;
 
+  isTemaModalOpen = false;
+  novaTemaNaziv: string = '';
+  selectedPredmet: any = null;
+
   constructor(private userService: UserService,
      private formBuilder: FormBuilder,
      private zaduzenjaService: ZaduzenjaService,
-    private router: Router) {
+    private router: Router,
+  private zadatakService: ZadatakService) {
     this.registrationForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -351,6 +358,33 @@ export class RegistrationComponent implements OnInit {
     this.editSkolaOpen = false;
   }
 
+  openTeme(predmet: Predmet){
+    predmet.teme = [];
+    this.selectedPredmet = predmet;
+    this.zadatakService.getTemeByPredmetId(predmet.id).subscribe(
+          (teme: Tema[]) =>{
+            this.selectedPredmet.teme = teme;
+          }
+    );
+    this.isTemaModalOpen = true;
+  }
+
+  // Function to close the modal
+  closeModal() {
+    this.isTemaModalOpen = false;
+    this.novaTemaNaziv = ''; // Clear the input field when closing
+  }
+
+  // Function to add a new topic to the selected subject
+  addTema(idPredmeta: number) {
+    if (this.novaTemaNaziv.trim()) {
+      this.zadatakService.addTema(this.novaTemaNaziv, idPredmeta).subscribe((res: Tema) => {
+        this.selectedPredmet.teme.push(res);
+        this.novaTemaNaziv = ''; // Clear the input field after adding
+      })
+    }
+  }
+
   isAdmin(){
     return this.userService.isAdmin();
   }
@@ -359,6 +393,10 @@ export class RegistrationComponent implements OnInit {
   }
   isProfesor(){
     return this.userService.isProfesor();
+  }
+
+  startNewSeason(){
+    //return this.userService.startNewSeason();
   }
 }
 

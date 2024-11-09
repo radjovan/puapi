@@ -10,6 +10,7 @@ import { Zadatak } from '../../models/zadatak';
 import { Router } from '@angular/router';
 import { FileService } from '../../services/file-service/file.service';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
+import { Tema } from '../../models/tema';
 
 @Component({
   selector: 'app-zadaci',
@@ -17,6 +18,7 @@ import { MathJaxService } from '../../services/math-jax/math-jax.service';
   styleUrls: ['./zadaci.component.css']
 })
 export class ZadaciComponent implements OnInit {
+
   taskForm: FormGroup;
   //hintForm: FormGroup;
   definitionForm: FormGroup;
@@ -37,6 +39,8 @@ export class ZadaciComponent implements OnInit {
 
   zadatak: Zadatak | null = null;
 
+  teme: Tema[] | undefined;
+
   @Input() mathString!: string;
   @Input() defMathString!: string;
   @Input() defHintString!: string;
@@ -55,7 +59,8 @@ export class ZadaciComponent implements OnInit {
       tekst: ['', Validators.required],
       idPredmeta: ['', Validators.required],
       latex: [false],
-      picture: [false]
+      picture: [false],
+      idTeme: ['', Validators.required],
     });
 
     this.definitionForm = this.fb.group({
@@ -79,6 +84,12 @@ export class ZadaciComponent implements OnInit {
       this.zadaciService.getPredmeti().subscribe(
         (response: Predmet[]) => {
           this.predmeti = response;
+
+          this.predmeti.forEach(predmet => {
+            this.zadaciService.getTemeByPredmetId(predmet.id).subscribe((teme: Tema[])=>{
+              predmet.teme = teme;
+            });
+          });
         }
       );
     }
@@ -87,6 +98,11 @@ export class ZadaciComponent implements OnInit {
       this.zadaciService.getPredmetiByProfesorId(current.id).subscribe(
         (response: Predmet[]) => {
           this.predmeti = response;
+          this.predmeti.forEach(predmet => {
+            this.zadaciService.getTemeByPredmetId(predmet.id).subscribe((teme: Tema[])=>{
+              predmet.teme = teme;
+            });
+          });
         }
       );
     }
@@ -142,6 +158,11 @@ export class ZadaciComponent implements OnInit {
               {
                 zadatak.opis = opis;
                 this.zadatak = zadatak;
+                var tema = this.teme?.filter(x=> x.id == this.zadatak?.idTeme);
+                if(tema)
+                {
+                  this.zadatak.tema;
+                }
                 this.zadatak.id = id;
                 var p =  this.predmeti?.find(x => x.id == this.zadatak?.idPredmeta);
                 if(p)
@@ -276,5 +297,14 @@ export class ZadaciComponent implements OnInit {
       console.error('Error rendering MathJax:', error);
     });
     return this.mathString;
+  }
+
+  setTema() {
+    var predmet = this.predmeti?.filter(x=> x.id == this.taskForm.get('idPredmeta')?.value)[0];
+    this.teme = predmet?.teme;
+  }
+
+  onPredmetChange(event: Event) {
+    this.setTema();
   }
 }
