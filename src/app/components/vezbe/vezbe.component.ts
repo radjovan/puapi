@@ -13,6 +13,7 @@ import { Definition } from '../../models/definition';
 import { Odgovor } from '../../models/odgovor';
 import { FileService } from '../../services/file-service/file.service';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
+import { Tema } from '../../models/tema';
 
 @Component({
   selector: 'app-vezbe',
@@ -36,6 +37,8 @@ export class VezbeComponent implements OnInit {
 
   onlyMyZadaci = false;
 
+  teme: Tema[] = [];
+
   @Input() mathString!: string;
   
   constructor(private fb: FormBuilder,
@@ -50,7 +53,8 @@ export class VezbeComponent implements OnInit {
       idPredmeta: [0, Validators.required],
       naziv: ['', Validators.required],
       trajanjeVezbe: ['', Validators.required],
-      selectedNivo: [0, Validators.required]
+      selectedNivo: [0, Validators.required],
+      idTeme: [0]
     });
   }
 
@@ -84,13 +88,37 @@ export class VezbeComponent implements OnInit {
         }
       );});
 
-      this.vezbaForm.get('selectedNivo')?.valueChanges.subscribe(value => {
-        if (value == 0) {
-          this.filteredZadaci = this.ucitaniZadaci.sort((a, b) => a.nivo - b.nivo);
-        } else {
-          this.filteredZadaci = this.ucitaniZadaci.filter(z => z.nivo == value).sort((a, b) => a.nivo - b.nivo);
-        }
+      this.vezbaForm.get('selectedNivo')?.valueChanges.subscribe(selectedNivo => {
+        this.filterZadaci();
       });
+
+      this.vezbaForm.get('idTeme')?.valueChanges.subscribe(value => {
+        this.filterZadaci();
+      });
+  }
+
+  filterZadaci(){
+    var idTeme = this.vezbaForm.get('idTeme')?.value;
+    var selectedNivo = this.vezbaForm.get('selectedNivo')?.value;
+
+    if (selectedNivo == 0 && idTeme == 0) {
+      this.filteredZadaci = this.ucitaniZadaci;
+    } 
+    else {
+      if(selectedNivo != 0){
+        this.filteredZadaci = this.ucitaniZadaci.filter(z => z.nivo == selectedNivo);
+        if(idTeme != 0){
+          this.filteredZadaci = this.filteredZadaci.filter(z => z.idTeme == idTeme);
+        }
+      }
+      if(idTeme != 0){
+        this.filteredZadaci = this.ucitaniZadaci.filter(z => z.idTeme == idTeme);
+        if(selectedNivo != 0){
+          this.filteredZadaci = this.filteredZadaci.filter(z => z.nivo == selectedNivo);
+        }
+      }
+    }
+    this.filteredZadaci.sort((a, b) => a.nivo - b.nivo);
   }
 
   toggleZadatak(id: number, event: any) {
@@ -176,5 +204,16 @@ export class VezbeComponent implements OnInit {
   
   showMyZadaci(){
     this.onlyMyZadaci = !this.onlyMyZadaci;
+  }
+
+  setTema() {
+    var predmet = this.predmeti?.filter(x=> x.id == this.vezbaForm.get('idPredmeta')?.value)[0];
+    this.zadaciService.getTemeByPredmetId(predmet.id).subscribe((res: Tema[])=>{
+      this.teme = res;
+    });
+  }
+
+  onPredmetChange(event: Event) {
+    this.setTema();
   }
 }

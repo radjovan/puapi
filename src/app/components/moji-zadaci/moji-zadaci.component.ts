@@ -11,6 +11,7 @@ import { Definition } from '../../models/definition';
 import { Odgovor } from '../../models/odgovor';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
 import { Router } from '@angular/router';
+import { Tema } from '../../models/tema';
 
 @Component({
   selector: 'app-moji-zadaci',
@@ -20,7 +21,7 @@ import { Router } from '@angular/router';
 export class MojiZadaciComponent implements OnInit {
   zadaci: Zadatak[] = [];
   filteredZadaci: Zadatak[] = [];
-  predmeti: Predmet[] = [{ id: -1, naziv: 'Svi predmeti', razred: 0 }]; // Dodavanje opcije "Svi predmeti"
+  predmeti: Predmet[] = []; // Dodavanje opcije "Svi predmeti"
   selectedRazred: number = 1;
   selectedPredmet: number = -1;
   showEditDialog: boolean = false;
@@ -29,6 +30,7 @@ export class MojiZadaciComponent implements OnInit {
   
   showImageModal: boolean = false;
   selectedImage: string = '';
+  teme: Tema[] = [];
 
   @Input() mathString!: string;
 
@@ -39,47 +41,46 @@ export class MojiZadaciComponent implements OnInit {
      private el: ElementRef,
      private mathJaxService: MathJaxService,
     private router: Router) {
-      this.selectedTask = this.zadaci[0];
     }
   ngOnInit() {  
     this.profId = this.userService.getCurrentUserId();
     this.loadTasks();
-    this.loadPredmeti();
     this.filterTasks();
   }
 
   loadTasks() {
-    this.zadatakService.getZadaciByCreatorId(this.profId).subscribe((res: Zadatak[]) => {  
-      res.forEach(element => {
-        var pred = this.predmeti.find(p => p.id == element.idPredmeta);
-        element.predmet =  pred? pred: this.predmeti[0];
-        if(element.picture == true){
-          element.path = this.fileService.getImageUrlByName(element.path);
-        }
-        else{
-          element.path = ""; 
-        }
-        this.zadatakService.dajHintPoIdZadatka(element.id).subscribe((res: Hint) => {
-          element.hint = res;
-        })
-        this.zadatakService.dajDefinicijuPoIdZadatka(element.id).subscribe((res: Definition) => {
-          element.definicija = res;
-        })
-        this.zadatakService.dajOdgovorePoIdZadatka(element.id).subscribe((res: Odgovor[]) => {
-          element.odgovori = res;
-        })
-      });
-      res.sort((a, b) => b.id - a.id);
-      this.zadaci = res;
-      this.filteredZadaci = res;
-      this.mathJaxService.render(this.el.nativeElement);
-    });
-  }
+    this.zadatakService.getPredmetiByProfesorId(this.profId).subscribe((resPredmeti: Predmet[]) => {
+      this.predmeti = resPredmeti;
 
-  loadPredmeti() {
-    this.zadatakService.getPredmetiByProfesorId(this.profId).subscribe((res: Predmet[]) => {
-      this.predmeti.push(...res);
-    });
+      this.zadatakService.getZadaciByCreatorId(this.profId).subscribe((resZadaci: Zadatak[]) => {  
+        resZadaci.forEach(element => {
+            var pred = this.predmeti.find(p => p.id == element.idPredmeta);
+            element.predmet =  pred? pred: this.predmeti[0];
+            if(element.picture == true){
+              element.path = this.fileService.getImageUrlByName(element.path);
+            }
+            else{
+              element.path = ""; 
+            }
+            this.zadatakService.dajHintPoIdZadatka(element.id).subscribe((res: Hint) => {
+              element.hint = res;
+            });
+            this.zadatakService.dajDefinicijuPoIdZadatka(element.id).subscribe((res: Definition) => {
+              element.definicija = res;
+            });
+            this.zadatakService.dajOdgovorePoIdZadatka(element.id).subscribe((res: Odgovor[]) => {
+              element.odgovori = res;
+            });
+            this.zadatakService.getTemaById(element.idTeme).subscribe((tema: Tema)=>{
+              element.tema = tema;
+              });
+          });  
+
+          resZadaci.sort((a, b) => b.id - a.id);
+          this.zadaci = this.filteredZadaci = resZadaci;
+          this.mathJaxService.render(this.el.nativeElement);
+      });
+   });
   }
 
   loadPicture(fileName: string){
@@ -99,6 +100,9 @@ export class MojiZadaciComponent implements OnInit {
 
   openEditDialog(zadatak: Zadatak) {
     this.selectedTask = zadatak;
+    this.zadatakService.getTemeByPredmetId(this.selectedTask.idPredmeta).subscribe((res: Tema[])=>{
+      this.teme = res;
+      });
     this.showEditDialog = true;
     this.mathJaxService.render(this.el.nativeElement).catch((error) => {
       console.error('Error rendering MathJax:', error);

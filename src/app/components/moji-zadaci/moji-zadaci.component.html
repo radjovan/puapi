@@ -18,6 +18,7 @@
           <li *ngFor="let zadatak of filteredZadaci">
               <div class="vezba-info">
                   <h3>{{ zadatak.opis }}</h3>
+                  <h4>Tema: {{ zadatak.tema?.naziv }}</h4>
                   <h4>Tekst zadatka:</h4>
                   <p *ngIf="!zadatak.latex">{{ zadatak.tekst }}</p>
                     <div class="latex-output" *ngIf="zadatak.latex">
@@ -54,6 +55,12 @@
           <form *ngIf="selectedTask" (submit)="updateTask()">
               <label for="opis">Opis:</label>
               <input id="opis" [(ngModel)]="selectedTask.opis" name="opis">
+
+              <label for="idTeme">Tema:</label>
+              <select id="idTeme" [(ngModel)]="selectedTask.idTeme" name="idTeme" required>
+                <option value="1">Bez teme</option>
+                <option *ngFor="let tema of teme" [value]="tema.id">{{ tema?.naziv }}</option>
+               </select>
 
               <label for="tekst">Tekst:</label>
               <textarea id="tekst" [(ngModel)]="selectedTask.tekst" name="tekst"></textarea>

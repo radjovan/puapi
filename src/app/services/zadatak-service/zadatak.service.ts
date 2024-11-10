@@ -125,4 +125,8 @@ export class ZadatakService {
   addTema(naziv: string, idPredmeta: number): Observable<Tema>{
     return this.http.get<Tema>(this.url + "zadatak.php?action=addTema&idPredmeta=" + idPredmeta + "&naziv=" + naziv);
   }
+
+  getTemaById(id: number): Observable<Tema>{
+    return this.http.get<Tema>(this.url + "zadatak.php?action=getTemaById&id=" + id);
+  }
 }

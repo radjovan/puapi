@@ -5,7 +5,7 @@
       <h1>Kreiraj Novu Vežbu</h1>
 
       <label for="predmet">Predmet</label>
-      <select id="predmet" formControlName="idPredmeta" required>
+      <select id="predmet" formControlName="idPredmeta" (change)="onPredmetChange($event)" required>
         <option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv + " (" + predmet.razred + ". razred)" }}</option>
       </select>
 
@@ -23,6 +23,11 @@
         <option [value]="1">Osnovni Nivo</option>
         <option [value]="2">Srednji Nivo</option>
         <option [value]="3">Napredni Nivo</option>
+      </select>
+      Teme
+      <select id="tema" formControlName="idTeme" required>
+        <option [value]="0">Sve teme</option>
+        <option *ngFor="let tema of teme" [value]="tema.id">{{ tema.naziv }}</option>
       </select>
       <div class="zadaci-section">
         <!--<label>Iza:</label>-->
