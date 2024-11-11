@@ -201,10 +201,10 @@ export class ZadaciComponent implements OnInit {
     if (this.answersForm.valid) {
       const { correct, forHint, wrong, wrong2 } = this.answersForm.value;
 
-      this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct).subscribe();
-      this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint).subscribe();
-      this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong).subscribe();
-      this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2).subscribe();
+      this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, undefined).subscribe();
+      this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, undefined).subscribe();
+      this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, undefined).subscribe();
+      this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, undefined).subscribe();
       this.submitHint();
       alert('Odgovori su uspešno dodati!');
       this.showAnswersForm = false; // Sakrivamo odgovor formu nakon submit-a
@@ -213,7 +213,7 @@ export class ZadaciComponent implements OnInit {
 
   submitHint() {
     if (this.answersForm.valid) {
-      this.zadaciService.addHint(this.answersForm.value.hint, this.taskId).subscribe();
+      this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, undefined).subscribe();
       this.showdefinitionForm = true;
     }
   }

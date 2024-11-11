@@ -12,6 +12,8 @@ import { Zadatak } from '../../models/zadatak';
 import { Pokusaj } from '../../models/pokusaj';
 import { Odgovor } from '../../models/odgovor';
 import { MathJaxService } from '../../services/math-jax/math-jax.service';
+import { saveAs } from 'file-saver';
+
 
 @Component({
   selector: 'app-statistike',
@@ -282,4 +284,34 @@ export class StatistikeComponent implements OnInit {
   allExcercises(){
     this.selectedVezba = null;
   }
+
+  exportToCSV() {
+    const csvData = [];
+    const header = ['ID Vežbe', 'Ime vežbe', 'Odeljenje', 'Ime učenika', 'Datum pokušaja', 'Broj tačnih odgovora', 'Ukupno odgovora'];
+    csvData.push(header);
+  
+    this.filteredVezbe.forEach(vezba => {
+      if(vezba.pokusaji)
+      {
+        vezba.pokusaji.forEach(pokusaj => {
+          const row = [
+            vezba.id,
+            vezba.naziv,
+            pokusaj.ucenik?.odeljenje?.naziv,
+            `${pokusaj.ucenik?.firstName} ${pokusaj.ucenik?.lastName}`,
+            pokusaj.datumPokusaja,
+            pokusaj.brojTacnihOdgovora,
+            pokusaj.pokusajiZadataka?.length || 0
+          ];
+          csvData.push(row);
+        });
+      }     
+    });
+  
+    // Convert to CSV string
+    const csvContent = csvData.map(e => e.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'statistics.csv');
+  }
+  
 }

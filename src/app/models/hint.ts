@@ -4,5 +4,6 @@ export interface Hint {
     tekst: string;
     idZadatka: number;
     action?: string;
+    slika?: string;
 }
   

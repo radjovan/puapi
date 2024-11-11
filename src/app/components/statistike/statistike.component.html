@@ -32,6 +32,7 @@
           <!-- <option value="0">Sva odeljenja</option> -->
           <option *ngFor="let o of filteredOdeljenja" [value]="o.id">({{ o.skola.naziv + ") " + o.razred + "/" + o.brojOdeljenja }}</option>
         </select>
+        <button class="delete-button" (click)="exportToCSV()">Export to CSV</button>
       </div>
       <!--
       

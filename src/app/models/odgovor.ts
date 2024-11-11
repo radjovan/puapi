@@ -5,5 +5,6 @@ export interface Odgovor {
     idZadatka: number;
     tacnost: number;
     action?: string;
+    slika?: string;
 }
   

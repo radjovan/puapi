@@ -74,12 +74,12 @@ export class ZadatakService {
     return this.http.post<Object>(this.url + "zadatak.php",{path: path, idZadatka: taskId, action: "dodajPutanjuZadatka"});
   }
 
-  addHint(tekst: any, taskId: number) {
-    return this.http.post<Object>(this.url + "zadatak.php",{tekst: tekst, idZadatka: taskId, action: "dodajHint"});
+  addHint(tekst: any, taskId: number, slika?: string) {
+    return this.http.post<Object>(this.url + "zadatak.php",{tekst: tekst, idZadatka: taskId, action: "dodajHint", slika: slika});
   }
 
-  addAnswers(tekst: any, taskId: number, level: number) {
-    return this.http.post<Object>(this.url + "zadatak.php",{tacnost: level,tekst: tekst, idZadatka: taskId, action: "dodajOdgovor"});
+  addAnswers(tekst: any, taskId: number, level: number, slika?: string) {
+    return this.http.post<Object>(this.url + "zadatak.php",{tacnost: level,tekst: tekst, idZadatka: taskId, action: "dodajOdgovor", slika: slika});
   }
 
   getZadaciByPredmetId(idPredmeta: any): Observable<Zadatak[]>{
