@@ -9,6 +9,8 @@
     <input type="password" id="password" formControlName="password">
 
     <button type="submit" [disabled]="!loginForm.valid">PRIJAVI SE</button>
+    <button type="button" class="forgot-password" (click)="onForgotPassword()">ZABORAVIO SAM LOZINKU</button>
+  
   </form>
 
   <form *ngIf="showChangePassword" [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">

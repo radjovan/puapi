@@ -37,6 +37,18 @@ export class ZadaciComponent implements OnInit {
   definitionImageUrl: string | null = null;
   taskAdded = false;
 
+  selectedFileHint: File | null = null;
+  selectedFileCorrectAnswer: File | null = null;
+  selectedFileHintAnswer: File | null = null;
+  selectedFileWrongAnswer: File | null = null;
+  selectedFileSecondWrongAnswer: File | null = null;
+
+  hintImageUrl: string | null = null;
+  correctAnswerImageUrl: string | null = null;
+  hintAnswerImageUrl: string | null = null;
+  wrongAnswerImageUrl: string | null = null;
+  secondWrongAnswerImageUrl: string | null = null;
+
   zadatak: Zadatak | null = null;
 
   teme: Tema[] | undefined;
@@ -74,7 +86,12 @@ export class ZadaciComponent implements OnInit {
       wrong: ['', Validators.required],
       wrong2: ['', Validators.required],
       hint: ['', Validators.required],
-      hintLatex: [false]
+      hintLatex: [false],
+      fileCorrect: [undefined],
+      fileHintAnswer: [undefined],
+      fileWrongAnswer: [undefined],
+      fileWrongAnswer2: [undefined],
+      fileHint: [undefined]
     });
   }
 
@@ -123,6 +140,41 @@ export class ZadaciComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       this.selectedFileDefinition = input.files[0];
+    }
+  }
+
+  onFileChangeHint(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFileHint = input.files[0];
+    }
+  }
+
+  onFileChangeCorrectAnswer(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFileCorrectAnswer = input.files[0];
+    }
+  }
+
+  onFileChangeHintAnswer(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFileHintAnswer = input.files[0];
+    }
+  }
+
+  onFileChangeWrongAnswer(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFileWrongAnswer = input.files[0];
+    }
+  }
+
+  onFileChangeSecondWrongAnswer(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFileSecondWrongAnswer = input.files[0];
     }
   }
 
@@ -201,10 +253,62 @@ export class ZadaciComponent implements OnInit {
     if (this.answersForm.valid) {
       const { correct, forHint, wrong, wrong2 } = this.answersForm.value;
 
-      this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, undefined).subscribe();
-      this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, undefined).subscribe();
-      this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, undefined).subscribe();
-      this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, undefined).subscribe();
+      if(this.selectedFileCorrectAnswer){
+        this.fileService.uploadFile(this.selectedFileCorrectAnswer).subscribe(response => {
+          if(response.status === 'success'){
+            this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, response.fileName).subscribe();
+            this.correctAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
+          } else {
+            console.error(response.message);
+          }
+        })
+      }
+      else{
+        this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, undefined).subscribe();
+      }
+
+      if(this.selectedFileHintAnswer){
+        this.fileService.uploadFile(this.selectedFileHintAnswer).subscribe(response => {
+          if(response.status === 'success'){
+            this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, response.fileName).subscribe();
+            this.hintAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
+          } else {
+            console.error(response.message);
+          }
+        })
+      }
+      else{
+        this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, undefined).subscribe();
+      }
+
+      if(this.selectedFileWrongAnswer){
+        this.fileService.uploadFile(this.selectedFileWrongAnswer).subscribe(response => {
+          if(response.status === 'success'){
+            this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, response.fileName).subscribe();
+            this.wrongAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
+          } else {
+            console.error(response.message);
+          }
+        })
+      }
+      else{
+        this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, undefined).subscribe();
+      }
+
+      if(this.selectedFileSecondWrongAnswer){
+        this.fileService.uploadFile(this.selectedFileSecondWrongAnswer).subscribe(response => {
+          if(response.status === 'success'){
+            this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, response.fileName).subscribe();
+            this.secondWrongAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
+          } else {
+            console.error(response.message);
+          }
+        })
+      }
+      else{
+        this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, undefined).subscribe();
+      }
+
       this.submitHint();
       alert('Odgovori su uspešno dodati!');
       this.showAnswersForm = false; // Sakrivamo odgovor formu nakon submit-a
@@ -213,8 +317,19 @@ export class ZadaciComponent implements OnInit {
 
   submitHint() {
     if (this.answersForm.valid) {
-      this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, undefined).subscribe();
-      this.showdefinitionForm = true;
+      if (this.selectedFileHint) {
+        this.fileService.uploadFile(this.selectedFileHint).subscribe(response => {
+          if (response.status === 'success') {
+            this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, response.fileName).subscribe();
+            this.hintImageUrl = this.fileService.getImageUrlByName(response.filename);
+          } else {
+            console.error(response.message);
+          }
+        });
+      }
+      else{
+        this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, undefined).subscribe(); }
+        this.showdefinitionForm = true;
     }
   }
 

@@ -13,6 +13,7 @@ import * as Papa from 'papaparse';
 import { SkolaDTO } from '../../models/DTOs/skolaDTO';
 import { Tema } from '../../models/tema';
 import { ZadatakService } from '../../services/zadatak-service/zadatak.service';
+import { EmailService } from '../../services/email-service/email.service';
 
 @Component({
   selector: 'app-registration',
@@ -48,10 +49,11 @@ export class RegistrationComponent implements OnInit {
   selectedPredmet: any = null;
 
   constructor(private userService: UserService,
-     private formBuilder: FormBuilder,
-     private zaduzenjaService: ZaduzenjaService,
-    private router: Router,
-  private zadatakService: ZadatakService) {
+              private formBuilder: FormBuilder,
+              private zaduzenjaService: ZaduzenjaService,
+              private router: Router,
+              private zadatakService: ZadatakService,
+              private emailService: EmailService) {
     this.registrationForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -170,7 +172,7 @@ export class RegistrationComponent implements OnInit {
                     }
                   );
                 }
-                
+                this.emailService.sendMail("Vaš nalog na Platformi za programirano učenje je uspešno kreiran!<br>Vaši podaci za prijavu su:<br>EMAIL: "+user.username+"  LOZINKA: "+user.password+"<br><br> Lozinku morate promeniti pri prvoj prijavi na platformu!", user.username).subscribe();
                 alert('Korisnik: '+ user.username +' je uspešno dodat!');
                 this.registrationForm.reset();       
                 this.router.navigate(['/registration']);
@@ -269,6 +271,7 @@ export class RegistrationComponent implements OnInit {
                 const odeljenjeRes = await this.zaduzenjaService.addOdeljenjeUcenik(userId, odeljenje.id).toPromise();
                 if (odeljenjeRes) {
                   success = success + 1;
+                  this.emailService.sendMail("Vaš nalog na Platformi za programirano učenje je uspešno kreiran!<br>Vaši podaci za prijavu su:<br>EMAIL: "+newUser.username+"  LOZINKA: "+newUser.password+"<br><br> Lozinku morate promeniti pri prvoj prijavi na platformu!", newUser.username).subscribe();
                 } else {
                   failed = failed + 1;
                 }

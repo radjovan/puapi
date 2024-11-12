@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user-service/user.service';
 import { FileService } from '../../services/file-service/file.service';
+import { EmailService } from '../../services/email-service/email.service';
 
 @Component({
   standalone: true,
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: UserService,
     private router: Router,
-    private fileService: FileService
+    private fileService: FileService,
+    private emailService: EmailService
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -75,6 +77,27 @@ export class LoginComponent implements OnInit {
           }
         }
       );
+    }
+  }
+
+  onForgotPassword() {
+    const email = this.loginForm.get('username')?.value;
+
+    if (email) {
+      this.authService.changePassword(this.username, "123").subscribe(
+        (user: any) => {
+          if (user) {
+            this.emailService.sendMail("Vaša lozinka na Platformi za programirano učenje je: 123 .<br> Morate je promeniti pri sledećoj registraciji!", email).subscribe();
+            console.log(`Zahtev za resetovanje lozinke poslat na email: ${email}`);
+            // Ovde možete pozvati servis koji će obraditi resetovanje lozinke
+            this.router.navigate(['/home']);
+          } else {
+            alert('Došlo je do greške prilikom promene lozinke!');
+          }
+        }
+      );
+    } else {
+      alert("Unesite email pre nego što zatražite resetovanje lozinke.");
     }
   }
 }

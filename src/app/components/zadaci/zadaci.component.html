@@ -49,6 +49,7 @@
       </div>
       <div class="info-body">
         <label><span style="color: #004AAD;">Tema: </span> {{ zadatak?.tema?.naziv }}</label>
+        <br>
         <label><span style="color: #004AAD;">Opis: </span> {{ zadatak?.opis }}</label>
         <br>
         <label><span style="color: #004AAD;">Tekst: </span></label>
@@ -73,13 +74,19 @@
   <h3>Dodaj Odgovore:</h3>
   <form [formGroup]="answersForm" (ngSubmit)="submitAnswers()">
     <label for="correct">Tačan odgovor</label>
+    <label for="fileCorrect">Upload photo</label>
+    <input type="file" id="fileCorrect" formControlName="fileCorrect" (change)="onFileChangeCorrectAnswer($event)">
     <input type="text" id="correct" formControlName="correct" required>
     <label for="forHintLabel">Približan odgovor</label>
+    <label for="fileHintAnswer">Upload photo</label>
+    <input type="file" id="fileHintAnswer" formControlName="fileHintAnswer" (change)="onFileChangeHintAnswer($event)">
     <input type="text" id="forHint" formControlName="forHint" required>
     <label for="hint" style="color:#FFA500;">Pomoć za zadatak sa približnim odgovorom</label>
+    <label for="fileHint">Upload photo</label>
+    <input type="file" id="fileHint" formControlName="fileHint" (change)="onFileChangeHint($event)">
     <textarea id="hint" formControlName="hint" rows="5" (input)="updateHintLatex()" required ></textarea>
     <label style="color:#FFA500;">Uneti tekst je Latex kod:</label>
-    <input type="checkbox" id="latexOption" formControlName="hintLatex"  (change)="updateHintLatex()">
+    <input type="checkbox" id="latexOption" formControlName="hintLatex" (change)="updateHintLatex()">
     <div *ngIf="answersForm.get('hintLatex')?.value">
       <label style="color:#FFA500;">Pomoć za zadatak sa približnim odgovorom(Latex)</label>
       <div class="latex-output">
@@ -87,8 +94,12 @@
       </div>
     </div>
     <label for="wrong">Pogrešan odgovor</label>
+    <label for="fileWrongAnswer">Upload photo</label>
+    <input type="file" id="fileWrongAnswer" formControlName="fileWrongAnswer" (change)="onFileChangeWrongAnswer($event)">
     <input type="text" id="wrong" formControlName="wrong" required>
     <label for="wrong2">Pogrešan odgovor</label>
+    <label for="fileWrongAnswer2">Upload photo</label>
+    <input type="file" id="fileWrongAnswer2" formControlName="fileWrongAnswer2" (change)="onFileChangeSecondWrongAnswer($event)">
     <input type="text" id="wrong2" formControlName="wrong2"required>
     <button type="submit" [disabled]="answersForm.invalid">Dodaj Odgovore</button>
   </form>
