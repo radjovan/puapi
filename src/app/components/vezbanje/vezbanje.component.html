@@ -31,16 +31,17 @@
         <div *ngIf="vezba.zadaci[currentZadatakIndex].picture == true">
           <img [src]="vezba.zadaci[currentZadatakIndex].path" alt="Slika zadatka">
         </div>
-        
+        <br>
         <div class="odgovori">
-          <div *ngFor="let odgovor of vezba.zadaci[currentZadatakIndex].odgovori">
+          <div *ngFor="let odgovor of vezba.zadaci[currentZadatakIndex].odgovori" class="odgovor-item">
             <label>
               <input type="radio" name="zadatak{{ vezba.zadaci[currentZadatakIndex].id }}" (click)="selectedOdgovor = odgovor">
               {{ odgovor.tekst }}
-              <div *ngIf="odgovor.path">
-                <img [src]="odgovor.path" alt="Slika zadatka">
-              </div>
             </label>
+            <br>
+            <div *ngIf="odgovor.path">
+              <img [src]="odgovor.path" alt="Slika zadatka" (click)="openImageModal(odgovor.path)" class="odgovor-slika">
+            </div>
           </div>
         </div>
         
@@ -67,6 +68,13 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+    <span class="image-modal-close">&times;</span>
+    <div class="image-modal-content">
+        <img [src]="selectedImage" alt="Full size image">
+    </div>
   </div>
 
   <div *ngIf="showResults" class="results">

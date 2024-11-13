@@ -45,6 +45,9 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
   zadatakPoRedu: number = 0;
   defaultNivo: number = 0;
 
+  selectedImage = "";
+  showImageModal = false;
+
   // Indeksi za zadatke po nivoima
   currentZadatakIndexOsnovni: number = 0;
   currentZadatakIndexSrednji: number = 0;
@@ -410,6 +413,15 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/vezbanja']);
   }
 
+  openImageModal(path: any) {
+    this.selectedImage = path;
+    this.showImageModal = true;
+  }
+
+  closeImageModal() {
+    this.showImageModal = false;
+    //this.selectedImage = '';
+  }
   /*
   preskociZadatak(id: any): void{
     if(this.pokusaj)
