@@ -37,6 +37,9 @@
             <label>
               <input type="radio" name="zadatak{{ vezba.zadaci[currentZadatakIndex].id }}" (click)="selectedOdgovor = odgovor">
               {{ odgovor.tekst }}
+              <div *ngIf="odgovor.path">
+                <img [src]="odgovor.path" alt="Slika zadatka">
+              </div>
             </label>
           </div>
         </div>
@@ -46,6 +49,9 @@
         <div *ngIf="showHint" class="hint-popup">
           <p>POMOĆ:</p>
           <p>{{ vezba.zadaci[currentZadatakIndex].hint.tekst }}</p>
+          <div *ngIf="vezba.zadaci[currentZadatakIndex].hint.path">
+            <img [src]="vezba.zadaci[currentZadatakIndex].hint.path" alt="Slika zadatka">
+          </div>
         </div>
         
         <div *ngIf="showDefinition" class="definition-popup">

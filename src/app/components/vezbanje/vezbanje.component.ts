@@ -91,11 +91,21 @@ export class VezbanjeComponent implements OnInit, OnDestroy {
     this.zadatakService.getZadaciByVezbaId(v.id).subscribe((z: Zadatak[]) => {
       z.forEach(zadatak => {
         this.zadatakService.dajOdgovorePoIdZadatka(zadatak.id).subscribe((o: Odgovor[]) => {
+          o.forEach(odg => {
+            if(odg.slika)
+              {
+                odg.path =  this.fileService.getImageUrlByName(odg.slika);
+              }
+          });
           zadatak.odgovori =  this.izmesajOdgovore(o);
         });
 
         this.zadatakService.dajHintPoIdZadatka(zadatak.id).subscribe((h: Hint) => {
           zadatak.hint = h;
+          if(zadatak.hint.slika)
+            {
+              zadatak.hint.path =  this.fileService.getImageUrlByName(zadatak.hint.slika);
+            }
         });
 
         this.zadatakService.dajDefinicijuPoIdZadatka(zadatak.id).subscribe((d: Definition) => {

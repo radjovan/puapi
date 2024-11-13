@@ -69,12 +69,12 @@
 
       <h3>Odgovori:</h3>
       <ul>
-        <li *ngFor="let odgovor of selectedZadatak?.odgovori">        
+        <div *ngFor="let odgovor of selectedZadatak?.odgovori">        
           <div *ngIf="odgovor.path">
-            {{ odgovor.tekst }}
+            <label>{{ odgovor.tekst}}</label> 
           <img  [src]="odgovor.path" class="task-image" (click)="openImageModal(odgovor.path)">
         </div>
-      </li>
+      </div>
       </ul>
 
       <h3>Teorijski podsetnik:</h3>
