@@ -5,5 +5,6 @@ export interface Hint {
     idZadatka: number;
     action?: string;
     slika?: string;
+    path?: string;
 }
   

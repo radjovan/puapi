@@ -87,11 +87,11 @@ export class ZadaciComponent implements OnInit {
       wrong2: ['', Validators.required],
       hint: ['', Validators.required],
       hintLatex: [false],
-      fileCorrect: [undefined],
-      fileHintAnswer: [undefined],
-      fileWrongAnswer: [undefined],
-      fileWrongAnswer2: [undefined],
-      fileHint: [undefined]
+      fileCorrect: [],
+      fileHintAnswer: [],
+      fileWrongAnswer: [],
+      fileWrongAnswer2: [],
+      fileHint: []
     });
   }
 
@@ -256,7 +256,7 @@ export class ZadaciComponent implements OnInit {
       if(this.selectedFileCorrectAnswer){
         this.fileService.uploadFile(this.selectedFileCorrectAnswer).subscribe(response => {
           if(response.status === 'success'){
-            this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, response.fileName).subscribe();
+            this.zadaciService.addAnswers(correct, this.taskId, tacnostOdgovora.correct, response.filename).subscribe();
             this.correctAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);
@@ -270,7 +270,7 @@ export class ZadaciComponent implements OnInit {
       if(this.selectedFileHintAnswer){
         this.fileService.uploadFile(this.selectedFileHintAnswer).subscribe(response => {
           if(response.status === 'success'){
-            this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, response.fileName).subscribe();
+            this.zadaciService.addAnswers(forHint, this.taskId, tacnostOdgovora.forHint, response.filename).subscribe();
             this.hintAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);
@@ -284,7 +284,7 @@ export class ZadaciComponent implements OnInit {
       if(this.selectedFileWrongAnswer){
         this.fileService.uploadFile(this.selectedFileWrongAnswer).subscribe(response => {
           if(response.status === 'success'){
-            this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, response.fileName).subscribe();
+            this.zadaciService.addAnswers(wrong, this.taskId, tacnostOdgovora.wrong, response.filename).subscribe();
             this.wrongAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);
@@ -298,7 +298,7 @@ export class ZadaciComponent implements OnInit {
       if(this.selectedFileSecondWrongAnswer){
         this.fileService.uploadFile(this.selectedFileSecondWrongAnswer).subscribe(response => {
           if(response.status === 'success'){
-            this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, response.fileName).subscribe();
+            this.zadaciService.addAnswers(wrong2, this.taskId, tacnostOdgovora.wrong2, response.filename).subscribe();
             this.secondWrongAnswerImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);
@@ -320,7 +320,7 @@ export class ZadaciComponent implements OnInit {
       if (this.selectedFileHint) {
         this.fileService.uploadFile(this.selectedFileHint).subscribe(response => {
           if (response.status === 'success') {
-            this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, response.fileName).subscribe();
+            this.zadaciService.addHint(this.answersForm.value.hint, this.taskId, response.filename).subscribe();
             this.hintImageUrl = this.fileService.getImageUrlByName(response.filename);
           } else {
             console.error(response.message);

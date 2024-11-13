@@ -6,5 +6,6 @@ export interface Definition {
     slika: string;
     latex: boolean;
     action?: string;
+    path?: string;
 }
   

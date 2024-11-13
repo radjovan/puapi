@@ -27,7 +27,7 @@
                     
                 <br>
               <div *ngIf="zadatak.picture == true">
-                <img  [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak)">
+                <img  [src]="zadatak.path" class="task-image" (click)="openImageModal(zadatak.path)">
               </div>
                   <br>
                   <div class="actions">
@@ -39,23 +39,24 @@
       </ul>
   </div>
 
-  <!-- Modal za prikaz slike -->
-  <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
-      <span class="image-modal-close">&times;</span>
-      <div class="image-modal-content">
-          <img [src]="selectedImage" alt="Full size image">
-      </div>
-  </div>
-
   <!-- Modal za izmenu zadatka -->
   <div class="modal" *ngIf="showEditDialog">
       <div class="modal-content form-container">
+
+        <!-- Modal za prikaz slike -->
+        <div class="image-modal" *ngIf="showImageModalFromEdit" (click)="closeImageModalFromEdit()">
+            <span class="image-modal-close">&times;</span>
+            <div class="image-modal-content">
+                <img [src]="selectedImageFromEdit" alt="Full size image">
+            </div>
+        </div>
+        
           <span class="close" (click)="closeEditDialog()">&times;</span>
           <h2>IZMENA ZADATKA</h2>
           <form *ngIf="selectedTask" (submit)="updateTask()">
               <label for="opis">Opis:</label>
               <input id="opis" [(ngModel)]="selectedTask.opis" name="opis">
-
+              
               <label for="idTeme">Tema:</label>
               <select id="idTeme" [(ngModel)]="selectedTask.idTeme" name="idTeme" required>
                 <option value="1">Bez teme</option>
@@ -64,20 +65,26 @@
 
               <label for="tekst">Tekst:</label>
               <textarea id="tekst" [(ngModel)]="selectedTask.tekst" name="tekst"></textarea>
-              <!--
-              <label for="slika">Slika:</label>
-              <input id="slika" type="file" (change)="onFileSelected($event)">
-              -->
+              <div *ngIf="selectedTask.picture == true">
+                <img  [src]="selectedTask.path" class="task-image" (click)="openImageModalFromEdit(selectedTask.path)">
+              </div>
 
               <label for="hint">Pomoć za približno tačan odgovor:</label>
               <textarea id="hint" [(ngModel)]="selectedTask.hint.tekst" name="hint"></textarea>
-
+              <div *ngIf="selectedTask.hint.path">
+                <img  [src]="selectedTask.hint.path" class="task-image" (click)="openImageModalFromEdit(selectedTask.hint.path)">
+              </div>
               <label for="definicija">Definicija:</label>
               <textarea id="definicija" [(ngModel)]="selectedTask.definicija.tekst" name="definicija"></textarea>
-
+              <div *ngIf="selectedTask.definicija.path">
+                <img  [src]="selectedTask.definicija.path" class="task-image" (click)="openImageModalFromEdit(selectedTask.definicija.path)">
+              </div>
               <div *ngFor="let odgovor of selectedTask.odgovori; let i = index">
                   <label [for]="'odgovor' + i">{{odgovor.tacnost == 1? "Tačan odgovor": odgovor.tacnost == 2? "Približno tačan odgovor" : "Netačan odgovor"}}:</label>
                   <textarea id="'odgovor' + i" [(ngModel)]="odgovor.tekst" [name]="'odgovor' + i"></textarea>
+                  <div *ngIf="odgovor.path">
+                    <img  [src]="odgovor.path" class="task-image" (click)="openImageModalFromEdit(odgovor.path)">
+                  </div>
               </div>
 
               <div class="actions">
@@ -86,4 +93,12 @@
           </form>
       </div>
   </div>
+
+    <!-- Modal za prikaz slike -->
+    <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+        <span class="image-modal-close">&times;</span>
+        <div class="image-modal-content">
+            <img [src]="selectedImage" alt="Full size image">
+        </div>
+    </div>
 </div>

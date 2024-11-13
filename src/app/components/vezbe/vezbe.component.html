@@ -51,6 +51,13 @@
 
   <div class="modal" *ngIf="showZadatakModal">
     <div class="modal-content form-container">
+
+      <div class="image-modal" *ngIf="showImageModal" (click)="closeImageModal()">
+        <span class="image-modal-close">&times;</span>
+        <div class="image-modal-content">
+            <img [src]="selectedImage" alt="Full size image">
+        </div>
+      </div>
       <span class="close" (click)="closeZadatakModal()">&times;</span>
       <h2>{{ selectedZadatak?.opis }}</h2>
       <p><strong>Tekst zadatka:</strong></p>
@@ -62,17 +69,28 @@
 
       <h3>Odgovori:</h3>
       <ul>
-        <li *ngFor="let odgovor of selectedZadatak?.odgovori">{{ odgovor.tekst }}</li>
+        <li *ngFor="let odgovor of selectedZadatak?.odgovori">        
+          <div *ngIf="odgovor.path">
+            {{ odgovor.tekst }}
+          <img  [src]="odgovor.path" class="task-image" (click)="openImageModal(odgovor.path)">
+        </div>
+      </li>
       </ul>
 
       <h3>Teorijski podsetnik:</h3>
       <p *ngIf="!selectedZadatak?.latex">{{ selectedZadatak?.definicija?.tekst }}</p>
       <div class="latex-output" *ngIf="selectedZadatak?.definicija?.latex">
       <div [innerHTML]="renderLatex(selectedZadatak?.definicija?.tekst)"></div>
+      <div *ngIf="selectedZadatak?.definicija?.path">
+        <img  [src]="selectedZadatak?.definicija?.path" class="task-image" (click)="openImageModal(selectedZadatak?.definicija?.path)">
+      </div>
       </div> 
 
       <h3>Pomoć za približan zadatak</h3>
       <p>{{ selectedZadatak?.hint?.tekst }}</p>
+      <div *ngIf="selectedZadatak?.hint?.path">
+        <img  [src]="selectedZadatak?.hint?.path" class="task-image" (click)="openImageModal(selectedZadatak?.hint?.path)">
+        </div>
     </div>
   </div>
 </div>

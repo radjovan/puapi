@@ -6,5 +6,6 @@ export interface Odgovor {
     tacnost: number;
     action?: string;
     slika?: string;
+    path?: string;
 }
   

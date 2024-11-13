@@ -30,6 +30,8 @@ export class MojiZadaciComponent implements OnInit {
   
   showImageModal: boolean = false;
   selectedImage: string = '';
+  showImageModalFromEdit: boolean = false;
+  selectedImageFromEdit: string = '';
   teme: Tema[] = [];
 
   @Input() mathString!: string;
@@ -64,12 +66,26 @@ export class MojiZadaciComponent implements OnInit {
             }
             this.zadatakService.dajHintPoIdZadatka(element.id).subscribe((res: Hint) => {
               element.hint = res;
+              if(element.hint.slika)
+              {
+                element.hint.path =  this.fileService.getImageUrlByName(element.hint.slika);
+              }
             });
             this.zadatakService.dajDefinicijuPoIdZadatka(element.id).subscribe((res: Definition) => {
               element.definicija = res;
+              if(element.definicija.slika)
+              {
+                element.definicija.path =  this.fileService.getImageUrlByName(element.definicija.slika);
+              }
             });
             this.zadatakService.dajOdgovorePoIdZadatka(element.id).subscribe((res: Odgovor[]) => {
               element.odgovori = res;
+              element.odgovori.forEach(odgovor => {
+                if(odgovor.slika)
+                {
+                  odgovor.path =  this.fileService.getImageUrlByName(odgovor.slika);
+                }
+              });
             });
             this.zadatakService.getTemaById(element.idTeme).subscribe((tema: Tema)=>{
               element.tema = tema;
@@ -154,8 +170,8 @@ export class MojiZadaciComponent implements OnInit {
     }
   }
 
-  openImageModal(zadatak: Zadatak) {
-    this.selectedImage = zadatak.path;
+  openImageModal(path: string) {
+    this.selectedImage = path;
     this.showImageModal = true;
   }
 
@@ -164,4 +180,13 @@ export class MojiZadaciComponent implements OnInit {
     //this.selectedImage = '';
   }
 
+  openImageModalFromEdit(path: string) {
+    this.selectedImageFromEdit = path;
+    this.showImageModalFromEdit = true;
+  }
+
+  closeImageModalFromEdit() {
+    this.showImageModalFromEdit = false;
+    //this.selectedImage = '';
+  }
 }

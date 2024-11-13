@@ -32,7 +32,8 @@
 
       <label for="idTeme">Tema</label>
       <select id="idTeme" formControlName="idTeme" (change)="onPredmetChange($event)" required>
-        <option *ngFor="let tema of teme" [value]="tema.id">{{zadatak?.tema?.naziv}}</option>
+        <option value="1">Bez teme</option>
+        <option *ngFor="let tema of teme" [value]="tema.id">{{tema.naziv}}</option>
       </select>
   
       <label for="document">Upload photo</label>

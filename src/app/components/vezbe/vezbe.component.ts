@@ -75,13 +75,30 @@ export class VezbeComponent implements OnInit {
               }
               this.zadaciService.dajHintPoIdZadatka(element.id).subscribe((res: Hint) => {
                 element.hint = res;
-              })
+                if(element.hint.slika)
+                {
+                  element.hint.path =  this.fileService.getImageUrlByName(element.hint.slika);
+                }
+              });
               this.zadaciService.dajDefinicijuPoIdZadatka(element.id).subscribe((res: Definition) => {
                 element.definicija = res;
-              })
+                if(element.definicija.slika)
+                {
+                  element.definicija.path =  this.fileService.getImageUrlByName(element.definicija.slika);
+                }
+              });
               this.zadaciService.dajOdgovorePoIdZadatka(element.id).subscribe((res: Odgovor[]) => {
                 element.odgovori = res;
-              })
+                element.odgovori.forEach(odgovor => {
+                  if(odgovor.slika)
+                  {
+                    odgovor.path =  this.fileService.getImageUrlByName(odgovor.slika);
+                  }
+                });
+              });
+              this.zadaciService.getTemaById(element.idTeme).subscribe((tema: Tema)=>{
+                element.tema = tema;
+                });
             });
             this.ucitaniZadaci = this.filteredZadaci = res.sort((a, b) => a.nivo - b.nivo);
           }
@@ -132,8 +149,8 @@ export class VezbeComponent implements OnInit {
     }
   }
 
-  openImageModal(zadatak: Zadatak) {
-    this.selectedImage = zadatak.path;
+  openImageModal(path: any) {
+    this.selectedImage = path;
     this.showImageModal = true;
   }
 
